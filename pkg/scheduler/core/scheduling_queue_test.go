@@ -90,6 +90,22 @@ func TestPriorityQueue_Add(t *testing.T) {
 	}
 }
 
+func TestPriorityQueue_AddIfNotPresent(t *testing.T) {
+	q := NewPriorityQueue()
+	q.AddIfNotPresent(&medPriorityPod)
+	q.AddIfNotPresent(&unschedulablePod)
+	q.AddIfNotPresent(&highPriorityPod)
+	if p, err := q.Pop(); err != nil || p != &highPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", highPriorityPod.Name, p.Name)
+	}
+	if p, err := q.Pop(); err != nil || p != &medPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", medPriorityPod.Name, p.Name)
+	}
+	if p, err := q.Pop(); err != nil || p != &unschedulablePod {
+		t.Errorf("Expected: %v after Pop, but got: %v", unschedulablePod.Name, p.Name)
+	}
+}
+
 func TestPriorityQueue_Pop(t *testing.T) {
 	q := NewPriorityQueue()
 	wg := sync.WaitGroup{}
@@ -401,4 +417,79 @@ func TestUnschedulablePodsMap(t *testing.T) {
 			t.Errorf("Expected the map to be empty, but has %v elements.", len(upm.pods))
 		}
 	}
+}
+
+func TestFIFO_Add(t *testing.T) {
+	f := NewFIFO()
+	f.Add(&medPriorityPod)
+	f.Add(&unschedulablePod)
+	f.Add(&highPriorityPod)
+	if p, err := f.Pop(); err != nil || p != &medPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", medPriorityPod.Name, p.Name)
+	}
+	if p, err := f.Pop(); err != nil || p != &unschedulablePod {
+		t.Errorf("Expected: %v after Pop, but got: %v", unschedulablePod.Name, p.Name)
+	}
+	if p, err := f.Pop(); err != nil || p != &highPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", highPriorityPod.Name, p.Name)
+	}
+}
+
+func TestFIFO_Update(t *testing.T) {
+	updatedmedPriorityPod := medPriorityPod.DeepCopy()
+	updatedmedPriorityPod.Status.NominatedNodeName = "updatedmednode1"
+	updatedunschedulablePod := unschedulablePod.DeepCopy()
+	updatedunschedulablePod.Status.NominatedNodeName = "updatedmednode2"
+	updatedhighPriorityPod := highPriorityPod.DeepCopy()
+	updatedhighPriorityPod.Status.NominatedNodeName = "updatedmednode3"
+
+	f := NewFIFO()
+	f.Add(&medPriorityPod)
+	f.Add(&unschedulablePod)
+	f.Add(&highPriorityPod)
+	f.Update(updatedmedPriorityPod)
+	f.Update(updatedunschedulablePod)
+	f.Update(updatedhighPriorityPod)
+	if p, err := f.Pop(); err != nil || reflect.DeepEqual(p, medPriorityPod) {
+		t.Errorf("Expected: %v after Pop, but got: %v", updatedmedPriorityPod.Name, medPriorityPod.Name)
+	}
+	if p, err := f.Pop(); err != nil || reflect.DeepEqual(p, unschedulablePod) {
+		t.Errorf("Expected: %v after Pop, but got: %v", updatedunschedulablePod.Name, unschedulablePod.Name)
+	}
+	if p, err := f.Pop(); err != nil || reflect.DeepEqual(p, highPriorityPod) {
+		t.Errorf("Expected: %v after Pop, but got: %v", updatedhighPriorityPod.Name, highPriorityPod.Name)
+	}
+}
+func TestFIFO_AddIfNotPresent(t *testing.T) {
+	f := NewFIFO()
+	f.AddIfNotPresent(&medPriorityPod)
+	f.AddIfNotPresent(&unschedulablePod)
+	f.AddIfNotPresent(&highPriorityPod)
+	if p, err := f.Pop(); err != nil || p != &medPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", medPriorityPod.Name, p.Name)
+	}
+	if p, err := f.Pop(); err != nil || p != &unschedulablePod {
+		t.Errorf("Expected: %v after Pop, but got: %v", unschedulablePod.Name, p.Name)
+	}
+	if p, err := f.Pop(); err != nil || p != &highPriorityPod {
+		t.Errorf("Expected: %v after Pop, but got: %v", highPriorityPod.Name, p.Name)
+	}
+}
+
+func TestFIFO_AddUnschedulableIfNotPresent(t *testing.T) {
+	f := NewFIFO()
+	f.AddUnschedulableIfNotPresent(&unschedulablePod)
+	if p, err := f.Pop(); err != nil || p != &unschedulablePod {
+		t.Errorf("Expected: %v after Pop, but got: %v", unschedulablePod.Name, p.Name)
+	}
+}
+
+func TestFIFO_Delete(t *testing.T) {
+	f := NewFIFO()
+	f.Add(&medPriorityPod)
+	f.Add(&unschedulablePod)
+	f.Add(&highPriorityPod)
+	f.Delete(&medPriorityPod)
+	f.Delete(&unschedulablePod)
+	f.Delete(&highPriorityPod)
 }

@@ -644,3 +644,107 @@ func TestInvalidateAllCachedPredicateItemOfNode(t *testing.T) {
 		}
 	}
 }
+
+func TestInvalidateCachedPredicateItemForPodAdd(t *testing.T) {
+	// testPredicate := "GeneralPredicates"
+	testNamespace := "test"
+	isController := true
+	// tests is used to initialize all nodes
+	tests := []struct {
+		nodeName string
+		pod      *v1.Pod
+	}{
+		{
+			nodeName: "node1",
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod1",
+					Namespace: testNamespace,
+					OwnerReferences: []metav1.OwnerReference{
+						{
+							APIVersion: "v1",
+							Kind:       "ReplicationController",
+							Name:       "rc",
+							UID:        "123",
+							Controller: &isController,
+						},
+					},
+				},
+				Spec: v1.PodSpec{
+					Volumes: []v1.Volume{
+						{
+							VolumeSource: v1.VolumeSource{
+								PersistentVolumeClaim: &v1.PersistentVolumeClaimVolumeSource{
+									ClaimName: "someEBSVol1",
+								},
+							},
+						},
+						{
+							VolumeSource: v1.VolumeSource{
+								PersistentVolumeClaim: &v1.PersistentVolumeClaimVolumeSource{
+									ClaimName: "someEBSVol2",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			nodeName: "node2",
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod2",
+					Namespace: testNamespace,
+					OwnerReferences: []metav1.OwnerReference{
+						{
+							APIVersion: "v1",
+							Kind:       "ReplicationController",
+							Name:       "rc",
+							UID:        "123",
+							Controller: &isController,
+						},
+					},
+				},
+				Spec: v1.PodSpec{
+					Volumes: []v1.Volume{
+						{
+							VolumeSource: v1.VolumeSource{
+								PersistentVolumeClaim: &v1.PersistentVolumeClaimVolumeSource{
+									ClaimName: "someEBSVol1",
+								},
+							},
+						},
+						{
+							VolumeSource: v1.VolumeSource{
+								PersistentVolumeClaim: nil,
+								AWSElasticBlockStore: &v1.AWSElasticBlockStoreVolumeSource{
+									VolumeID: "someAWSVol1",
+								},
+								GCEPersistentDisk: &v1.GCEPersistentDiskVolumeSource{
+									PDName: "someGCEPersistentDiskVol1",
+								},
+								AzureDisk: &v1.AzureDiskVolumeSource{
+									DiskName: "someAzureDiskVol1",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	// this case does not need to calculate equivalence hash, just pass an empty function
+	fakeGetEquivalencePodFunc := func(pod *v1.Pod) interface{} { return nil }
+	ecache := NewEquivalenceCache(fakeGetEquivalencePodFunc)
+
+	for _, test := range tests {
+		// invalidate cached predicate for all nodes
+		ecache.InvalidateCachedPredicateItemForPodAdd(test.pod, test.nodeName)
+		if _, exist := ecache.algorithmCache[test.nodeName]; exist {
+			t.Errorf("Failed: cached item for node: %v should be invalidated", test.nodeName)
+			break
+		}
+	}
+}
