@@ -24,7 +24,6 @@ import (
 	v1core "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/client-go/tools/record"
-	"k8s.io/kubernetes/cmd/controller-manager/app"
 	"k8s.io/kubernetes/pkg/apis/componentconfig"
 )
 
@@ -32,12 +31,9 @@ import (
 type Config struct {
 	// config is the scheduler server's configuration object.
 	ComponentConfig componentconfig.KubeSchedulerConfiguration
-
-	InsecureServing        *app.InsecureServingInfo // nil will disable serving on an insecure port
-	InsecureMetricsServing *app.InsecureServingInfo // non-nil if metrics should be served independently
-	Authentication         apiserver.AuthenticationInfo
-	Authorization          apiserver.AuthorizationInfo
-	SecureServing          *apiserver.SecureServingInfo
+	Authentication  apiserver.AuthenticationInfo
+	Authorization   apiserver.AuthorizationInfo
+	SecureServing   *apiserver.SecureServingInfo
 
 	Client          clientset.Interface
 	InformerFactory informers.SharedInformerFactory
@@ -63,13 +59,6 @@ type CompletedConfig struct {
 // Complete fills in any fields not set that are required to have valid data. It's mutating the receiver.
 func (c *Config) Complete() CompletedConfig {
 	cc := completedConfig{c}
-
-	if c.InsecureServing != nil {
-		c.InsecureServing.Name = "healthz"
-	}
-	if c.InsecureMetricsServing != nil {
-		c.InsecureMetricsServing.Name = "metrics"
-	}
 
 	return CompletedConfig{&cc}
 }

@@ -39,7 +39,6 @@ import (
 	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	"k8s.io/client-go/tools/record"
-	controlleroptions "k8s.io/kubernetes/cmd/controller-manager/app/options"
 	schedulerappconfig "k8s.io/kubernetes/cmd/kube-scheduler/app/config"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/apis/componentconfig"
@@ -53,11 +52,10 @@ type Options struct {
 	// The default values. These are overridden if ConfigFile is set or by values in InsecureServing.
 	ComponentConfig componentconfig.KubeSchedulerConfiguration
 
-	SecureServing           *apiserveroptions.SecureServingOptions
-	CombinedInsecureServing *CombinedInsecureServingOptions
-	Authentication          *apiserveroptions.DelegatingAuthenticationOptions
-	Authorization           *apiserveroptions.DelegatingAuthorizationOptions
-	Deprecated              *DeprecatedOptions
+	SecureServing  *apiserveroptions.SecureServingOptions
+	Authentication *apiserveroptions.DelegatingAuthenticationOptions
+	Authorization  *apiserveroptions.DelegatingAuthorizationOptions
+	Deprecated     *DeprecatedOptions
 
 	// ConfigFile is the location of the scheduler server's configuration file.
 	ConfigFile string
@@ -75,26 +73,11 @@ func NewOptions() (*Options, error) {
 		return nil, err
 	}
 
-	hhost, hport, err := splitHostIntPort(cfg.HealthzBindAddress)
-	if err != nil {
-		return nil, err
-	}
-
 	o := &Options{
 		ComponentConfig: *cfg,
 		SecureServing:   nil, // TODO: enable with apiserveroptions.NewSecureServingOptions()
-		CombinedInsecureServing: &CombinedInsecureServingOptions{
-			Healthz: &controlleroptions.InsecureServingOptions{
-				BindNetwork: "tcp",
-			},
-			Metrics: &controlleroptions.InsecureServingOptions{
-				BindNetwork: "tcp",
-			},
-			BindPort:    hport,
-			BindAddress: hhost,
-		},
-		Authentication: nil, // TODO: enable with apiserveroptions.NewDelegatingAuthenticationOptions()
-		Authorization:  nil, // TODO: enable with apiserveroptions.NewDelegatingAuthorizationOptions()
+		Authentication:  nil, // TODO: enable with apiserveroptions.NewDelegatingAuthenticationOptions()
+		Authorization:   nil, // TODO: enable with apiserveroptions.NewDelegatingAuthorizationOptions()
 		Deprecated: &DeprecatedOptions{
 			UseLegacyPolicyConfig:    false,
 			PolicyConfigMapNamespace: metav1.NamespaceSystem,
@@ -133,7 +116,6 @@ func (o *Options) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&o.Master, "master", o.Master, "The address of the Kubernetes API server (overrides any value in kubeconfig)")
 
 	o.SecureServing.AddFlags(fs)
-	o.CombinedInsecureServing.AddFlags(fs)
 	o.Authentication.AddFlags(fs)
 	o.Authorization.AddFlags(fs)
 	o.Deprecated.AddFlags(fs, &o.ComponentConfig)
@@ -144,35 +126,6 @@ func (o *Options) AddFlags(fs *pflag.FlagSet) {
 
 // ApplyTo applies the scheduler options to the given scheduler app configuration.
 func (o *Options) ApplyTo(c *schedulerappconfig.Config) error {
-	if len(o.ConfigFile) == 0 && len(o.WriteConfigTo) == 0 {
-		glog.Warning("WARNING: all flags other than --config, --write-config-to, and --cleanup are deprecated. Please begin using a config file ASAP.")
-	}
-	if len(o.ConfigFile) == 0 {
-		c.ComponentConfig = o.ComponentConfig
-
-		// only apply deprecated flags if no config file is loaded (this is the old behaviour).
-		if err := o.Deprecated.ApplyTo(&c.ComponentConfig); err != nil {
-			return err
-		}
-		if err := o.CombinedInsecureServing.ApplyTo(c, &c.ComponentConfig); err != nil {
-			return err
-		}
-	} else {
-		cfg, err := loadConfigFromFile(o.ConfigFile)
-		if err != nil {
-			return err
-		}
-
-		// use the loaded config file only, with the exception of --address and --port. This means that
-		// none of the deprectated flags in o.Deprecated are taken into consideration. This is the old
-		// behaviour of the flags we have to keep.
-		c.ComponentConfig = *cfg
-
-		if err := o.CombinedInsecureServing.ApplyToFromLoadedConfig(c, &c.ComponentConfig); err != nil {
-			return err
-		}
-	}
-
 	if err := o.SecureServing.ApplyTo(&c.SecureServing); err != nil {
 		return err
 	}
@@ -187,7 +140,6 @@ func (o *Options) Validate() []error {
 	var errs []error
 
 	errs = append(errs, o.SecureServing.Validate()...)
-	errs = append(errs, o.CombinedInsecureServing.Validate()...)
 	errs = append(errs, o.Authentication.Validate()...)
 	errs = append(errs, o.Authorization.Validate()...)
 	errs = append(errs, o.Deprecated.Validate()...)
