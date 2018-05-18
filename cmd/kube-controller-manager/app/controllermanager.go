@@ -132,13 +132,6 @@ func Run(c *config.CompletedConfig) error {
 			return err
 		}
 	}
-	if c.Generic.InsecureServing != nil {
-		handler := genericcontrollermanager.NewBaseHandler(&c.Generic)
-		handler = genericcontrollermanager.BuildHandlerChain(handler, &c.Generic)
-		if err := c.Generic.InsecureServing.Serve(handler, 0, stopCh); err != nil {
-			return err
-		}
-	}
 
 	run := func(stop <-chan struct{}) {
 		rootClientBuilder := controller.SimpleControllerClientBuilder{

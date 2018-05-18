@@ -17,10 +17,7 @@ limitations under the License.
 package options
 
 import (
-	"net"
-
 	"github.com/golang/glog"
-
 	"github.com/spf13/pflag"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -68,11 +65,9 @@ type GenericControllerManagerOptions struct {
 	Controllers               []string
 	ExternalCloudVolumePlugin string
 
-	SecureServing *apiserveroptions.SecureServingOptions
-	// TODO: remove insecure serving mode
-	InsecureServing *InsecureServingOptions
-	Authentication  *apiserveroptions.DelegatingAuthenticationOptions
-	Authorization   *apiserveroptions.DelegatingAuthorizationOptions
+	SecureServing  *apiserveroptions.SecureServingOptions
+	Authentication *apiserveroptions.DelegatingAuthenticationOptions
+	Authorization  *apiserveroptions.DelegatingAuthorizationOptions
 
 	Master     string
 	Kubeconfig string
@@ -182,13 +177,8 @@ func NewGenericControllerManagerOptions(componentConfig componentconfig.KubeCont
 		ServiceController: &ServiceControllerOptions{
 			ConcurrentServiceSyncs: componentConfig.ServiceController.ConcurrentServiceSyncs,
 		},
-		Controllers:   componentConfig.Controllers,
-		SecureServing: apiserveroptions.NewSecureServingOptions(),
-		InsecureServing: &InsecureServingOptions{
-			BindAddress: net.ParseIP(componentConfig.KubeCloudShared.Address),
-			BindPort:    int(componentConfig.KubeCloudShared.Port),
-			BindNetwork: "tcp",
-		},
+		Controllers:    componentConfig.Controllers,
+		SecureServing:  apiserveroptions.NewSecureServingOptions(),
 		Authentication: nil, // TODO: enable with apiserveroptions.NewDelegatingAuthenticationOptions()
 		Authorization:  nil, // TODO: enable with apiserveroptions.NewDelegatingAuthorizationOptions()
 	}
@@ -224,8 +214,6 @@ func (o *GenericControllerManagerOptions) AddFlags(fs *pflag.FlagSet) {
 	o.KubeCloudShared.AddFlags(fs)
 	o.ServiceController.AddFlags(fs)
 	o.SecureServing.AddFlags(fs)
-	o.InsecureServing.AddFlags(fs)
-	o.InsecureServing.AddDeprecatedFlags(fs)
 	o.Authentication.AddFlags(fs)
 	o.Authorization.AddFlags(fs)
 }
@@ -304,9 +292,6 @@ func (o *GenericControllerManagerOptions) ApplyTo(c *genericcontrollermanager.Co
 	if err := o.SecureServing.ApplyTo(&c.SecureServing); err != nil {
 		return err
 	}
-	if err := o.InsecureServing.ApplyTo(&c.InsecureServing, &c.ComponentConfig.KubeCloudShared); err != nil {
-		return err
-	}
 	if err := o.Authentication.ApplyTo(&c.Authentication, c.SecureServing, nil); err != nil {
 		return err
 	}
@@ -362,7 +347,6 @@ func (o *GenericControllerManagerOptions) Validate() []error {
 	errors = append(errors, o.SAController.Validate()...)
 	errors = append(errors, o.ServiceController.Validate()...)
 	errors = append(errors, o.SecureServing.Validate()...)
-	errors = append(errors, o.InsecureServing.Validate()...)
 	errors = append(errors, o.Authentication.Validate()...)
 	errors = append(errors, o.Authorization.Validate()...)
 
