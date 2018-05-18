@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package app
+package config
 
 import (
 	apiserver "k8s.io/apiserver/pkg/server"
@@ -28,11 +28,9 @@ import (
 type Config struct {
 	ComponentConfig componentconfig.KubeControllerManagerConfiguration
 
-	SecureServing *apiserver.SecureServingInfo
-	// TODO: remove deprecated insecure serving
-	InsecureServing *InsecureServingInfo
-	Authentication  apiserver.AuthenticationInfo
-	Authorization   apiserver.AuthorizationInfo
+	SecureServing  *apiserver.SecureServingInfo
+	Authentication apiserver.AuthenticationInfo
+	Authorization  apiserver.AuthorizationInfo
 
 	// the general kube client
 	Client *clientset.Clientset

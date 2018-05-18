@@ -29,11 +29,12 @@ import (
 	"k8s.io/apiserver/pkg/server/mux"
 	"k8s.io/apiserver/pkg/server/routes"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	"k8s.io/kubernetes/pkg/controller/config"
 	"k8s.io/kubernetes/pkg/util/configz"
 )
 
 // BuildHandlerChain builds a handler chain with a base handler and CompletedConfig.
-func BuildHandlerChain(apiHandler http.Handler, c *CompletedConfig) http.Handler {
+func BuildHandlerChain(apiHandler http.Handler, c *config.CompletedConfig) http.Handler {
 	requestInfoResolver := &apirequest.RequestInfoFactory{}
 	failedHandler := genericapifilters.Unauthorized(legacyscheme.Codecs, false)
 
@@ -46,7 +47,7 @@ func BuildHandlerChain(apiHandler http.Handler, c *CompletedConfig) http.Handler
 }
 
 // NewBaseHandler takes in CompletedConfig and returns a handler.
-func NewBaseHandler(c *CompletedConfig) http.Handler {
+func NewBaseHandler(c *config.CompletedConfig) http.Handler {
 	mux := mux.NewPathRecorderMux("controller-manager")
 	healthz.InstallHandler(mux)
 	if c.ComponentConfig.Debugging.EnableProfiling {

@@ -19,7 +19,7 @@ package app
 import (
 	"time"
 
-	genericcontrollermanager "k8s.io/kubernetes/cmd/controller-manager/app"
+	genericcontroller "k8s.io/kubernetes/pkg/controller/config"
 )
 
 // ExtraConfig are part of Config, also can place your custom config here.
@@ -29,12 +29,12 @@ type ExtraConfig struct {
 
 // Config is the main context object for the cloud controller manager.
 type Config struct {
-	Generic genericcontrollermanager.Config
+	Generic genericcontroller.Config
 	Extra   ExtraConfig
 }
 
 type completedConfig struct {
-	Generic genericcontrollermanager.CompletedConfig
+	Generic genericcontroller.CompletedConfig
 	Extra   *ExtraConfig
 }
 
