@@ -36,6 +36,7 @@ import (
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 	"k8s.io/kubernetes/pkg/kubectl/genericclioptions"
 	"k8s.io/kubernetes/pkg/kubectl/genericclioptions/resource"
+	"k8s.io/kubernetes/pkg/kubectl/polymorphichelpers"
 	"k8s.io/kubernetes/pkg/kubectl/scheme"
 	"k8s.io/kubernetes/pkg/kubectl/util/i18n"
 	"k8s.io/kubernetes/pkg/printers"
@@ -193,7 +194,7 @@ func (o *ExposeServiceOptions) Complete(f cmdutil.Factory, cmd *cobra.Command) e
 	o.Builder = f.NewBuilder()
 	o.CanBeExposed = f.CanBeExposed
 	o.ClientForMapping = f.ClientForMapping
-	o.MapBasedSelectorForObject = f.MapBasedSelectorForObject
+	o.MapBasedSelectorForObject = polymorphichelpers.MapBasedSelectorForObject
 	o.PortsForObject = f.PortsForObject
 	o.ProtocolsForObject = f.ProtocolsForObject
 	o.Mapper, err = f.ToRESTMapper()

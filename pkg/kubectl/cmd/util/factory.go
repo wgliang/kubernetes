@@ -84,10 +84,6 @@ type ClientAccessFactory interface {
 	// return false if no pod spec is supported, or return an error.
 	UpdatePodSpecForObject(obj runtime.Object, fn func(*v1.PodSpec) error) (bool, error)
 
-	// MapBasedSelectorForObject returns the map-based selector associated with the provided object. If a
-	// new set-based selector is provided, an error is returned if the selector cannot be converted to a
-	// map-based selector
-	MapBasedSelectorForObject(object runtime.Object) (string, error)
 	// PortsForObject returns the ports associated with the provided object
 	PortsForObject(object runtime.Object) ([]string, error)
 	// ProtocolsForObject returns the <port, protocol> mapping associated with the provided object

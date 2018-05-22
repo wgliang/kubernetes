@@ -190,40 +190,6 @@ func (f *ring0Factory) UpdatePodSpecForObject(obj runtime.Object, fn func(*v1.Po
 	}
 }
 
-func (f *ring0Factory) MapBasedSelectorForObject(object runtime.Object) (string, error) {
-	// TODO: replace with a swagger schema based approach (identify pod selector via schema introspection)
-	switch t := object.(type) {
-	case *api.ReplicationController:
-		return kubectl.MakeLabels(t.Spec.Selector), nil
-	case *api.Pod:
-		if len(t.Labels) == 0 {
-			return "", fmt.Errorf("the pod has no labels and cannot be exposed")
-		}
-		return kubectl.MakeLabels(t.Labels), nil
-	case *api.Service:
-		if t.Spec.Selector == nil {
-			return "", fmt.Errorf("the service has no pod selector set")
-		}
-		return kubectl.MakeLabels(t.Spec.Selector), nil
-	case *extensions.Deployment:
-		// TODO(madhusudancs): Make this smarter by admitting MatchExpressions with Equals
-		// operator, DoubleEquals operator and In operator with only one element in the set.
-		if len(t.Spec.Selector.MatchExpressions) > 0 {
-			return "", fmt.Errorf("couldn't convert expressions - \"%+v\" to map-based selector format", t.Spec.Selector.MatchExpressions)
-		}
-		return kubectl.MakeLabels(t.Spec.Selector.MatchLabels), nil
-	case *extensions.ReplicaSet:
-		// TODO(madhusudancs): Make this smarter by admitting MatchExpressions with Equals
-		// operator, DoubleEquals operator and In operator with only one element in the set.
-		if len(t.Spec.Selector.MatchExpressions) > 0 {
-			return "", fmt.Errorf("couldn't convert expressions - \"%+v\" to map-based selector format", t.Spec.Selector.MatchExpressions)
-		}
-		return kubectl.MakeLabels(t.Spec.Selector.MatchLabels), nil
-	default:
-		return "", fmt.Errorf("cannot extract pod selector from %T", object)
-	}
-}
-
 func (f *ring0Factory) PortsForObject(object runtime.Object) ([]string, error) {
 	// TODO: replace with a swagger schema based approach (identify pod selector via schema introspection)
 	switch t := object.(type) {
