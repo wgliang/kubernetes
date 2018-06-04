@@ -54,7 +54,7 @@ func GetLoadBalancerSourceRanges(service *v1.Service) (netsets.IPNet, error) {
 		}
 	} else {
 		val := service.Annotations[v1.AnnotationLoadBalancerSourceRangesKey]
-		val = strings.TrimSpace(val)
+		val = strings.TrimSuffix(strings.TrimPrefix(val, `"`), `"`)
 		if val == "" {
 			val = defaultLoadBalancerSourceRanges
 		}
