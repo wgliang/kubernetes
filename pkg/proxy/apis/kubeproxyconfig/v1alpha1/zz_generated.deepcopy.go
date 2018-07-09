@@ -72,6 +72,11 @@ func (in *KubeProxyConfiguration) DeepCopyInto(out *KubeProxyConfiguration) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.TLSCipherSuites != nil {
+		in, out := &in.TLSCipherSuites, &out.TLSCipherSuites
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	return
 }
 

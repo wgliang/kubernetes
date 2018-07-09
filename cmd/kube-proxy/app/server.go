@@ -177,6 +177,11 @@ func (o *Options) AddFlags(fs *pflag.FlagSet) {
 		"A string slice of values which specify the addresses to use for NodePorts. Values may be valid IP blocks (e.g. 1.2.3.0/24, 1.2.3.4/32). The default empty string slice ([]) means to use all local addresses.")
 	fs.Var(flag.NewMapStringBool(&o.config.FeatureGates), "feature-gates", "A set of key=value pairs that describe feature gates for alpha/experimental features. "+
 		"Options are:\n"+strings.Join(utilfeature.DefaultFeatureGate.KnownFeatures(), "\n"))
+	tlsCipherPossibleValues := flag.TLSCipherPossibleValues()
+	fs.StringSliceVar(&o.config.TLSCipherSuites, "tls-cipher-suites", o.config.TLSCipherSuites,
+		"Comma-separated list of cipher suites for the server. "+
+			"If omitted, the default Go cipher suites will be used. "+
+			"Possible values: "+strings.Join(tlsCipherPossibleValues, ","))
 }
 
 func NewOptions() *Options {

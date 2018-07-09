@@ -151,6 +151,9 @@ type KubeProxyConfiguration struct {
 	// If set it to a non-zero IP block, kube-proxy will filter that down to just the IPs that applied to the node.
 	// An empty string slice is meant to select all network interfaces.
 	NodePortAddresses []string `json:"nodePortAddresses"`
+	// TLSCipherSuites is the list of allowed cipher suites for the server.
+	// Values are from tls package constants (https://golang.org/pkg/crypto/tls/#pkg-constants).
+	TLSCipherSuites []string
 }
 
 // Currently, three modes of proxy are available in Linux platform: 'userspace' (older, going to be EOL), 'iptables'
