@@ -351,7 +351,8 @@ func (g *genericScheduler) findNodesThatFit(pod *v1.Pod, nodes []*v1.Node) ([]*v
 		errs := errors.MessageCountMap{}
 		var predicateResultLock sync.Mutex
 		var filteredLen int32
-
+		var certainNumber int32
+		certainNumber = int32(16)
 		// We can use the same metadata producer for all nodes.
 		meta := g.predicateMetaProducer(pod, g.cachedNodeInfoMap)
 
@@ -387,13 +388,14 @@ func (g *genericScheduler) findNodesThatFit(pod *v1.Pod, nodes []*v1.Node) ([]*v
 			}
 			if fits {
 				filtered[atomic.AddInt32(&filteredLen, 1)-1] = nodes[i]
+				atomic.AddInt32(&certainNumber, -1)
 			} else {
 				predicateResultLock.Lock()
 				failedPredicateMap[nodeName] = failedPredicates
 				predicateResultLock.Unlock()
 			}
 		}
-		workqueue.Parallelize(16, len(nodes), checkNode)
+		workqueue.ParallelizeUntilFeasible(16, len(nodes), checkNode, &certainNumber)
 		filtered = filtered[:filteredLen]
 		if len(errs) > 0 {
 			return []*v1.Node{}, FailedPredicateMap{}, errors.CreateAggregateFromMessageCountMap(errs)

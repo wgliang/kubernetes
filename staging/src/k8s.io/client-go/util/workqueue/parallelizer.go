@@ -18,6 +18,7 @@ package workqueue
 
 import (
 	"sync"
+	"sync/atomic"
 
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 )
@@ -44,6 +45,37 @@ func Parallelize(workers, pieces int, doWorkPiece DoWorkPieceFunc) {
 			defer utilruntime.HandleCrash()
 			defer wg.Done()
 			for piece := range toProcess {
+				doWorkPiece(piece)
+			}
+		}()
+	}
+	wg.Wait()
+}
+
+// ParallelizeUntilFeasible is a very simple framework that allow for parallelizing
+// N independent pieces of work until get feasible solution.
+func ParallelizeUntilFeasible(workers, pieces int, doWorkPiece DoWorkPieceFunc, feasible *int32) {
+	toProcess := make(chan int, pieces)
+	for i := 0; i < pieces; i++ {
+		toProcess <- i
+	}
+	close(toProcess)
+
+	if pieces < workers {
+		workers = pieces
+	}
+
+	wg := sync.WaitGroup{}
+	wg.Add(workers)
+	for i := 0; i < workers; i++ {
+		go func() {
+			defer utilruntime.HandleCrash()
+			defer wg.Done()
+			for piece := range toProcess {
+				// It will returns if no remaining feasible solutions.
+				if atomic.LoadInt32(feasible) <= 0 {
+					return
+				}
 				doWorkPiece(piece)
 			}
 		}()
