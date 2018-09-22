@@ -24,8 +24,8 @@ import (
 
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
-	schedulertesting "k8s.io/kubernetes/pkg/scheduler/testing"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
+	schedulertesting "k8s.io/kubernetes/pkg/scheduler/internal/testing"
 )
 
 // sortablePods lets us to sort pods.

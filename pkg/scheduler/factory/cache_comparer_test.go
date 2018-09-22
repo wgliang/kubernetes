@@ -23,7 +23,7 @@ import (
 	"k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1beta1"
 	"k8s.io/apimachinery/pkg/types"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 )
 
 func TestCompareNodes(t *testing.T) {
@@ -73,9 +73,9 @@ func testCompareNodes(actual, cached, missing, redundant []string, t *testing.T)
 		nodes = append(nodes, node)
 	}
 
-	nodeInfo := make(map[string]*schedulercache.NodeInfo)
+	nodeInfo := make(map[string]*schedulernode.NodeInfo)
 	for _, nodeName := range cached {
-		nodeInfo[nodeName] = &schedulercache.NodeInfo{}
+		nodeInfo[nodeName] = &schedulernode.NodeInfo{}
 	}
 
 	m, r := compare.CompareNodes(nodes, nodeInfo)
@@ -171,7 +171,7 @@ func testComparePods(actual, cached, queued, missing, redundant []string, t *tes
 		queuedPods = append(queuedPods, pod)
 	}
 
-	nodeInfo := make(map[string]*schedulercache.NodeInfo)
+	nodeInfo := make(map[string]*schedulernode.NodeInfo)
 	for _, uid := range cached {
 		pod := &v1.Pod{}
 		pod.UID = types.UID(uid)

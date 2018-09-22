@@ -27,7 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm/predicates"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 	schedulertesting "k8s.io/kubernetes/pkg/scheduler/testing"
 )
 
@@ -163,7 +163,7 @@ type staleNodeCache struct {
 	schedulertesting.FakeCache
 }
 
-func (c *staleNodeCache) IsUpToDate(*schedulercache.NodeInfo) bool { return false }
+func (c *staleNodeCache) IsUpToDate(*schedulernode.NodeInfo) bool { return false }
 
 // mockPredicate provides an algorithm.FitPredicate with pre-set return values.
 type mockPredicate struct {
@@ -173,7 +173,7 @@ type mockPredicate struct {
 	callCount int
 }
 
-func (p *mockPredicate) predicate(*v1.Pod, algorithm.PredicateMetadata, *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+func (p *mockPredicate) predicate(*v1.Pod, algorithm.PredicateMetadata, *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 	p.callCount++
 	return p.fit, p.reasons, p.err
 }
@@ -408,9 +408,9 @@ func TestLookupResult(t *testing.T) {
 		cache                             schedulercache.Cache
 	}{
 		{
-			name:     "test 1",
-			podName:  "testPod",
-			nodeName: "node1",
+			name:                              "test 1",
+			podName:                           "testPod",
+			nodeName:                          "node1",
 			equivalenceHashForUpdatePredicate: 123,
 			equivalenceHashForCalPredicate:    123,
 			predicateKey:                      "GeneralPredicates",
@@ -426,9 +426,9 @@ func TestLookupResult(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "test 2",
-			podName:  "testPod",
-			nodeName: "node2",
+			name:                              "test 2",
+			podName:                           "testPod",
+			nodeName:                          "node2",
 			equivalenceHashForUpdatePredicate: 123,
 			equivalenceHashForCalPredicate:    123,
 			predicateKey:                      "GeneralPredicates",
@@ -443,9 +443,9 @@ func TestLookupResult(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "test 3",
-			podName:  "testPod",
-			nodeName: "node3",
+			name:                              "test 3",
+			podName:                           "testPod",
+			nodeName:                          "node3",
 			equivalenceHashForUpdatePredicate: 123,
 			equivalenceHashForCalPredicate:    123,
 			predicateKey:                      "GeneralPredicates",
@@ -461,9 +461,9 @@ func TestLookupResult(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "test 4",
-			podName:  "testPod",
-			nodeName: "node4",
+			name:                              "test 4",
+			podName:                           "testPod",
+			nodeName:                          "node4",
 			equivalenceHashForUpdatePredicate: 123,
 			equivalenceHashForCalPredicate:    456,
 			predicateKey:                      "GeneralPredicates",
@@ -669,9 +669,9 @@ func TestInvalidateCachedPredicateItemOfAllNodes(t *testing.T) {
 		cache                             schedulercache.Cache
 	}{
 		{
-			name:     "hash predicate 123 not fits host ports",
-			podName:  "testPod",
-			nodeName: "node1",
+			name:                              "hash predicate 123 not fits host ports",
+			podName:                           "testPod",
+			nodeName:                          "node1",
 			equivalenceHashForUpdatePredicate: 123,
 			cachedItem: predicateItemType{
 				fit: false,
@@ -682,9 +682,9 @@ func TestInvalidateCachedPredicateItemOfAllNodes(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "hash predicate 456 not fits host ports",
-			podName:  "testPod",
-			nodeName: "node2",
+			name:                              "hash predicate 456 not fits host ports",
+			podName:                           "testPod",
+			nodeName:                          "node2",
 			equivalenceHashForUpdatePredicate: 456,
 			cachedItem: predicateItemType{
 				fit: false,
@@ -695,9 +695,9 @@ func TestInvalidateCachedPredicateItemOfAllNodes(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "hash predicate 123 fits",
-			podName:  "testPod",
-			nodeName: "node3",
+			name:                              "hash predicate 123 fits",
+			podName:                           "testPod",
+			nodeName:                          "node3",
 			equivalenceHashForUpdatePredicate: 123,
 			cachedItem: predicateItemType{
 				fit: true,
@@ -753,9 +753,9 @@ func TestInvalidateAllCachedPredicateItemOfNode(t *testing.T) {
 		cache                             schedulercache.Cache
 	}{
 		{
-			name:     "hash predicate 123 not fits host ports",
-			podName:  "testPod",
-			nodeName: "node1",
+			name:                              "hash predicate 123 not fits host ports",
+			podName:                           "testPod",
+			nodeName:                          "node1",
 			equivalenceHashForUpdatePredicate: 123,
 			cachedItem: predicateItemType{
 				fit:     false,
@@ -764,9 +764,9 @@ func TestInvalidateAllCachedPredicateItemOfNode(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "hash predicate 456 not fits host ports",
-			podName:  "testPod",
-			nodeName: "node2",
+			name:                              "hash predicate 456 not fits host ports",
+			podName:                           "testPod",
+			nodeName:                          "node2",
 			equivalenceHashForUpdatePredicate: 456,
 			cachedItem: predicateItemType{
 				fit:     false,
@@ -775,9 +775,9 @@ func TestInvalidateAllCachedPredicateItemOfNode(t *testing.T) {
 			cache: &upToDateCache{},
 		},
 		{
-			name:     "hash predicate 123 fits host ports",
-			podName:  "testPod",
-			nodeName: "node3",
+			name:                              "hash predicate 123 fits host ports",
+			podName:                           "testPod",
+			nodeName:                          "node3",
 			equivalenceHashForUpdatePredicate: 123,
 			cachedItem: predicateItemType{
 				fit: true,

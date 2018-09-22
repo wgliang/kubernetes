@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package cache
+package node
 
 import (
 	"errors"
@@ -35,6 +35,14 @@ var (
 	emptyResource = Resource{}
 	generation    int64
 )
+
+// ImageStateSummary provides summarized information about the state of an image.
+type ImageStateSummary struct {
+	// Size of the image
+	Size int64
+	// Used to track how many nodes have this image
+	NumNodes int
+}
 
 // NodeInfo is node level aggregated information.
 type NodeInfo struct {
@@ -120,7 +128,7 @@ func newTransientSchedulerInfo() *transientSchedulerInfo {
 }
 
 // resetTransientSchedulerInfo resets the transientSchedulerInfo.
-func (transientSchedInfo *transientSchedulerInfo) resetTransientSchedulerInfo() {
+func (transientSchedInfo *transientSchedulerInfo) ResetTransientSchedulerInfo() {
 	transientSchedInfo.TransientLock.Lock()
 	defer transientSchedInfo.TransientLock.Unlock()
 	// Reset TransientNodeInfo.
@@ -302,6 +310,15 @@ func (n *NodeInfo) ImageStates() map[string]*ImageStateSummary {
 	return n.imageStates
 }
 
+// ImageStates returns the state information of all images.
+func (n *NodeInfo) SetImageStates(newImageStates map[string]*ImageStateSummary) error {
+	if n == nil {
+		return fmt.Errorf("NodeIno is nil")
+	}
+	n.imageStates = newImageStates
+	return nil
+}
+
 // PodsWithAffinity return all pods with (anti)affinity constraints on this node.
 func (n *NodeInfo) PodsWithAffinity() []*v1.Pod {
 	if n == nil {
@@ -471,13 +488,13 @@ func (n *NodeInfo) AddPod(pod *v1.Pod) {
 
 // RemovePod subtracts pod information from this NodeInfo.
 func (n *NodeInfo) RemovePod(pod *v1.Pod) error {
-	k1, err := getPodKey(pod)
+	k1, err := GetPodKey(pod)
 	if err != nil {
 		return err
 	}
 
 	for i := range n.podsWithAffinity {
-		k2, err := getPodKey(n.podsWithAffinity[i])
+		k2, err := GetPodKey(n.podsWithAffinity[i])
 		if err != nil {
 			glog.Errorf("Cannot get pod key, err: %v", err)
 			continue
@@ -490,7 +507,7 @@ func (n *NodeInfo) RemovePod(pod *v1.Pod) error {
 		}
 	}
 	for i := range n.pods {
-		k2, err := getPodKey(n.pods[i])
+		k2, err := GetPodKey(n.pods[i])
 		if err != nil {
 			glog.Errorf("Cannot get pod key, err: %v", err)
 			continue
@@ -614,9 +631,9 @@ func (n *NodeInfo) FilterOutPods(pods []*v1.Pod) []*v1.Pod {
 			continue
 		}
 		// If pod is on the given node, add it to 'filtered' only if it is present in nodeInfo.
-		podKey, _ := getPodKey(p)
+		podKey, _ := GetPodKey(p)
 		for _, np := range n.Pods() {
-			npodkey, _ := getPodKey(np)
+			npodkey, _ := GetPodKey(np)
 			if npodkey == podKey {
 				filtered = append(filtered, p)
 				break
@@ -626,8 +643,8 @@ func (n *NodeInfo) FilterOutPods(pods []*v1.Pod) []*v1.Pod {
 	return filtered
 }
 
-// getPodKey returns the string key of a pod.
-func getPodKey(pod *v1.Pod) (string, error) {
+// GetPodKey returns the string key of a pod.
+func GetPodKey(pod *v1.Pod) (string, error) {
 	uid := string(pod.UID)
 	if len(uid) == 0 {
 		return "", errors.New("Cannot get cache key for pod with empty UID")
@@ -648,4 +665,12 @@ func (n *NodeInfo) Filter(pod *v1.Pod) bool {
 		}
 	}
 	return false
+}
+
+// MemoryPressureCondition returns the memory pressure condition status on this node.
+func (n *NodeInfo) Generation() int64 {
+	if n == nil {
+		return 0
+	}
+	return n.generation
 }

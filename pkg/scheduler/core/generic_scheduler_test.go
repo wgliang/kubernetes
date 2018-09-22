@@ -38,8 +38,8 @@ import (
 	algorithmpriorities "k8s.io/kubernetes/pkg/scheduler/algorithm/priorities"
 	priorityutil "k8s.io/kubernetes/pkg/scheduler/algorithm/priorities/util"
 	schedulerapi "k8s.io/kubernetes/pkg/scheduler/api"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
 	"k8s.io/kubernetes/pkg/scheduler/core/equivalence"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 	schedulertesting "k8s.io/kubernetes/pkg/scheduler/testing"
 )
 
@@ -47,15 +47,15 @@ var (
 	order = []string{"false", "true", "matches", "nopods", algorithmpredicates.MatchInterPodAffinityPred}
 )
 
-func falsePredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+func falsePredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 	return false, []algorithm.PredicateFailureReason{algorithmpredicates.ErrFakePredicate}, nil
 }
 
-func truePredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+func truePredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 	return true, nil, nil
 }
 
-func matchesPredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+func matchesPredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 	node := nodeInfo.Node()
 	if node == nil {
 		return false, nil, fmt.Errorf("node not found")
@@ -66,14 +66,14 @@ func matchesPredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *s
 	return false, []algorithm.PredicateFailureReason{algorithmpredicates.ErrFakePredicate}, nil
 }
 
-func hasNoPodsPredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+func hasNoPodsPredicate(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 	if len(nodeInfo.Pods()) == 0 {
 		return true, nil, nil
 	}
 	return false, []algorithm.PredicateFailureReason{algorithmpredicates.ErrFakePredicate}, nil
 }
 
-func numericPriority(pod *v1.Pod, nodeNameToInfo map[string]*schedulercache.NodeInfo, nodes []*v1.Node) (schedulerapi.HostPriorityList, error) {
+func numericPriority(pod *v1.Pod, nodeNameToInfo map[string]*schedulernode.NodeInfo, nodes []*v1.Node) (schedulerapi.HostPriorityList, error) {
 	result := []schedulerapi.HostPriority{}
 	for _, node := range nodes {
 		score, err := strconv.Atoi(node.Name)
@@ -88,7 +88,7 @@ func numericPriority(pod *v1.Pod, nodeNameToInfo map[string]*schedulercache.Node
 	return result, nil
 }
 
-func reverseNumericPriority(pod *v1.Pod, nodeNameToInfo map[string]*schedulercache.NodeInfo, nodes []*v1.Node) (schedulerapi.HostPriorityList, error) {
+func reverseNumericPriority(pod *v1.Pod, nodeNameToInfo map[string]*schedulernode.NodeInfo, nodes []*v1.Node) (schedulerapi.HostPriorityList, error) {
 	var maxScore float64
 	minScore := math.MaxFloat64
 	reverseResult := []schedulerapi.HostPriority{}
@@ -388,9 +388,9 @@ func TestGenericScheduler(t *testing.T) {
 			predicates:               map[string]algorithm.FitPredicate{"true": truePredicate, "matches": matchesPredicate, "false": falsePredicate},
 			prioritizers:             []algorithm.PriorityConfig{{Map: EqualPriorityMap, Weight: 1}},
 			alwaysCheckAllPredicates: true,
-			nodes: []string{"1"},
-			pod:   &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "2", UID: types.UID("2")}},
-			name:  "test alwaysCheckAllPredicates is true",
+			nodes:                    []string{"1"},
+			pod:                      &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "2", UID: types.UID("2")}},
+			name:                     "test alwaysCheckAllPredicates is true",
 			wErr: &FitError{
 				Pod:         &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "2", UID: types.UID("2")}},
 				NumAllNodes: 1,
@@ -742,7 +742,7 @@ func (n FakeNodeInfo) GetNodeInfo(nodeName string) (*v1.Node, error) {
 	return &node, nil
 }
 
-func PredicateMetadata(p *v1.Pod, nodeInfo map[string]*schedulercache.NodeInfo) algorithm.PredicateMetadata {
+func PredicateMetadata(p *v1.Pod, nodeInfo map[string]*schedulernode.NodeInfo) algorithm.PredicateMetadata {
 	return algorithmpredicates.NewPredicateMetadataFactory(schedulertesting.FakePodLister{p})(p, nodeInfo)
 }
 
@@ -1354,7 +1354,7 @@ func TestPreempt(t *testing.T) {
 			for _, pod := range test.pods {
 				cache.AddPod(pod)
 			}
-			cachedNodeInfoMap := map[string]*schedulercache.NodeInfo{}
+			cachedNodeInfoMap := map[string]*schedulernode.NodeInfo{}
 			for _, name := range nodeNames {
 				node := makeNode(name, 1000*5, priorityutil.DefaultMemoryRequest*5)
 				cache.AddNode(node)
@@ -1437,7 +1437,7 @@ type syncingMockCache struct {
 //
 // Since UpdateNodeNameToInfoMap is one of the first steps of (*genericScheduler).Schedule, we use
 // this point to signal to the test that a scheduling cycle has started.
-func (c *syncingMockCache) UpdateNodeNameToInfoMap(infoMap map[string]*schedulercache.NodeInfo) error {
+func (c *syncingMockCache) UpdateNodeNameToInfoMap(infoMap map[string]*schedulernode.NodeInfo) error {
 	err := c.Cache.UpdateNodeNameToInfoMap(infoMap)
 	c.once.Do(func() {
 		c.cycleStart <- struct{}{}
@@ -1455,7 +1455,7 @@ func TestCacheInvalidationRace(t *testing.T) {
 	var callCount int
 	testPredicate := func(pod *v1.Pod,
 		meta algorithm.PredicateMetadata,
-		nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
+		nodeInfo *schedulernode.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {
 		callCount++
 		if !podWillFit {
 			podWillFit = true

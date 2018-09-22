@@ -25,7 +25,7 @@ import (
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	schedulerapi "k8s.io/kubernetes/pkg/scheduler/api"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 )
 
 func TestCreatingFunctionShapeErrorsIfEmptyPoints(t *testing.T) {

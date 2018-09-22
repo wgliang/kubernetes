@@ -21,7 +21,7 @@ import (
 
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 )
 
 // EmptyPriorityMetadataProducer should returns a no-op PriorityMetadataProducer type.

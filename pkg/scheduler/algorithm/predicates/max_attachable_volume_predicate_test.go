@@ -31,7 +31,7 @@ import (
 	"k8s.io/kubernetes/pkg/features"
 	kubeletapis "k8s.io/kubernetes/pkg/kubelet/apis"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 	volumeutil "k8s.io/kubernetes/pkg/volume/util"
 )
 

@@ -20,6 +20,7 @@ import (
 	"k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1beta1"
 	"k8s.io/apimachinery/pkg/labels"
+	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 )
 
 // PodFilter is a function to filter a pod. If pod passed return true else return false.
@@ -112,7 +113,7 @@ type Cache interface {
 	// UpdateNodeNameToInfoMap updates the passed infoMap to the current contents of Cache.
 	// The node info contains aggregated information of pods scheduled (including assumed to be)
 	// on this node.
-	UpdateNodeNameToInfoMap(infoMap map[string]*NodeInfo) error
+	UpdateNodeNameToInfoMap(infoMap map[string]*schedulernode.NodeInfo) error
 
 	// List lists all cached pods (including assumed ones).
 	List(labels.Selector) ([]*v1.Pod, error)
@@ -124,15 +125,15 @@ type Cache interface {
 	Snapshot() *Snapshot
 
 	// IsUpToDate returns true if the given NodeInfo matches the current data in the cache.
-	IsUpToDate(n *NodeInfo) bool
+	IsUpToDate(n *schedulernode.NodeInfo) bool
 
 	// NodeTree returns a node tree structure
-	NodeTree() *NodeTree
+	NodeTree() *schedulernode.NodeTree
 }
 
 // Snapshot is a snapshot of cache state
 type Snapshot struct {
 	AssumedPods map[string]bool
-	Nodes       map[string]*NodeInfo
+	Nodes       map[string]*schedulernode.NodeInfo
 	Pdbs        map[string]*policy.PodDisruptionBudget
 }

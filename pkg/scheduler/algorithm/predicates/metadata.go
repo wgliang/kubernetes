@@ -29,7 +29,7 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm"
 	priorityutil "k8s.io/kubernetes/pkg/scheduler/algorithm/priorities/util"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
+	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 	schedutil "k8s.io/kubernetes/pkg/scheduler/util"
 )
 
@@ -67,7 +67,7 @@ type topologyPairsMaps struct {
 type predicateMetadata struct {
 	pod           *v1.Pod
 	podBestEffort bool
-	podRequest    *schedulercache.Resource
+	podRequest    *schedulernode.Resource
 	podPorts      []*v1.ContainerPort
 
 	topologyPairsAntiAffinityPodsMap *topologyPairsMaps
@@ -125,7 +125,7 @@ func NewPredicateMetadataFactory(podLister algorithm.PodLister) algorithm.Predic
 }
 
 // GetMetadata returns the predicateMetadata used which will be used by various predicates.
-func (pfactory *PredicateMetadataFactory) GetMetadata(pod *v1.Pod, nodeNameToInfoMap map[string]*schedulercache.NodeInfo) algorithm.PredicateMetadata {
+func (pfactory *PredicateMetadataFactory) GetMetadata(pod *v1.Pod, nodeNameToInfoMap map[string]*schedulernode.NodeInfo) algorithm.PredicateMetadata {
 	// If we cannot compute metadata, just return nil
 	if pod == nil {
 		return nil
@@ -143,10 +143,10 @@ func (pfactory *PredicateMetadataFactory) GetMetadata(pod *v1.Pod, nodeNameToInf
 		return nil
 	}
 	predicateMetadata := &predicateMetadata{
-		pod:           pod,
-		podBestEffort: isPodBestEffort(pod),
-		podRequest:    GetResourceRequest(pod),
-		podPorts:      schedutil.GetContainerPorts(pod),
+		pod:                                    pod,
+		podBestEffort:                          isPodBestEffort(pod),
+		podRequest:                             GetResourceRequest(pod),
+		podPorts:                               schedutil.GetContainerPorts(pod),
 		topologyPairsPotentialAffinityPods:     incomingPodAffinityMap,
 		topologyPairsPotentialAntiAffinityPods: incomingPodAntiAffinityMap,
 		topologyPairsAntiAffinityPodsMap:       existingPodAntiAffinityMap,
@@ -229,7 +229,7 @@ func (meta *predicateMetadata) RemovePod(deletedPod *v1.Pod) error {
 
 // AddPod changes predicateMetadata assuming that `newPod` is added to the
 // system.
-func (meta *predicateMetadata) AddPod(addedPod *v1.Pod, nodeInfo *schedulercache.NodeInfo) error {
+func (meta *predicateMetadata) AddPod(addedPod *v1.Pod, nodeInfo *schedulernode.NodeInfo) error {
 	addedPodFullName := schedutil.GetPodFullName(addedPod)
 	if addedPodFullName == schedutil.GetPodFullName(meta.pod) {
 		return fmt.Errorf("addedPod and meta.pod must not be the same")
@@ -358,7 +358,7 @@ func podMatchesAnyAffinityTermProperties(pod *v1.Pod, properties []*affinityTerm
 // getTPMapMatchingExistingAntiAffinity calculates the following for each existing pod on each node:
 // (1) Whether it has PodAntiAffinity
 // (2) Whether any AffinityTerm matches the incoming pod
-func getTPMapMatchingExistingAntiAffinity(pod *v1.Pod, nodeInfoMap map[string]*schedulercache.NodeInfo) (*topologyPairsMaps, error) {
+func getTPMapMatchingExistingAntiAffinity(pod *v1.Pod, nodeInfoMap map[string]*schedulernode.NodeInfo) (*topologyPairsMaps, error) {
 	allNodeNames := make([]string, 0, len(nodeInfoMap))
 	for name := range nodeInfoMap {
 		allNodeNames = append(allNodeNames, name)
@@ -406,7 +406,7 @@ func getTPMapMatchingExistingAntiAffinity(pod *v1.Pod, nodeInfoMap map[string]*s
 // It returns a topologyPairsMaps that are checked later by the affinity
 // predicate. With this topologyPairsMaps available, the affinity predicate does not
 // need to check all the pods in the cluster.
-func getTPMapMatchingIncomingAffinityAntiAffinity(pod *v1.Pod, nodeInfoMap map[string]*schedulercache.NodeInfo) (topologyPairsAffinityPodsMaps *topologyPairsMaps, topologyPairsAntiAffinityPodsMaps *topologyPairsMaps, err error) {
+func getTPMapMatchingIncomingAffinityAntiAffinity(pod *v1.Pod, nodeInfoMap map[string]*schedulernode.NodeInfo) (topologyPairsAffinityPodsMaps *topologyPairsMaps, topologyPairsAntiAffinityPodsMaps *topologyPairsMaps, err error) {
 	allNodeNames := make([]string, 0, len(nodeInfoMap))
 
 	affinity := pod.Spec.Affinity

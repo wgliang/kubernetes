@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package cache
+package node
 
 import (
 	"fmt"
@@ -59,7 +59,7 @@ func (na *nodeArray) next() (nodeName string, exhausted bool) {
 	return nodeName, false
 }
 
-func newNodeTree(nodes []*v1.Node) *NodeTree {
+func NewNodeTree(nodes []*v1.Node) *NodeTree {
 	nt := &NodeTree{
 		tree:           make(map[string]*nodeArray),
 		exhaustedZones: sets.NewString(),

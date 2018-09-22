@@ -39,9 +39,10 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/algorithm"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm/predicates"
 	schedulerapi "k8s.io/kubernetes/pkg/scheduler/api"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/cache"
 	"k8s.io/kubernetes/pkg/scheduler/core/equivalence"
+	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 	"k8s.io/kubernetes/pkg/scheduler/metrics"
+	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 	"k8s.io/kubernetes/pkg/scheduler/util"
 	"k8s.io/kubernetes/pkg/scheduler/volumebinder"
 )
@@ -104,7 +105,7 @@ type genericScheduler struct {
 	extenders                []algorithm.SchedulerExtender
 	lastNodeIndex            uint64
 	alwaysCheckAllPredicates bool
-	cachedNodeInfoMap        map[string]*schedulercache.NodeInfo
+	cachedNodeInfoMap        map[string]*schedulernode.NodeInfo
 	volumeBinder             *volumebinder.VolumeBinder
 	pvcLister                corelisters.PersistentVolumeClaimLister
 	disablePreemption        bool
@@ -475,8 +476,8 @@ func (g *genericScheduler) findNodesThatFit(pod *v1.Pod, nodes []*v1.Node) ([]*v
 // to run on the node given in nodeInfo to meta and nodeInfo. It returns 1) whether
 // any pod was found, 2) augmented meta data, 3) augmented nodeInfo.
 func addNominatedPods(podPriority int32, meta algorithm.PredicateMetadata,
-	nodeInfo *schedulercache.NodeInfo, queue SchedulingQueue) (bool, algorithm.PredicateMetadata,
-	*schedulercache.NodeInfo) {
+	nodeInfo *schedulernode.NodeInfo, queue SchedulingQueue) (bool, algorithm.PredicateMetadata,
+	*schedulernode.NodeInfo) {
 	if queue == nil || nodeInfo == nil || nodeInfo.Node() == nil {
 		// This may happen only in tests.
 		return false, meta, nodeInfo
@@ -514,7 +515,7 @@ func addNominatedPods(podPriority int32, meta algorithm.PredicateMetadata,
 func podFitsOnNode(
 	pod *v1.Pod,
 	meta algorithm.PredicateMetadata,
-	info *schedulercache.NodeInfo,
+	info *schedulernode.NodeInfo,
 	predicateFuncs map[string]algorithm.FitPredicate,
 	cache schedulercache.Cache,
 	nodeCache *equivalence.NodeCache,
@@ -601,7 +602,7 @@ func podFitsOnNode(
 // All scores are finally combined (added) to get the total weighted scores of all nodes
 func PrioritizeNodes(
 	pod *v1.Pod,
-	nodeNameToInfo map[string]*schedulercache.NodeInfo,
+	nodeNameToInfo map[string]*schedulernode.NodeInfo,
 	meta interface{},
 	priorityConfigs []algorithm.PriorityConfig,
 	nodes []*v1.Node,
@@ -736,7 +737,7 @@ func PrioritizeNodes(
 }
 
 // EqualPriorityMap is a prioritizer function that gives an equal weight of one to all nodes
-func EqualPriorityMap(_ *v1.Pod, _ interface{}, nodeInfo *schedulercache.NodeInfo) (schedulerapi.HostPriority, error) {
+func EqualPriorityMap(_ *v1.Pod, _ interface{}, nodeInfo *schedulernode.NodeInfo) (schedulerapi.HostPriority, error) {
 	node := nodeInfo.Node()
 	if node == nil {
 		return schedulerapi.HostPriority{}, fmt.Errorf("node not found")
@@ -865,7 +866,7 @@ func pickOneNodeForPreemption(nodesToVictims map[*v1.Node]*schedulerapi.Victims)
 // selectNodesForPreemption finds all the nodes with possible victims for
 // preemption in parallel.
 func selectNodesForPreemption(pod *v1.Pod,
-	nodeNameToInfo map[string]*schedulercache.NodeInfo,
+	nodeNameToInfo map[string]*schedulernode.NodeInfo,
 	potentialNodes []*v1.Node,
 	predicates map[string]algorithm.FitPredicate,
 	metadataProducer algorithm.PredicateMetadataProducer,
@@ -956,7 +957,7 @@ func filterPodsWithPDBViolation(pods []interface{}, pdbs []*policy.PodDisruption
 func selectVictimsOnNode(
 	pod *v1.Pod,
 	meta algorithm.PredicateMetadata,
-	nodeInfo *schedulercache.NodeInfo,
+	nodeInfo *schedulernode.NodeInfo,
 	fitPredicates map[string]algorithm.FitPredicate,
 	queue SchedulingQueue,
 	pdbs []*policy.PodDisruptionBudget,
@@ -1077,7 +1078,7 @@ func nodesWherePreemptionMightHelp(nodes []*v1.Node, failedPredicatesMap FailedP
 // considered for preemption.
 // We look at the node that is nominated for this pod and as long as there are
 // terminating pods on the node, we don't consider this for preempting more pods.
-func podEligibleToPreemptOthers(pod *v1.Pod, nodeNameToInfo map[string]*schedulercache.NodeInfo) bool {
+func podEligibleToPreemptOthers(pod *v1.Pod, nodeNameToInfo map[string]*schedulernode.NodeInfo) bool {
 	nomNodeName := pod.Status.NominatedNodeName
 	if len(nomNodeName) > 0 {
 		if nodeInfo, found := nodeNameToInfo[nomNodeName]; found {
@@ -1143,7 +1144,7 @@ func NewGenericScheduler(
 		prioritizers:             prioritizers,
 		priorityMetaProducer:     priorityMetaProducer,
 		extenders:                extenders,
-		cachedNodeInfoMap:        make(map[string]*schedulercache.NodeInfo),
+		cachedNodeInfoMap:        make(map[string]*schedulernode.NodeInfo),
 		volumeBinder:             volumeBinder,
 		pvcLister:                pvcLister,
 		alwaysCheckAllPredicates: alwaysCheckAllPredicates,

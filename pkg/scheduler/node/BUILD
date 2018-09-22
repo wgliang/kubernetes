@@ -9,7 +9,7 @@ go_library(
         "node_tree.go",
         "util.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/scheduler/cache",
+    importpath = "k8s.io/kubernetes/pkg/scheduler/internal/cache",
     visibility = ["//visibility:public"],
     deps = [
         "//pkg/apis/core/v1/helper:go_default_library",
