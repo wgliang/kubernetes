@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package testing
+package fake
 
 import (
 	"k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1beta1"
 	"k8s.io/apimachinery/pkg/labels"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
+	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 )
 
 // FakeCache is used for testing
@@ -75,7 +75,7 @@ func (f *FakeCache) UpdateNode(oldNode, newNode *v1.Node) error { return nil }
 func (f *FakeCache) RemoveNode(node *v1.Node) error { return nil }
 
 // UpdateNodeNameToInfoMap is a fake method for testing.
-func (f *FakeCache) UpdateNodeNameToInfoMap(infoMap map[string]*schedulercache.NodeInfo) error {
+func (f *FakeCache) UpdateNodeNameToInfoMap(infoMap map[string]*schedulernode.NodeInfo) error {
 	return nil
 }
 
@@ -97,17 +97,17 @@ func (f *FakeCache) ListPDBs(selector labels.Selector) ([]*policy.PodDisruptionB
 func (f *FakeCache) List(s labels.Selector) ([]*v1.Pod, error) { return nil, nil }
 
 // FilteredList is a fake method for testing.
-func (f *FakeCache) FilteredList(filter schedulercache.PodFilter, selector labels.Selector) ([]*v1.Pod, error) {
+func (f *FakeCache) FilteredList(filter schedulernode.PodFilter, selector labels.Selector) ([]*v1.Pod, error) {
 	return nil, nil
 }
 
 // Snapshot is a fake method for testing
-func (f *FakeCache) Snapshot() *schedulercache.Snapshot {
-	return &schedulercache.Snapshot{}
+func (f *FakeCache) Snapshot() *schedulernode.Snapshot {
+	return &schedulernode.Snapshot{}
 }
 
 // IsUpToDate is a fake method for testing
-func (f *FakeCache) IsUpToDate(*schedulercache.NodeInfo) bool { return true }
+func (f *FakeCache) IsUpToDate(*schedulernode.NodeInfo) bool { return true }
 
 // NodeTree is a fake method for testing.
-func (f *FakeCache) NodeTree() *schedulercache.NodeTree { return nil }
+func (f *FakeCache) NodeTree() *schedulernode.NodeTree { return nil }

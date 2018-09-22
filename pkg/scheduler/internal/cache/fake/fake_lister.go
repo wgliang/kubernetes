@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package testing
+package fake
 
 import (
 	"fmt"
@@ -25,7 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	corelisters "k8s.io/client-go/listers/core/v1"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
+	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 )
 
 var _ algorithm.NodeLister = &FakeNodeLister{}
@@ -54,7 +54,7 @@ func (f FakePodLister) List(s labels.Selector) (selected []*v1.Pod, err error) {
 }
 
 // FilteredList returns pods matching a pod filter and a label selector.
-func (f FakePodLister) FilteredList(podFilter schedulercache.PodFilter, s labels.Selector) (selected []*v1.Pod, err error) {
+func (f FakePodLister) FilteredList(podFilter schedulernode.PodFilter, s labels.Selector) (selected []*v1.Pod, err error) {
 	for _, pod := range f {
 		if podFilter(pod) && s.Matches(labels.Set(pod.Labels)) {
 			selected = append(selected, pod)

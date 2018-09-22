@@ -13,7 +13,7 @@ go_library(
         "fake_lister.go",
         "util.go",
     ],
-    importpath = "k8s.io/kubernetes/pkg/scheduler/testing",
+    importpath = "k8s.io/kubernetes/pkg/scheduler/internal/cache/fake",
     deps = [
         "//pkg/api/legacyscheme:go_default_library",
         "//pkg/apis/core:go_default_library",
