@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package factory
+package comparer
 
 import (
 	"sort"
@@ -31,38 +31,38 @@ import (
 	schedulernode "k8s.io/kubernetes/pkg/scheduler/node"
 )
 
-type cacheComparer struct {
-	nodeLister corelisters.NodeLister
-	podLister  corelisters.PodLister
-	pdbLister  v1beta1.PodDisruptionBudgetLister
-	cache      schedulercache.Cache
-	podQueue   core.SchedulingQueue
+type CacheComparer struct {
+	NodeLister corelisters.NodeLister
+	PodLister  corelisters.PodLister
+	PdbLister  v1beta1.PodDisruptionBudgetLister
+	Cache      schedulercache.Cache
+	PodQueue   core.SchedulingQueue
 
 	compareStrategy
 }
 
-func (c *cacheComparer) Compare() error {
+func (c *CacheComparer) Compare() error {
 	glog.V(3).Info("cache comparer started")
 	defer glog.V(3).Info("cache comparer finished")
 
-	nodes, err := c.nodeLister.List(labels.Everything())
+	nodes, err := c.NodeLister.List(labels.Everything())
 	if err != nil {
 		return err
 	}
 
-	pods, err := c.podLister.List(labels.Everything())
+	pods, err := c.PodLister.List(labels.Everything())
 	if err != nil {
 		return err
 	}
 
-	pdbs, err := c.pdbLister.List(labels.Everything())
+	pdbs, err := c.PdbLister.List(labels.Everything())
 	if err != nil {
 		return err
 	}
 
-	snapshot := c.cache.Snapshot()
+	snapshot := c.Cache.Snapshot()
 
-	waitingPods := c.podQueue.WaitingPods()
+	waitingPods := c.PodQueue.WaitingPods()
 
 	if missed, redundant := c.CompareNodes(nodes, snapshot.Nodes); len(missed)+len(redundant) != 0 {
 		glog.Warningf("cache mismatch: missed nodes: %s; redundant nodes: %s", missed, redundant)

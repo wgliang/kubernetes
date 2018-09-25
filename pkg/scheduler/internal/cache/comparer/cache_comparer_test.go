@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package factory
+package comparer
 
 import (
 	"reflect"
@@ -23,7 +23,6 @@ import (
 	"k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1beta1"
 	"k8s.io/apimachinery/pkg/types"
-	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
 )
 
 func TestCompareNodes(t *testing.T) {
@@ -178,7 +177,7 @@ func testComparePods(actual, cached, queued, missing, redundant []string, t *tes
 		pod.Namespace = "ns"
 		pod.Name = uid
 
-		nodeInfo[uid] = schedulercache.NewNodeInfo(pod)
+		nodeInfo[uid] = NewNodeInfo(pod)
 	}
 
 	m, r := compare.ComparePods(pods, queuedPods, nodeInfo)

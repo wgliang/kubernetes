@@ -61,6 +61,7 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/core"
 	"k8s.io/kubernetes/pkg/scheduler/core/equivalence"
 	schedulercache "k8s.io/kubernetes/pkg/scheduler/internal/cache"
+	schedulercomparer "k8s.io/kubernetes/pkg/scheduler/internal/cache/comparer"
 	"k8s.io/kubernetes/pkg/scheduler/util"
 	"k8s.io/kubernetes/pkg/scheduler/volumebinder"
 )
@@ -317,12 +318,12 @@ func NewConfigFactory(args *ConfigFactoryArgs) scheduler.Configurator {
 	}
 
 	// Setup cache comparer
-	comparer := &cacheComparer{
-		podLister:  args.PodInformer.Lister(),
-		nodeLister: args.NodeInformer.Lister(),
-		pdbLister:  args.PdbInformer.Lister(),
-		cache:      c.schedulerCache,
-		podQueue:   c.podQueue,
+	comparer := &schedulercomparer.CacheComparer{
+		PodLister:  args.PodInformer.Lister(),
+		NodeLister: args.NodeInformer.Lister(),
+		PdbLister:  args.PdbInformer.Lister(),
+		Cache:      c.schedulerCache,
+		PodQueue:   c.podQueue,
 	}
 
 	ch := make(chan os.Signal, 1)
