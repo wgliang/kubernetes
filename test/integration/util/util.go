@@ -26,8 +26,10 @@ import (
 	clientv1core "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/klog"
+	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/scheduler"
 	schedulerapi "k8s.io/kubernetes/pkg/scheduler/api"
+	kubeschedulerconfig "k8s.io/kubernetes/pkg/scheduler/apis/config"
 	"k8s.io/kubernetes/pkg/scheduler/factory"
 	"k8s.io/kubernetes/test/integration/framework"
 )
@@ -64,14 +66,35 @@ func StartScheduler(clientSet clientset.Interface) (factory.Configurator, Shutdo
 		Interface: clientSet.CoreV1().Events("")})
 
 	stopCh := make(chan struct{})
-	schedulerConfigurator := createSchedulerConfigurator(clientSet, informerFactory, stopCh)
 
-	config, err := schedulerConfigurator.CreateFromConfig(schedulerapi.Policy{})
+	sched, err := scheduler.New(
+		clientSet,
+		informerFactory.Core().V1().Nodes(),
+		informerFactory.Core().V1().Pods(),
+		informerFactory.Core().V1().PersistentVolumes(),
+		informerFactory.Core().V1().PersistentVolumeClaims(),
+		informerFactory.Core().V1().ReplicationControllers(),
+		informerFactory.Apps().V1().ReplicaSets(),
+		informerFactory.Apps().V1().StatefulSets(),
+		informerFactory.Core().V1().Services(),
+		informerFactory.Policy().V1beta1().PodDisruptionBudgets(),
+		informerFactory.Storage().V1().StorageClasses(),
+		evtBroadcaster.NewRecorder(
+			legacyscheme.Scheme,
+			v1.EventSource{Component: v1.DefaultSchedulerName},
+		),
+		kubeschedulerconfig.SchedulerAlgorithmSource{},
+		stopCh,
+		scheduler.WithName(v1.DefaultSchedulerName),
+		scheduler.WithHardPodAffinitySymmetricWeight(v1.DefaultHardPodAffinitySymmetricWeight),
+		scheduler.WithPreemptionDisabled(false),
+		scheduler.WithPercentageOfNodesToScore(schedulerapi.DefaultPercentageOfNodesToScore),
+		scheduler.WithBindTimeoutSeconds(600),
+	)
 	if err != nil {
-		klog.Fatalf("Error creating scheduler: %v", err)
+		klog.Fatalf("Couldn't create scheduler: %v", err)
 	}
 
-	sched := scheduler.NewFromConfig(config)
 	informerFactory.Start(stopCh)
 	sched.Run()
 
@@ -81,32 +104,5 @@ func StartScheduler(clientSet clientset.Interface) (factory.Configurator, Shutdo
 		close(stopCh)
 		klog.Infof("destroyed scheduler")
 	}
-	return schedulerConfigurator, shutdownFunc
-}
-
-// createSchedulerConfigurator create a configurator for scheduler with given informer factory and default name.
-func createSchedulerConfigurator(
-	clientSet clientset.Interface,
-	informerFactory informers.SharedInformerFactory,
-	stopCh <-chan struct{},
-) factory.Configurator {
-
-	return factory.NewConfigFactory(&factory.ConfigFactoryArgs{
-		SchedulerName:                  v1.DefaultSchedulerName,
-		Client:                         clientSet,
-		NodeInformer:                   informerFactory.Core().V1().Nodes(),
-		PodInformer:                    informerFactory.Core().V1().Pods(),
-		PvInformer:                     informerFactory.Core().V1().PersistentVolumes(),
-		PvcInformer:                    informerFactory.Core().V1().PersistentVolumeClaims(),
-		ReplicationControllerInformer:  informerFactory.Core().V1().ReplicationControllers(),
-		ReplicaSetInformer:             informerFactory.Apps().V1().ReplicaSets(),
-		StatefulSetInformer:            informerFactory.Apps().V1().StatefulSets(),
-		ServiceInformer:                informerFactory.Core().V1().Services(),
-		PdbInformer:                    informerFactory.Policy().V1beta1().PodDisruptionBudgets(),
-		StorageClassInformer:           informerFactory.Storage().V1().StorageClasses(),
-		HardPodAffinitySymmetricWeight: v1.DefaultHardPodAffinitySymmetricWeight,
-		DisablePreemption:              false,
-		PercentageOfNodesToScore:       schedulerapi.DefaultPercentageOfNodesToScore,
-		StopCh:                         stopCh,
-	})
+	return sched.Config, shutdownFunc
 }
