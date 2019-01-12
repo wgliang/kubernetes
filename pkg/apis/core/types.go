@@ -2365,6 +2365,50 @@ type WeightedPodAffinityTerm struct {
 	PodAffinityTerm PodAffinityTerm
 }
 
+// A pod selector is a label query over a set of resources. The result of matchLabels and
+// matchExpressions are ANDed. An empty pod selector matches all objects. A null
+// pod selector matches no objects.
+type PodSelector struct {
+	// matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+	// map is equivalent to an element of matchExpressions, whose key field is "key", the
+	// operator is "In", and the values array contains only "value". The requirements are ANDed.
+	// +optional
+	MatchLabels map[string]string `json:"matchLabels,omitempty" protobuf:"bytes,1,rep,name=matchLabels"`
+	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
+	// +optional
+	MatchExpressions []PodSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,2,rep,name=matchExpressions"`
+}
+
+// A pod selector requirement is a selector that contains values, a key, and an operator that
+// relates the key and values.
+type PodSelectorRequirement struct {
+	// key is the label key that the selector applies to.
+	// +patchMergeKey=key
+	// +patchStrategy=merge
+	Key string `json:"key" patchStrategy:"merge" patchMergeKey:"key" protobuf:"bytes,1,opt,name=key"`
+	// operator represents a key's relationship to a set of values.
+	// Valid operators are In, NotIn, Exists and DoesNotExist.
+	Operator PodSelectorOperator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=PodSelectorOperator"`
+	// values is an array of string values. If the operator is In or NotIn,
+	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
+	// the values array must be empty. This array is replaced during a strategic
+	// merge patch.
+	// +optional
+	Values []string `json:"values,omitempty" protobuf:"bytes,3,rep,name=values"`
+}
+
+// A pod selector operator is the set of operators that can be used in a selector requirement.
+type PodSelectorOperator string
+
+const (
+	PodSelectorOpIn           PodSelectorOperator = "In"
+	PodSelectorOpNotIn        PodSelectorOperator = "NotIn"
+	PodSelectorOpExists       PodSelectorOperator = "Exists"
+	PodSelectorOpDoesNotExist PodSelectorOperator = "DoesNotExist"
+	PodSelectorOpGt           PodSelectorOperator = "Gt"
+	PodSelectorOpLt           PodSelectorOperator = "Lt"
+)
+
 // Defines a set of pods (namely those matching the labelSelector
 // relative to the given namespace(s)) that this pod should be
 // co-located (affinity) or not co-located (anti-affinity) with,
@@ -2374,7 +2418,7 @@ type WeightedPodAffinityTerm struct {
 type PodAffinityTerm struct {
 	// A label query over a set of resources, in this case pods.
 	// +optional
-	LabelSelector *metav1.LabelSelector
+	LabelSelector *PodSelector
 	// namespaces specifies which namespaces the labelSelector applies to (matches against);
 	// null or empty list means "this pod's namespace"
 	// +optional

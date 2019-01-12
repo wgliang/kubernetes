@@ -54,10 +54,6 @@ func LabelSelectorAsSelector(ps *LabelSelector) (labels.Selector, error) {
 			op = selection.Exists
 		case LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case LabelSelectorOpGt:
-			op = selection.GreaterThan
-		case LabelSelectorOpLt:
-			op = selection.LessThan
 		default:
 			return nil, fmt.Errorf("%q is not a valid pod selector operator", expr.Operator)
 		}
@@ -90,7 +86,7 @@ func LabelSelectorAsMap(ps *LabelSelector) (map[string]string, error) {
 			}
 			// Should we do anything in case this will override a previous key-value pair?
 			selector[expr.Key] = expr.Values[0]
-		case LabelSelectorOpNotIn, LabelSelectorOpExists, LabelSelectorOpDoesNotExist, LabelSelectorOpGt, LabelSelectorOpLt:
+		case LabelSelectorOpNotIn, LabelSelectorOpExists, LabelSelectorOpDoesNotExist:
 			return selector, fmt.Errorf("operator %q cannot be converted into the old label selector format", expr.Operator)
 		default:
 			return selector, fmt.Errorf("%q is not a valid selector operator", expr.Operator)
@@ -133,10 +129,9 @@ func ParseToLabelSelector(selector string) (*LabelSelector, error) {
 			op = LabelSelectorOpExists
 		case selection.DoesNotExist:
 			op = LabelSelectorOpDoesNotExist
-		case selection.GreaterThan:
-			op = LabelSelectorOpLt
-		case selection.LessThan:
-			op = LabelSelectorOpLt
+		case selection.GreaterThan, selection.LessThan:
+			// Adding a separate case for these operators to indicate that this is deliberate
+			return nil, fmt.Errorf("%q isn't supported in label selectors", req.Operator())
 		default:
 			return nil, fmt.Errorf("%q is not a valid label selector operator", req.Operator())
 		}

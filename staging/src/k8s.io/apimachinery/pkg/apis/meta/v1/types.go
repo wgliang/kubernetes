@@ -1002,6 +1002,4 @@ const (
 	LabelSelectorOpNotIn        LabelSelectorOperator = "NotIn"
 	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
 	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
-	LabelSelectorOpGt           LabelSelectorOperator = "Gt"
-	LabelSelectorOpLt           LabelSelectorOperator = "Lt"
 )

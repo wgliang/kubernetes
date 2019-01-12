@@ -25,6 +25,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"k8s.io/klog"
@@ -3224,11 +3225,50 @@ func ValidatePreferredSchedulingTerms(terms []core.PreferredSchedulingTerm, fldP
 	return allErrs
 }
 
+func ValidatePodSelectorRequirement(sr core.PodSelectorRequirement, fldPath *field.Path) field.ErrorList {
+	allErrs := field.ErrorList{}
+	switch sr.Operator {
+	case core.PodSelectorOpIn, core.PodSelectorOpNotIn:
+		if len(sr.Values) == 0 {
+			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified when `operator` is 'In' or 'NotIn'"))
+		}
+	case core.PodSelectorOpExists, core.PodSelectorOpDoesNotExist:
+		if len(sr.Values) > 0 {
+			allErrs = append(allErrs, field.Forbidden(fldPath.Child("values"), "may not be specified when `operator` is 'Exists' or 'DoesNotExist'"))
+		}
+	case core.PodSelectorOpGt, core.PodSelectorOpLt:
+		if len(sr.Values) != 1 {
+			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified single value when `operator` is 'Lt' or 'Gt'"))
+		} else {
+			if _, err := strconv.ParseInt(sr.Values[0], 10, 64); err != nil {
+				allErrs = append(allErrs, field.Invalid(fldPath.Child("values"), sr.Values,
+					"must be a number when `operator` is 'Lt' or 'Gt'"))
+			}
+		}
+	default:
+		allErrs = append(allErrs, field.Invalid(fldPath.Child("operator"), sr.Operator, "not a valid selector operator"))
+	}
+	allErrs = append(allErrs, unversionedvalidation.ValidateLabelName(sr.Key, fldPath.Child("key"))...)
+	return allErrs
+}
+
+func ValidatePodSelector(ps *core.PodSelector, fldPath *field.Path) field.ErrorList {
+	allErrs := field.ErrorList{}
+	if ps == nil {
+		return allErrs
+	}
+	allErrs = append(allErrs, unversionedvalidation.ValidateLabels(ps.MatchLabels, fldPath.Child("matchLabels"))...)
+	for i, expr := range ps.MatchExpressions {
+		allErrs = append(allErrs, ValidatePodSelectorRequirement(expr, fldPath.Child("matchExpressions").Index(i))...)
+	}
+	return allErrs
+}
+
 // validatePodAffinityTerm tests that the specified podAffinityTerm fields have valid data
 func validatePodAffinityTerm(podAffinityTerm core.PodAffinityTerm, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
-	allErrs = append(allErrs, unversionedvalidation.ValidateLabelSelector(podAffinityTerm.LabelSelector, fldPath.Child("matchExpressions"))...)
+	allErrs = append(allErrs, ValidatePodSelector(podAffinityTerm.LabelSelector, fldPath.Child("matchExpressions"))...)
 	for _, name := range podAffinityTerm.Namespaces {
 		for _, msg := range ValidateNamespaceName(name, false) {
 			allErrs = append(allErrs, field.Invalid(fldPath.Child("namespace"), name, msg))
