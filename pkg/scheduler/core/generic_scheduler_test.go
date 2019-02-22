@@ -958,11 +958,11 @@ func TestSelectNodesForPreemption(t *testing.T) {
 					PodAntiAffinity: &v1.PodAntiAffinity{
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
-								LabelSelector: &metav1.LabelSelector{
-									MatchExpressions: []metav1.LabelSelectorRequirement{
+								LabelSelector: &v1.PodSelector{
+									MatchExpressions: []v1.PodSelectorRequirement{
 										{
 											Key:      "pod",
-											Operator: metav1.LabelSelectorOpIn,
+											Operator: v1.PodSelectorOpIn,
 											Values:   []string{"preemptor", "value2"},
 										},
 									},

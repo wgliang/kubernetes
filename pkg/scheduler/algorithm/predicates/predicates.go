@@ -28,7 +28,6 @@ import (
 	"k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/rand"
@@ -1294,7 +1293,7 @@ func getMatchingAntiAffinityTopologyPairsOfPod(newPod *v1.Pod, existingPod *v1.P
 	topologyMaps := newTopologyPairsMaps()
 	for _, term := range GetPodAntiAffinityTerms(affinity.PodAntiAffinity) {
 		namespaces := priorityutil.GetNamespacesFromPodAffinityTerm(existingPod, &term)
-		selector, err := metav1.LabelSelectorAsSelector(term.LabelSelector)
+		selector, err := v1helper.PodSelectorAsSelector(term.LabelSelector)
 		if err != nil {
 			return nil, err
 		}
