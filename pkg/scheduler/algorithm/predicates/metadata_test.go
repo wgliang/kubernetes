@@ -121,11 +121,11 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 	antiAffinityFooBar := &v1.PodAntiAffinity{
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: metav1.LabelSelectorOpIn,
+							Operator: v1.PodSelectorOpIn,
 							Values:   []string{"bar"},
 						},
 					},
@@ -137,11 +137,11 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 	antiAffinityComplex := &v1.PodAntiAffinity{
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: metav1.LabelSelectorOpIn,
+							Operator: v1.PodSelectorOpIn,
 							Values:   []string{"bar", "buzz"},
 						},
 					},
@@ -149,11 +149,11 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 				TopologyKey: "region",
 			},
 			{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      "service",
-							Operator: metav1.LabelSelectorOpNotIn,
+							Operator: v1.PodSelectorOpNotIn,
 							Values:   []string{"bar", "security", "test"},
 						},
 					},
@@ -165,11 +165,11 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 	affinityComplex := &v1.PodAffinity{
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: metav1.LabelSelectorOpIn,
+							Operator: v1.PodSelectorOpIn,
 							Values:   []string{"bar", "buzz"},
 						},
 					},
@@ -177,11 +177,11 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 				TopologyKey: "region",
 			},
 			{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      "service",
-							Operator: metav1.LabelSelectorOpNotIn,
+							Operator: v1.PodSelectorOpNotIn,
 							Values:   []string{"bar", "security", "test"},
 						},
 					},
@@ -533,11 +533,11 @@ func TestGetTPMapMatchingIncomingAffinityAntiAffinity(t *testing.T) {
 		var terms []v1.PodAffinityTerm
 		for _, key := range keys {
 			terms = append(terms, v1.PodAffinityTerm{
-				LabelSelector: &metav1.LabelSelector{
-					MatchExpressions: []metav1.LabelSelectorRequirement{
+				LabelSelector: &v1.PodSelector{
+					MatchExpressions: []v1.PodSelectorRequirement{
 						{
 							Key:      key,
-							Operator: metav1.LabelSelectorOpExists,
+							Operator: v1.PodSelectorOpExists,
 						},
 					},
 				},
