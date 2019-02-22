@@ -508,3 +508,154 @@ func ScopedResourceSelectorRequirementsAsSelector(ssr v1.ScopedResourceSelectorR
 	selector = selector.Add(*r)
 	return selector, nil
 }
+
+// PodSelectorAsSelector converts the PodSelector api type into a struct that implements
+// v1.PodSelector
+func PodSelectorAsSelector(ps *v1.PodSelector) (labels.Selector, error) {
+	if ps == nil {
+		return labels.Nothing(), nil
+	}
+	if len(ps.MatchLabels)+len(ps.MatchExpressions) == 0 {
+		return labels.Everything(), nil
+	}
+	selector := labels.NewSelector()
+	for k, v := range ps.MatchLabels {
+		r, err := labels.NewRequirement(k, selection.Equals, []string{v})
+		if err != nil {
+			return nil, err
+		}
+		selector = selector.Add(*r)
+	}
+	for _, expr := range ps.MatchExpressions {
+		var op selection.Operator
+		switch expr.Operator {
+		case v1.PodSelectorOpIn:
+			op = selection.In
+		case v1.PodSelectorOpNotIn:
+			op = selection.NotIn
+		case v1.PodSelectorOpExists:
+			op = selection.Exists
+		case v1.PodSelectorOpDoesNotExist:
+			op = selection.DoesNotExist
+		case v1.PodSelectorOpGt:
+			op = selection.GreaterThan
+		case v1.PodSelectorOpLt:
+			op = selection.LessThan
+		default:
+			return nil, fmt.Errorf("%q is not a valid pod selector operator", expr.Operator)
+		}
+		r, err := labels.NewRequirement(expr.Key, op, append([]string(nil), expr.Values...))
+		if err != nil {
+			return nil, err
+		}
+		selector = selector.Add(*r)
+	}
+	return selector, nil
+}
+
+// PodSelectorAsMap converts the PodSelector api type into a map of strings, ie. the
+// original structure of a pod selector. Operators that cannot be converted into plain
+// labels (Exists, DoesNotExist, NotIn, In, Gt and Lt with more than one value) will result in
+// an error.
+func PodSelectorAsMap(ps *v1.PodSelector) (map[string]string, error) {
+	if ps == nil {
+		return nil, nil
+	}
+	selector := map[string]string{}
+	for k, v := range ps.MatchLabels {
+		selector[k] = v
+	}
+	for _, expr := range ps.MatchExpressions {
+		switch expr.Operator {
+		case v1.PodSelectorOpIn:
+			if len(expr.Values) != 1 {
+				return selector, fmt.Errorf("operator %q without a single value cannot be converted into the old label selector format", expr.Operator)
+			}
+			// Should we do anything in case this will override a previous key-value pair?
+			selector[expr.Key] = expr.Values[0]
+		case v1.PodSelectorOpNotIn, v1.PodSelectorOpExists, v1.PodSelectorOpDoesNotExist, v1.PodSelectorOpGt, v1.PodSelectorOpLt:
+			return selector, fmt.Errorf("operator %q cannot be converted into the old label selector format", expr.Operator)
+		default:
+			return selector, fmt.Errorf("%q is not a valid selector operator", expr.Operator)
+		}
+	}
+	return selector, nil
+}
+
+// ParseToPodSelector parses a string representing a selector into a PodSelector object.
+func ParseToPodSelector(selector string) (*v1.PodSelector, error) {
+	reqs, err := labels.ParseToRequirements(selector)
+	if err != nil {
+		return nil, fmt.Errorf("couldn't parse the selector string \"%s\": %v", selector, err)
+	}
+
+	labelSelector := &v1.PodSelector{
+		MatchLabels:      map[string]string{},
+		MatchExpressions: []v1.PodSelectorRequirement{},
+	}
+	for _, req := range reqs {
+		var op v1.PodSelectorOperator
+		switch req.Operator() {
+		case selection.Equals, selection.DoubleEquals:
+			vals := req.Values()
+			if vals.Len() != 1 {
+				return nil, fmt.Errorf("equals operator must have exactly one value")
+			}
+			val, ok := vals.PopAny()
+			if !ok {
+				return nil, fmt.Errorf("equals operator has exactly one value but it cannot be retrieved")
+			}
+			labelSelector.MatchLabels[req.Key()] = val
+			continue
+		case selection.In:
+			op = v1.PodSelectorOpIn
+		case selection.NotIn:
+			op = v1.PodSelectorOpNotIn
+		case selection.Exists:
+			op = v1.PodSelectorOpExists
+		case selection.DoesNotExist:
+			op = v1.PodSelectorOpDoesNotExist
+		case selection.GreaterThan, selection.LessThan:
+			// Adding a separate case for these operators to indicate that this is deliberate
+			return nil, fmt.Errorf("%q isn't supported in label selectors", req.Operator())
+		default:
+			return nil, fmt.Errorf("%q is not a valid label selector operator", req.Operator())
+		}
+		labelSelector.MatchExpressions = append(labelSelector.MatchExpressions, v1.PodSelectorRequirement{
+			Key:      req.Key(),
+			Operator: op,
+			Values:   req.Values().List(),
+		})
+	}
+	return labelSelector, nil
+}
+
+// SetAsPodSelector converts the labels.Set object into a PodSelector api object.
+func SetAsPodSelector(ls labels.Set) *v1.PodSelector {
+	if ls == nil {
+		return nil
+	}
+
+	selector := &v1.PodSelector{
+		MatchLabels: make(map[string]string),
+	}
+	for label, value := range ls {
+		selector.MatchLabels[label] = value
+	}
+
+	return selector
+}
+
+// FormatPodSelector convert podSelector into plain string
+func FormatPodSelector(podSelector *v1.PodSelector) string {
+	selector, err := PodSelectorAsSelector(podSelector)
+	if err != nil {
+		return "<error>"
+	}
+
+	l := selector.String()
+	if len(l) == 0 {
+		l = "<none>"
+	}
+	return l
+}
