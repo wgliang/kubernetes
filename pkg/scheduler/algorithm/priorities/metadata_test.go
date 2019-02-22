@@ -23,7 +23,6 @@ import (
 	apps "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	priorityutil "k8s.io/kubernetes/pkg/scheduler/algorithm/priorities/util"
 	schedulernodeinfo "k8s.io/kubernetes/pkg/scheduler/nodeinfo"
 	schedulertesting "k8s.io/kubernetes/pkg/scheduler/testing"
@@ -50,11 +49,11 @@ func TestPriorityMetadata(t *testing.T) {
 				{
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
-						LabelSelector: &metav1.LabelSelector{
-							MatchExpressions: []metav1.LabelSelectorRequirement{
+						LabelSelector: &v1.PodSelector{
+							MatchExpressions: []v1.PodSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: metav1.LabelSelectorOpIn,
+									Operator: v1.PodSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},
