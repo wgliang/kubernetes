@@ -28,7 +28,6 @@ import (
 	"k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/rand"
@@ -852,9 +851,9 @@ func podMatchesNodeSelectorAndAffinityTerms(pod *v1.Pod, node *v1.Node) bool {
 	// 1. nil NodeSelector matches all nodes (i.e. does not filter out any nodes)
 	// 2. nil []NodeSelectorTerm (equivalent to non-nil empty NodeSelector) matches no nodes
 	// 3. zero-length non-nil []NodeSelectorTerm matches no nodes also, just for simplicity
-	// 4. nil []NodeSelectorRequirement (equivalent to non-nil empty NodeSelectorTerm) matches no nodes
-	// 5. zero-length non-nil []NodeSelectorRequirement matches no nodes also, just for simplicity
-	// 6. non-nil empty NodeSelectorRequirement is not allowed
+	// 4. nil []NumericAwareSelectorRequirement (equivalent to non-nil empty NodeSelectorTerm) matches no nodes
+	// 5. zero-length non-nil []NumericAwareSelectorRequirement matches no nodes also, just for simplicity
+	// 6. non-nil empty NumericAwareSelectorRequirement is not allowed
 	nodeAffinityMatches := true
 	affinity := pod.Spec.Affinity
 	if affinity != nil && affinity.NodeAffinity != nil {
@@ -1293,7 +1292,7 @@ func getMatchingAntiAffinityTopologyPairsOfPod(newPod *v1.Pod, existingPod *v1.P
 
 	topologyMaps := newTopologyPairsMaps()
 	for _, term := range GetPodAntiAffinityTerms(affinity.PodAntiAffinity) {
-		selector, err := metav1.LabelSelectorAsSelector(term.LabelSelector)
+		selector, err := v1helper.PodSelectorAsSelector(term.LabelSelector)
 		if err != nil {
 			return nil, err
 		}
@@ -1305,6 +1304,7 @@ func getMatchingAntiAffinityTopologyPairsOfPod(newPod *v1.Pod, existingPod *v1.P
 			}
 		}
 	}
+
 	return topologyMaps, nil
 }
 

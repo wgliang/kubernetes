@@ -256,11 +256,11 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 					PodAntiAffinity: &corev1.PodAntiAffinity{
 						RequiredDuringSchedulingIgnoredDuringExecution: []corev1.PodAffinityTerm{
 							{
-								LabelSelector: &metav1.LabelSelector{
-									MatchExpressions: []metav1.LabelSelectorRequirement{
+								LabelSelector: &corev1.PodSelector{
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{
 										{
 											Key:      "service",
-											Operator: metav1.LabelSelectorOpIn,
+											Operator: corev1.LabelSelectorOpIn,
 											Values:   []string{"blah", "foo"},
 										},
 									},
@@ -273,10 +273,10 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 						RequiredDuringSchedulingIgnoredDuringExecution: &corev1.NodeSelector{
 							NodeSelectorTerms: []corev1.NodeSelectorTerm{
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{
 										{
 											Key:      "node",
-											Operator: corev1.NodeSelectorOpIn,
+											Operator: corev1.LabelSelectorOpIn,
 											Values:   []string{node.Name},
 										},
 									},
@@ -310,10 +310,10 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 					RequiredDuringSchedulingIgnoredDuringExecution: &corev1.NodeSelector{
 						NodeSelectorTerms: []corev1.NodeSelectorTerm{
 							{
-								MatchExpressions: []corev1.NodeSelectorRequirement{
+								MatchExpressions: []corev1.NumericAwareSelectorRequirement{
 									{
 										Key:      "node",
-										Operator: corev1.NodeSelectorOpIn,
+										Operator: corev1.LabelSelectorOpIn,
 										Values:   []string{nodeList.Items[0].Name},
 									},
 								},

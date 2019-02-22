@@ -118,11 +118,11 @@ limitations under the License.
 		NodeProxyOptions
 		NodeResources
 		NodeSelector
-		NodeSelectorRequirement
 		NodeSelectorTerm
 		NodeSpec
 		NodeStatus
 		NodeSystemInfo
+		NumericAwareSelectorRequirement
 		ObjectFieldSelector
 		ObjectReference
 		PersistentVolume
@@ -152,6 +152,7 @@ limitations under the License.
 		PodProxyOptions
 		PodReadinessGate
 		PodSecurityContext
+		PodSelector
 		PodSignature
 		PodSpec
 		PodStatus
@@ -653,27 +654,27 @@ func (m *NodeSelector) Reset()                    { *m = NodeSelector{} }
 func (*NodeSelector) ProtoMessage()               {}
 func (*NodeSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{93} }
 
-func (m *NodeSelectorRequirement) Reset()      { *m = NodeSelectorRequirement{} }
-func (*NodeSelectorRequirement) ProtoMessage() {}
-func (*NodeSelectorRequirement) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{94}
-}
-
 func (m *NodeSelectorTerm) Reset()                    { *m = NodeSelectorTerm{} }
 func (*NodeSelectorTerm) ProtoMessage()               {}
-func (*NodeSelectorTerm) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{95} }
+func (*NodeSelectorTerm) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{94} }
 
 func (m *NodeSpec) Reset()                    { *m = NodeSpec{} }
 func (*NodeSpec) ProtoMessage()               {}
-func (*NodeSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{96} }
+func (*NodeSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{95} }
 
 func (m *NodeStatus) Reset()                    { *m = NodeStatus{} }
 func (*NodeStatus) ProtoMessage()               {}
-func (*NodeStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{97} }
+func (*NodeStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{96} }
 
 func (m *NodeSystemInfo) Reset()                    { *m = NodeSystemInfo{} }
 func (*NodeSystemInfo) ProtoMessage()               {}
-func (*NodeSystemInfo) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{98} }
+func (*NodeSystemInfo) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{97} }
+
+func (m *NumericAwareSelectorRequirement) Reset()      { *m = NumericAwareSelectorRequirement{} }
+func (*NumericAwareSelectorRequirement) ProtoMessage() {}
+func (*NumericAwareSelectorRequirement) Descriptor() ([]byte, []int) {
+	return fileDescriptorGenerated, []int{98}
+}
 
 func (m *ObjectFieldSelector) Reset()                    { *m = ObjectFieldSelector{} }
 func (*ObjectFieldSelector) ProtoMessage()               {}
@@ -807,314 +808,318 @@ func (m *PodSecurityContext) Reset()                    { *m = PodSecurityContex
 func (*PodSecurityContext) ProtoMessage()               {}
 func (*PodSecurityContext) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{127} }
 
+func (m *PodSelector) Reset()                    { *m = PodSelector{} }
+func (*PodSelector) ProtoMessage()               {}
+func (*PodSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{128} }
+
 func (m *PodSignature) Reset()                    { *m = PodSignature{} }
 func (*PodSignature) ProtoMessage()               {}
-func (*PodSignature) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{128} }
+func (*PodSignature) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{129} }
 
 func (m *PodSpec) Reset()                    { *m = PodSpec{} }
 func (*PodSpec) ProtoMessage()               {}
-func (*PodSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{129} }
+func (*PodSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{130} }
 
 func (m *PodStatus) Reset()                    { *m = PodStatus{} }
 func (*PodStatus) ProtoMessage()               {}
-func (*PodStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{130} }
+func (*PodStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{131} }
 
 func (m *PodStatusResult) Reset()                    { *m = PodStatusResult{} }
 func (*PodStatusResult) ProtoMessage()               {}
-func (*PodStatusResult) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{131} }
+func (*PodStatusResult) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{132} }
 
 func (m *PodTemplate) Reset()                    { *m = PodTemplate{} }
 func (*PodTemplate) ProtoMessage()               {}
-func (*PodTemplate) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{132} }
+func (*PodTemplate) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{133} }
 
 func (m *PodTemplateList) Reset()                    { *m = PodTemplateList{} }
 func (*PodTemplateList) ProtoMessage()               {}
-func (*PodTemplateList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{133} }
+func (*PodTemplateList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{134} }
 
 func (m *PodTemplateSpec) Reset()                    { *m = PodTemplateSpec{} }
 func (*PodTemplateSpec) ProtoMessage()               {}
-func (*PodTemplateSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{134} }
+func (*PodTemplateSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{135} }
 
 func (m *PortworxVolumeSource) Reset()                    { *m = PortworxVolumeSource{} }
 func (*PortworxVolumeSource) ProtoMessage()               {}
-func (*PortworxVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{135} }
+func (*PortworxVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{136} }
 
 func (m *Preconditions) Reset()                    { *m = Preconditions{} }
 func (*Preconditions) ProtoMessage()               {}
-func (*Preconditions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{136} }
+func (*Preconditions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{137} }
 
 func (m *PreferAvoidPodsEntry) Reset()                    { *m = PreferAvoidPodsEntry{} }
 func (*PreferAvoidPodsEntry) ProtoMessage()               {}
-func (*PreferAvoidPodsEntry) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{137} }
+func (*PreferAvoidPodsEntry) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{138} }
 
 func (m *PreferredSchedulingTerm) Reset()      { *m = PreferredSchedulingTerm{} }
 func (*PreferredSchedulingTerm) ProtoMessage() {}
 func (*PreferredSchedulingTerm) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{138}
+	return fileDescriptorGenerated, []int{139}
 }
 
 func (m *Probe) Reset()                    { *m = Probe{} }
 func (*Probe) ProtoMessage()               {}
-func (*Probe) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{139} }
+func (*Probe) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{140} }
 
 func (m *ProjectedVolumeSource) Reset()                    { *m = ProjectedVolumeSource{} }
 func (*ProjectedVolumeSource) ProtoMessage()               {}
-func (*ProjectedVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{140} }
+func (*ProjectedVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{141} }
 
 func (m *QuobyteVolumeSource) Reset()                    { *m = QuobyteVolumeSource{} }
 func (*QuobyteVolumeSource) ProtoMessage()               {}
-func (*QuobyteVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{141} }
+func (*QuobyteVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{142} }
 
 func (m *RBDPersistentVolumeSource) Reset()      { *m = RBDPersistentVolumeSource{} }
 func (*RBDPersistentVolumeSource) ProtoMessage() {}
 func (*RBDPersistentVolumeSource) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{142}
+	return fileDescriptorGenerated, []int{143}
 }
 
 func (m *RBDVolumeSource) Reset()                    { *m = RBDVolumeSource{} }
 func (*RBDVolumeSource) ProtoMessage()               {}
-func (*RBDVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{143} }
+func (*RBDVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{144} }
 
 func (m *RangeAllocation) Reset()                    { *m = RangeAllocation{} }
 func (*RangeAllocation) ProtoMessage()               {}
-func (*RangeAllocation) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{144} }
+func (*RangeAllocation) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{145} }
 
 func (m *ReplicationController) Reset()                    { *m = ReplicationController{} }
 func (*ReplicationController) ProtoMessage()               {}
-func (*ReplicationController) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{145} }
+func (*ReplicationController) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{146} }
 
 func (m *ReplicationControllerCondition) Reset()      { *m = ReplicationControllerCondition{} }
 func (*ReplicationControllerCondition) ProtoMessage() {}
 func (*ReplicationControllerCondition) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{146}
+	return fileDescriptorGenerated, []int{147}
 }
 
 func (m *ReplicationControllerList) Reset()      { *m = ReplicationControllerList{} }
 func (*ReplicationControllerList) ProtoMessage() {}
 func (*ReplicationControllerList) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{147}
+	return fileDescriptorGenerated, []int{148}
 }
 
 func (m *ReplicationControllerSpec) Reset()      { *m = ReplicationControllerSpec{} }
 func (*ReplicationControllerSpec) ProtoMessage() {}
 func (*ReplicationControllerSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{148}
+	return fileDescriptorGenerated, []int{149}
 }
 
 func (m *ReplicationControllerStatus) Reset()      { *m = ReplicationControllerStatus{} }
 func (*ReplicationControllerStatus) ProtoMessage() {}
 func (*ReplicationControllerStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{149}
+	return fileDescriptorGenerated, []int{150}
 }
 
 func (m *ResourceFieldSelector) Reset()                    { *m = ResourceFieldSelector{} }
 func (*ResourceFieldSelector) ProtoMessage()               {}
-func (*ResourceFieldSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{150} }
+func (*ResourceFieldSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{151} }
 
 func (m *ResourceQuota) Reset()                    { *m = ResourceQuota{} }
 func (*ResourceQuota) ProtoMessage()               {}
-func (*ResourceQuota) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{151} }
+func (*ResourceQuota) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{152} }
 
 func (m *ResourceQuotaList) Reset()                    { *m = ResourceQuotaList{} }
 func (*ResourceQuotaList) ProtoMessage()               {}
-func (*ResourceQuotaList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{152} }
+func (*ResourceQuotaList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{153} }
 
 func (m *ResourceQuotaSpec) Reset()                    { *m = ResourceQuotaSpec{} }
 func (*ResourceQuotaSpec) ProtoMessage()               {}
-func (*ResourceQuotaSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{153} }
+func (*ResourceQuotaSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{154} }
 
 func (m *ResourceQuotaStatus) Reset()                    { *m = ResourceQuotaStatus{} }
 func (*ResourceQuotaStatus) ProtoMessage()               {}
-func (*ResourceQuotaStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{154} }
+func (*ResourceQuotaStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{155} }
 
 func (m *ResourceRequirements) Reset()                    { *m = ResourceRequirements{} }
 func (*ResourceRequirements) ProtoMessage()               {}
-func (*ResourceRequirements) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{155} }
+func (*ResourceRequirements) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{156} }
 
 func (m *SELinuxOptions) Reset()                    { *m = SELinuxOptions{} }
 func (*SELinuxOptions) ProtoMessage()               {}
-func (*SELinuxOptions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{156} }
+func (*SELinuxOptions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{157} }
 
 func (m *ScaleIOPersistentVolumeSource) Reset()      { *m = ScaleIOPersistentVolumeSource{} }
 func (*ScaleIOPersistentVolumeSource) ProtoMessage() {}
 func (*ScaleIOPersistentVolumeSource) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{157}
+	return fileDescriptorGenerated, []int{158}
 }
 
 func (m *ScaleIOVolumeSource) Reset()                    { *m = ScaleIOVolumeSource{} }
 func (*ScaleIOVolumeSource) ProtoMessage()               {}
-func (*ScaleIOVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{158} }
+func (*ScaleIOVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{159} }
 
 func (m *ScopeSelector) Reset()                    { *m = ScopeSelector{} }
 func (*ScopeSelector) ProtoMessage()               {}
-func (*ScopeSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{159} }
+func (*ScopeSelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{160} }
 
 func (m *ScopedResourceSelectorRequirement) Reset()      { *m = ScopedResourceSelectorRequirement{} }
 func (*ScopedResourceSelectorRequirement) ProtoMessage() {}
 func (*ScopedResourceSelectorRequirement) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{160}
+	return fileDescriptorGenerated, []int{161}
 }
 
 func (m *Secret) Reset()                    { *m = Secret{} }
 func (*Secret) ProtoMessage()               {}
-func (*Secret) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{161} }
+func (*Secret) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{162} }
 
 func (m *SecretEnvSource) Reset()                    { *m = SecretEnvSource{} }
 func (*SecretEnvSource) ProtoMessage()               {}
-func (*SecretEnvSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{162} }
+func (*SecretEnvSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{163} }
 
 func (m *SecretKeySelector) Reset()                    { *m = SecretKeySelector{} }
 func (*SecretKeySelector) ProtoMessage()               {}
-func (*SecretKeySelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{163} }
+func (*SecretKeySelector) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{164} }
 
 func (m *SecretList) Reset()                    { *m = SecretList{} }
 func (*SecretList) ProtoMessage()               {}
-func (*SecretList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{164} }
+func (*SecretList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{165} }
 
 func (m *SecretProjection) Reset()                    { *m = SecretProjection{} }
 func (*SecretProjection) ProtoMessage()               {}
-func (*SecretProjection) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{165} }
+func (*SecretProjection) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{166} }
 
 func (m *SecretReference) Reset()                    { *m = SecretReference{} }
 func (*SecretReference) ProtoMessage()               {}
-func (*SecretReference) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{166} }
+func (*SecretReference) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{167} }
 
 func (m *SecretVolumeSource) Reset()                    { *m = SecretVolumeSource{} }
 func (*SecretVolumeSource) ProtoMessage()               {}
-func (*SecretVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{167} }
+func (*SecretVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{168} }
 
 func (m *SecurityContext) Reset()                    { *m = SecurityContext{} }
 func (*SecurityContext) ProtoMessage()               {}
-func (*SecurityContext) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{168} }
+func (*SecurityContext) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{169} }
 
 func (m *SerializedReference) Reset()                    { *m = SerializedReference{} }
 func (*SerializedReference) ProtoMessage()               {}
-func (*SerializedReference) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{169} }
+func (*SerializedReference) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{170} }
 
 func (m *Service) Reset()                    { *m = Service{} }
 func (*Service) ProtoMessage()               {}
-func (*Service) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{170} }
+func (*Service) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{171} }
 
 func (m *ServiceAccount) Reset()                    { *m = ServiceAccount{} }
 func (*ServiceAccount) ProtoMessage()               {}
-func (*ServiceAccount) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{171} }
+func (*ServiceAccount) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{172} }
 
 func (m *ServiceAccountList) Reset()                    { *m = ServiceAccountList{} }
 func (*ServiceAccountList) ProtoMessage()               {}
-func (*ServiceAccountList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{172} }
+func (*ServiceAccountList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{173} }
 
 func (m *ServiceAccountTokenProjection) Reset()      { *m = ServiceAccountTokenProjection{} }
 func (*ServiceAccountTokenProjection) ProtoMessage() {}
 func (*ServiceAccountTokenProjection) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{173}
+	return fileDescriptorGenerated, []int{174}
 }
 
 func (m *ServiceList) Reset()                    { *m = ServiceList{} }
 func (*ServiceList) ProtoMessage()               {}
-func (*ServiceList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{174} }
+func (*ServiceList) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{175} }
 
 func (m *ServicePort) Reset()                    { *m = ServicePort{} }
 func (*ServicePort) ProtoMessage()               {}
-func (*ServicePort) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{175} }
+func (*ServicePort) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{176} }
 
 func (m *ServiceProxyOptions) Reset()                    { *m = ServiceProxyOptions{} }
 func (*ServiceProxyOptions) ProtoMessage()               {}
-func (*ServiceProxyOptions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{176} }
+func (*ServiceProxyOptions) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{177} }
 
 func (m *ServiceSpec) Reset()                    { *m = ServiceSpec{} }
 func (*ServiceSpec) ProtoMessage()               {}
-func (*ServiceSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{177} }
+func (*ServiceSpec) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{178} }
 
 func (m *ServiceStatus) Reset()                    { *m = ServiceStatus{} }
 func (*ServiceStatus) ProtoMessage()               {}
-func (*ServiceStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{178} }
+func (*ServiceStatus) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{179} }
 
 func (m *SessionAffinityConfig) Reset()                    { *m = SessionAffinityConfig{} }
 func (*SessionAffinityConfig) ProtoMessage()               {}
-func (*SessionAffinityConfig) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{179} }
+func (*SessionAffinityConfig) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{180} }
 
 func (m *StorageOSPersistentVolumeSource) Reset()      { *m = StorageOSPersistentVolumeSource{} }
 func (*StorageOSPersistentVolumeSource) ProtoMessage() {}
 func (*StorageOSPersistentVolumeSource) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{180}
+	return fileDescriptorGenerated, []int{181}
 }
 
 func (m *StorageOSVolumeSource) Reset()                    { *m = StorageOSVolumeSource{} }
 func (*StorageOSVolumeSource) ProtoMessage()               {}
-func (*StorageOSVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{181} }
+func (*StorageOSVolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{182} }
 
 func (m *Sysctl) Reset()                    { *m = Sysctl{} }
 func (*Sysctl) ProtoMessage()               {}
-func (*Sysctl) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{182} }
+func (*Sysctl) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{183} }
 
 func (m *TCPSocketAction) Reset()                    { *m = TCPSocketAction{} }
 func (*TCPSocketAction) ProtoMessage()               {}
-func (*TCPSocketAction) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{183} }
+func (*TCPSocketAction) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{184} }
 
 func (m *Taint) Reset()                    { *m = Taint{} }
 func (*Taint) ProtoMessage()               {}
-func (*Taint) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{184} }
+func (*Taint) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{185} }
 
 func (m *Toleration) Reset()                    { *m = Toleration{} }
 func (*Toleration) ProtoMessage()               {}
-func (*Toleration) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{185} }
+func (*Toleration) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{186} }
 
 func (m *TopologySelectorLabelRequirement) Reset()      { *m = TopologySelectorLabelRequirement{} }
 func (*TopologySelectorLabelRequirement) ProtoMessage() {}
 func (*TopologySelectorLabelRequirement) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{186}
+	return fileDescriptorGenerated, []int{187}
 }
 
 func (m *TopologySelectorTerm) Reset()                    { *m = TopologySelectorTerm{} }
 func (*TopologySelectorTerm) ProtoMessage()               {}
-func (*TopologySelectorTerm) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{187} }
+func (*TopologySelectorTerm) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{188} }
 
 func (m *TypedLocalObjectReference) Reset()      { *m = TypedLocalObjectReference{} }
 func (*TypedLocalObjectReference) ProtoMessage() {}
 func (*TypedLocalObjectReference) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{188}
+	return fileDescriptorGenerated, []int{189}
 }
 
 func (m *Volume) Reset()                    { *m = Volume{} }
 func (*Volume) ProtoMessage()               {}
-func (*Volume) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{189} }
+func (*Volume) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{190} }
 
 func (m *VolumeDevice) Reset()                    { *m = VolumeDevice{} }
 func (*VolumeDevice) ProtoMessage()               {}
-func (*VolumeDevice) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{190} }
+func (*VolumeDevice) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{191} }
 
 func (m *VolumeMount) Reset()                    { *m = VolumeMount{} }
 func (*VolumeMount) ProtoMessage()               {}
-func (*VolumeMount) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{191} }
+func (*VolumeMount) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{192} }
 
 func (m *VolumeNodeAffinity) Reset()                    { *m = VolumeNodeAffinity{} }
 func (*VolumeNodeAffinity) ProtoMessage()               {}
-func (*VolumeNodeAffinity) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{192} }
+func (*VolumeNodeAffinity) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{193} }
 
 func (m *VolumeProjection) Reset()                    { *m = VolumeProjection{} }
 func (*VolumeProjection) ProtoMessage()               {}
-func (*VolumeProjection) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{193} }
+func (*VolumeProjection) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{194} }
 
 func (m *VolumeSource) Reset()                    { *m = VolumeSource{} }
 func (*VolumeSource) ProtoMessage()               {}
-func (*VolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{194} }
+func (*VolumeSource) Descriptor() ([]byte, []int) { return fileDescriptorGenerated, []int{195} }
 
 func (m *VsphereVirtualDiskVolumeSource) Reset()      { *m = VsphereVirtualDiskVolumeSource{} }
 func (*VsphereVirtualDiskVolumeSource) ProtoMessage() {}
 func (*VsphereVirtualDiskVolumeSource) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{195}
+	return fileDescriptorGenerated, []int{196}
 }
 
 func (m *WeightedPodAffinityTerm) Reset()      { *m = WeightedPodAffinityTerm{} }
 func (*WeightedPodAffinityTerm) ProtoMessage() {}
 func (*WeightedPodAffinityTerm) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{196}
+	return fileDescriptorGenerated, []int{197}
 }
 
 func (m *WindowsSecurityContextOptions) Reset()      { *m = WindowsSecurityContextOptions{} }
 func (*WindowsSecurityContextOptions) ProtoMessage() {}
 func (*WindowsSecurityContextOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptorGenerated, []int{197}
+	return fileDescriptorGenerated, []int{198}
 }
 
 func init() {
@@ -1212,11 +1217,11 @@ func init() {
 	proto.RegisterType((*NodeProxyOptions)(nil), "k8s.io.api.core.v1.NodeProxyOptions")
 	proto.RegisterType((*NodeResources)(nil), "k8s.io.api.core.v1.NodeResources")
 	proto.RegisterType((*NodeSelector)(nil), "k8s.io.api.core.v1.NodeSelector")
-	proto.RegisterType((*NodeSelectorRequirement)(nil), "k8s.io.api.core.v1.NodeSelectorRequirement")
 	proto.RegisterType((*NodeSelectorTerm)(nil), "k8s.io.api.core.v1.NodeSelectorTerm")
 	proto.RegisterType((*NodeSpec)(nil), "k8s.io.api.core.v1.NodeSpec")
 	proto.RegisterType((*NodeStatus)(nil), "k8s.io.api.core.v1.NodeStatus")
 	proto.RegisterType((*NodeSystemInfo)(nil), "k8s.io.api.core.v1.NodeSystemInfo")
+	proto.RegisterType((*NumericAwareSelectorRequirement)(nil), "k8s.io.api.core.v1.NumericAwareSelectorRequirement")
 	proto.RegisterType((*ObjectFieldSelector)(nil), "k8s.io.api.core.v1.ObjectFieldSelector")
 	proto.RegisterType((*ObjectReference)(nil), "k8s.io.api.core.v1.ObjectReference")
 	proto.RegisterType((*PersistentVolume)(nil), "k8s.io.api.core.v1.PersistentVolume")
@@ -1246,6 +1251,7 @@ func init() {
 	proto.RegisterType((*PodProxyOptions)(nil), "k8s.io.api.core.v1.PodProxyOptions")
 	proto.RegisterType((*PodReadinessGate)(nil), "k8s.io.api.core.v1.PodReadinessGate")
 	proto.RegisterType((*PodSecurityContext)(nil), "k8s.io.api.core.v1.PodSecurityContext")
+	proto.RegisterType((*PodSelector)(nil), "k8s.io.api.core.v1.PodSelector")
 	proto.RegisterType((*PodSignature)(nil), "k8s.io.api.core.v1.PodSignature")
 	proto.RegisterType((*PodSpec)(nil), "k8s.io.api.core.v1.PodSpec")
 	proto.RegisterType((*PodStatus)(nil), "k8s.io.api.core.v1.PodStatus")
@@ -5561,47 +5567,6 @@ func (m *NodeSelector) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *NodeSelectorRequirement) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *NodeSelectorRequirement) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Key)))
-	i += copy(dAtA[i:], m.Key)
-	dAtA[i] = 0x12
-	i++
-	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Operator)))
-	i += copy(dAtA[i:], m.Operator)
-	if len(m.Values) > 0 {
-		for _, s := range m.Values {
-			dAtA[i] = 0x1a
-			i++
-			l = len(s)
-			for l >= 1<<7 {
-				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
-				l >>= 7
-				i++
-			}
-			dAtA[i] = uint8(l)
-			i++
-			i += copy(dAtA[i:], s)
-		}
-	}
-	return i, nil
-}
-
 func (m *NodeSelectorTerm) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -5932,6 +5897,47 @@ func (m *NodeSystemInfo) MarshalTo(dAtA []byte) (int, error) {
 	i++
 	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Architecture)))
 	i += copy(dAtA[i:], m.Architecture)
+	return i, nil
+}
+
+func (m *NumericAwareSelectorRequirement) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NumericAwareSelectorRequirement) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	dAtA[i] = 0xa
+	i++
+	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Key)))
+	i += copy(dAtA[i:], m.Key)
+	dAtA[i] = 0x12
+	i++
+	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Operator)))
+	i += copy(dAtA[i:], m.Operator)
+	if len(m.Values) > 0 {
+		for _, s := range m.Values {
+			dAtA[i] = 0x1a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
 	return i, nil
 }
 
@@ -7523,6 +7529,58 @@ func (m *PodSecurityContext) MarshalTo(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i += n150
+	}
+	return i, nil
+}
+
+func (m *PodSelector) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *PodSelector) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.MatchLabels) > 0 {
+		keysForMatchLabels := make([]string, 0, len(m.MatchLabels))
+		for k := range m.MatchLabels {
+			keysForMatchLabels = append(keysForMatchLabels, string(k))
+		}
+		github_com_gogo_protobuf_sortkeys.Strings(keysForMatchLabels)
+		for _, k := range keysForMatchLabels {
+			dAtA[i] = 0xa
+			i++
+			v := m.MatchLabels[string(k)]
+			mapSize := 1 + len(k) + sovGenerated(uint64(len(k))) + 1 + len(v) + sovGenerated(uint64(len(v)))
+			i = encodeVarintGenerated(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintGenerated(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintGenerated(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.MatchExpressions) > 0 {
+		for _, msg := range m.MatchExpressions {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintGenerated(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
 	}
 	return i, nil
 }
@@ -12713,22 +12771,6 @@ func (m *NodeSelector) Size() (n int) {
 	return n
 }
 
-func (m *NodeSelectorRequirement) Size() (n int) {
-	var l int
-	_ = l
-	l = len(m.Key)
-	n += 1 + l + sovGenerated(uint64(l))
-	l = len(m.Operator)
-	n += 1 + l + sovGenerated(uint64(l))
-	if len(m.Values) > 0 {
-		for _, s := range m.Values {
-			l = len(s)
-			n += 1 + l + sovGenerated(uint64(l))
-		}
-	}
-	return n
-}
-
 func (m *NodeSelectorTerm) Size() (n int) {
 	var l int
 	_ = l
@@ -12857,6 +12899,22 @@ func (m *NodeSystemInfo) Size() (n int) {
 	n += 1 + l + sovGenerated(uint64(l))
 	l = len(m.Architecture)
 	n += 1 + l + sovGenerated(uint64(l))
+	return n
+}
+
+func (m *NumericAwareSelectorRequirement) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Key)
+	n += 1 + l + sovGenerated(uint64(l))
+	l = len(m.Operator)
+	n += 1 + l + sovGenerated(uint64(l))
+	if len(m.Values) > 0 {
+		for _, s := range m.Values {
+			l = len(s)
+			n += 1 + l + sovGenerated(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -13439,6 +13497,26 @@ func (m *PodSecurityContext) Size() (n int) {
 	if m.WindowsOptions != nil {
 		l = m.WindowsOptions.Size()
 		n += 1 + l + sovGenerated(uint64(l))
+	}
+	return n
+}
+
+func (m *PodSelector) Size() (n int) {
+	var l int
+	_ = l
+	if len(m.MatchLabels) > 0 {
+		for k, v := range m.MatchLabels {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovGenerated(uint64(len(k))) + 1 + len(v) + sovGenerated(uint64(len(v)))
+			n += mapEntrySize + 1 + sovGenerated(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MatchExpressions) > 0 {
+		for _, e := range m.MatchExpressions {
+			l = e.Size()
+			n += 1 + l + sovGenerated(uint64(l))
+		}
 	}
 	return n
 }
@@ -16069,25 +16147,13 @@ func (this *NodeSelector) String() string {
 	}, "")
 	return s
 }
-func (this *NodeSelectorRequirement) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeSelectorRequirement{`,
-		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
-		`Operator:` + fmt.Sprintf("%v", this.Operator) + `,`,
-		`Values:` + fmt.Sprintf("%v", this.Values) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *NodeSelectorTerm) String() string {
 	if this == nil {
 		return "nil"
 	}
 	s := strings.Join([]string{`&NodeSelectorTerm{`,
-		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "NodeSelectorRequirement", "NodeSelectorRequirement", 1), `&`, ``, 1) + `,`,
-		`MatchFields:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchFields), "NodeSelectorRequirement", "NodeSelectorRequirement", 1), `&`, ``, 1) + `,`,
+		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
+		`MatchFields:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchFields), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -16162,6 +16228,18 @@ func (this *NodeSystemInfo) String() string {
 		`KubeProxyVersion:` + fmt.Sprintf("%v", this.KubeProxyVersion) + `,`,
 		`OperatingSystem:` + fmt.Sprintf("%v", this.OperatingSystem) + `,`,
 		`Architecture:` + fmt.Sprintf("%v", this.Architecture) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *NumericAwareSelectorRequirement) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NumericAwareSelectorRequirement{`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`Operator:` + fmt.Sprintf("%v", this.Operator) + `,`,
+		`Values:` + fmt.Sprintf("%v", this.Values) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -16414,7 +16492,7 @@ func (this *PodAffinityTerm) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&PodAffinityTerm{`,
-		`LabelSelector:` + strings.Replace(fmt.Sprintf("%v", this.LabelSelector), "LabelSelector", "k8s_io_apimachinery_pkg_apis_meta_v1.LabelSelector", 1) + `,`,
+		`LabelSelector:` + strings.Replace(fmt.Sprintf("%v", this.LabelSelector), "PodSelector", "PodSelector", 1) + `,`,
 		`Namespaces:` + fmt.Sprintf("%v", this.Namespaces) + `,`,
 		`TopologyKey:` + fmt.Sprintf("%v", this.TopologyKey) + `,`,
 		`}`,
@@ -16570,6 +16648,27 @@ func (this *PodSecurityContext) String() string {
 		`RunAsGroup:` + valueToStringGenerated(this.RunAsGroup) + `,`,
 		`Sysctls:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Sysctls), "Sysctl", "Sysctl", 1), `&`, ``, 1) + `,`,
 		`WindowsOptions:` + strings.Replace(fmt.Sprintf("%v", this.WindowsOptions), "WindowsSecurityContextOptions", "WindowsSecurityContextOptions", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *PodSelector) String() string {
+	if this == nil {
+		return "nil"
+	}
+	keysForMatchLabels := make([]string, 0, len(this.MatchLabels))
+	for k := range this.MatchLabels {
+		keysForMatchLabels = append(keysForMatchLabels, k)
+	}
+	github_com_gogo_protobuf_sortkeys.Strings(keysForMatchLabels)
+	mapStringForMatchLabels := "map[string]string{"
+	for _, k := range keysForMatchLabels {
+		mapStringForMatchLabels += fmt.Sprintf("%v: %v,", k, this.MatchLabels[k])
+	}
+	mapStringForMatchLabels += "}"
+	s := strings.Join([]string{`&PodSelector{`,
+		`MatchLabels:` + mapStringForMatchLabels + `,`,
+		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -32604,143 +32703,6 @@ func (m *NodeSelector) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *NodeSelectorRequirement) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowGenerated
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: NodeSelectorRequirement: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: NodeSelectorRequirement: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowGenerated
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthGenerated
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Key = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Operator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowGenerated
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthGenerated
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Operator = NodeSelectorOperator(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Values", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowGenerated
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthGenerated
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Values = append(m.Values, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipGenerated(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthGenerated
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *NodeSelectorTerm) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -32796,7 +32758,7 @@ func (m *NodeSelectorTerm) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MatchExpressions = append(m.MatchExpressions, NodeSelectorRequirement{})
+			m.MatchExpressions = append(m.MatchExpressions, NumericAwareSelectorRequirement{})
 			if err := m.MatchExpressions[len(m.MatchExpressions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -32827,7 +32789,7 @@ func (m *NodeSelectorTerm) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MatchFields = append(m.MatchFields, NodeSelectorRequirement{})
+			m.MatchFields = append(m.MatchFields, NumericAwareSelectorRequirement{})
 			if err := m.MatchFields[len(m.MatchFields)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -33963,6 +33925,143 @@ func (m *NodeSystemInfo) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Architecture = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenerated(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NumericAwareSelectorRequirement) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenerated
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NumericAwareSelectorRequirement: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NumericAwareSelectorRequirement: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Operator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Operator = LabelSelectorOperator(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Values", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Values = append(m.Values, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -37443,7 +37542,7 @@ func (m *PodAffinityTerm) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.LabelSelector == nil {
-				m.LabelSelector = &k8s_io_apimachinery_pkg_apis_meta_v1.LabelSelector{}
+				m.LabelSelector = &PodSelector{}
 			}
 			if err := m.LabelSelector.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -39340,6 +39439,205 @@ func (m *PodSecurityContext) Unmarshal(dAtA []byte) error {
 				m.WindowsOptions = &WindowsSecurityContextOptions{}
 			}
 			if err := m.WindowsOptions.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenerated(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *PodSelector) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenerated
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: PodSelector: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: PodSelector: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MatchLabels", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MatchLabels == nil {
+				m.MatchLabels = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowGenerated
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowGenerated
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= (uint64(b) & 0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthGenerated
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowGenerated
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= (uint64(b) & 0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthGenerated
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipGenerated(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if skippy < 0 {
+						return ErrInvalidLengthGenerated
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.MatchLabels[mapkey] = mapvalue
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MatchExpressions", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MatchExpressions = append(m.MatchExpressions, NumericAwareSelectorRequirement{})
+			if err := m.MatchExpressions[len(m.MatchExpressions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

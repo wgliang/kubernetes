@@ -1137,10 +1137,10 @@ func TestPersistentVolumeDescriber(t *testing.T) {
 						Required: &corev1.NodeSelector{
 							NodeSelectorTerms: []corev1.NodeSelectorTerm{
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{},
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{},
 								},
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{},
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{},
 								},
 							},
 						},
@@ -1162,7 +1162,7 @@ func TestPersistentVolumeDescriber(t *testing.T) {
 						Required: &corev1.NodeSelector{
 							NodeSelectorTerms: []corev1.NodeSelectorTerm{
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{
 										{
 											Key:      "foo",
 											Operator: "In",
@@ -1221,7 +1221,7 @@ func TestPersistentVolumeDescriber(t *testing.T) {
 						Required: &corev1.NodeSelector{
 							NodeSelectorTerms: []corev1.NodeSelectorTerm{
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{
+									MatchExpressions: []corev1.NumericAwareSelectorRequirement{
 										{
 											Key:      "foo",
 											Operator: "In",
