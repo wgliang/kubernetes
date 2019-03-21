@@ -676,7 +676,7 @@ func (j *ServiceTestJig) AddRCAntiAffinity(rc *v1.ReplicationController) {
 	rc.Spec.Template.Spec.Affinity.PodAntiAffinity.RequiredDuringSchedulingIgnoredDuringExecution = append(
 		rc.Spec.Template.Spec.Affinity.PodAntiAffinity.RequiredDuringSchedulingIgnoredDuringExecution,
 		v1.PodAffinityTerm{
-			LabelSelector: &metav1.LabelSelector{MatchLabels: j.Labels},
+			LabelSelector: &v1.PodSelector{MatchLabels: j.Labels},
 			Namespaces:    nil,
 			TopologyKey:   "kubernetes.io/hostname",
 		})

@@ -122,10 +122,10 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: v1.PodSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"bar"},
 						},
 					},
@@ -138,10 +138,10 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: v1.PodSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"bar", "buzz"},
 						},
 					},
@@ -150,10 +150,10 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 			},
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "service",
-							Operator: v1.PodSelectorOpNotIn,
+							Operator: v1.LabelSelectorOpNotIn,
 							Values:   []string{"bar", "security", "test"},
 						},
 					},
@@ -166,10 +166,10 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "foo",
-							Operator: v1.PodSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"bar", "buzz"},
 						},
 					},
@@ -178,10 +178,10 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 			},
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "service",
-							Operator: v1.PodSelectorOpNotIn,
+							Operator: v1.LabelSelectorOpNotIn,
 							Values:   []string{"bar", "security", "test"},
 						},
 					},
@@ -534,10 +534,10 @@ func TestGetTPMapMatchingIncomingAffinityAntiAffinity(t *testing.T) {
 		for _, key := range keys {
 			terms = append(terms, v1.PodAffinityTerm{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.PodSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      key,
-							Operator: v1.PodSelectorOpExists,
+							Operator: v1.LabelSelectorOpExists,
 						},
 					},
 				},

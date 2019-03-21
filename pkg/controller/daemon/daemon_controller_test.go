@@ -520,8 +520,8 @@ func TestSimpleDaemonSetScheduleDaemonSetPodsLaunchesPods(t *testing.T) {
 
 			field := nodeSelector.NodeSelectorTerms[0].MatchFields[0]
 			if field.Key == schedulerapi.NodeFieldSelectorKeyNodeName {
-				if field.Operator != v1.NodeSelectorOpIn {
-					t.Fatalf("the operation of hostname NodeAffinity is not %v", v1.NodeSelectorOpIn)
+				if field.Operator != v1.LabelSelectorOpIn {
+					t.Fatalf("the operation of hostname NodeAffinity is not %v", v1.LabelSelectorOpIn)
 				}
 
 				if len(field.Values) != 1 {
@@ -1290,10 +1290,10 @@ func TestNodeAffinityDaemonLaunchesPods(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.NodeSelectorRequirement{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      "color",
-										Operator: v1.NodeSelectorOpIn,
+										Operator: v1.LabelSelectorOpIn,
 										Values:   []string{simpleNodeLabel["color"]},
 									},
 								},
@@ -2025,10 +2025,10 @@ func TestNodeShouldRunDaemonPod(t *testing.T) {
 										RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 											NodeSelectorTerms: []v1.NodeSelectorTerm{
 												{
-													MatchExpressions: []v1.NodeSelectorRequirement{
+													MatchExpressions: []v1.LabelSelectorRequirement{
 														{
 															Key:      "type",
-															Operator: v1.NodeSelectorOpIn,
+															Operator: v1.LabelSelectorOpIn,
 															Values:   []string{"test"},
 														},
 													},
@@ -2060,10 +2060,10 @@ func TestNodeShouldRunDaemonPod(t *testing.T) {
 										RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 											NodeSelectorTerms: []v1.NodeSelectorTerm{
 												{
-													MatchExpressions: []v1.NodeSelectorRequirement{
+													MatchExpressions: []v1.LabelSelectorRequirement{
 														{
 															Key:      "type",
-															Operator: v1.NodeSelectorOpIn,
+															Operator: v1.LabelSelectorOpIn,
 															Values:   []string{"production"},
 														},
 													},

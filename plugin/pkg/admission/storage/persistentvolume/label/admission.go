@@ -84,7 +84,7 @@ func (l *persistentVolumeLabel) SetCloudConfig(cloudConfig []byte) {
 	l.cloudConfig = cloudConfig
 }
 
-func nodeSelectorRequirementKeysExistInNodeSelectorTerms(reqs []api.NodeSelectorRequirement, terms []api.NodeSelectorTerm) bool {
+func labelSelectorRequirementKeysExistInNodeSelectorTerms(reqs []api.LabelSelectorRequirement, terms []api.NodeSelectorTerm) bool {
 	for _, req := range reqs {
 		for _, term := range terms {
 			for _, r := range term.MatchExpressions {
@@ -146,7 +146,7 @@ func (l *persistentVolumeLabel) Admit(a admission.Attributes, o admission.Object
 		}
 		volumeLabels = labels
 	}
-	requirements := make([]api.NodeSelectorRequirement, 0)
+	requirements := make([]api.LabelSelectorRequirement, 0)
 	if len(volumeLabels) != 0 {
 		if volume.Labels == nil {
 			volume.Labels = make(map[string]string)
@@ -157,7 +157,7 @@ func (l *persistentVolumeLabel) Admit(a admission.Attributes, o admission.Object
 			// i.e. we own them
 			volume.Labels[k] = v
 
-			// Set NodeSelectorRequirements based on the labels
+			// Set LabelSelectorRequirements based on the labels
 			var values []string
 			if k == v1.LabelZoneFailureDomain {
 				zones, err := volumehelpers.LabelZonesToSet(v)
@@ -169,7 +169,7 @@ func (l *persistentVolumeLabel) Admit(a admission.Attributes, o admission.Object
 			} else {
 				values = []string{v}
 			}
-			requirements = append(requirements, api.NodeSelectorRequirement{Key: k, Operator: api.NodeSelectorOpIn, Values: values})
+			requirements = append(requirements, api.LabelSelectorRequirement{Key: k, Operator: api.LabelSelectorOpIn, Values: values})
 		}
 
 		if volume.Spec.NodeAffinity == nil {
@@ -182,8 +182,8 @@ func (l *persistentVolumeLabel) Admit(a admission.Attributes, o admission.Object
 			// Need at least one term pre-allocated whose MatchExpressions can be appended to
 			volume.Spec.NodeAffinity.Required.NodeSelectorTerms = make([]api.NodeSelectorTerm, 1)
 		}
-		if nodeSelectorRequirementKeysExistInNodeSelectorTerms(requirements, volume.Spec.NodeAffinity.Required.NodeSelectorTerms) {
-			klog.V(4).Infof("NodeSelectorRequirements for cloud labels %v conflict with existing NodeAffinity %v. Skipping addition of NodeSelectorRequirements for cloud labels.",
+		if labelSelectorRequirementKeysExistInNodeSelectorTerms(requirements, volume.Spec.NodeAffinity.Required.NodeSelectorTerms) {
+			klog.V(4).Infof("LabelSelectorRequirements for cloud labels %v conflict with existing NodeAffinity %v. Skipping addition of LabelSelectorRequirements for cloud labels.",
 				requirements, volume.Spec.NodeAffinity)
 		} else {
 			for _, req := range requirements {

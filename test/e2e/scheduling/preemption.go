@@ -271,7 +271,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 						RequiredDuringSchedulingIgnoredDuringExecution: &corev1.NodeSelector{
 							NodeSelectorTerms: []corev1.NodeSelectorTerm{
 								{
-									MatchExpressions: []corev1.NodeSelectorRequirement{
+									MatchExpressions: []v1.LabelSelectorRequirement{
 										{
 											Key:      "node",
 											Operator: corev1.NodeSelectorOpIn,
@@ -308,7 +308,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 					RequiredDuringSchedulingIgnoredDuringExecution: &corev1.NodeSelector{
 						NodeSelectorTerms: []corev1.NodeSelectorTerm{
 							{
-								MatchExpressions: []corev1.NodeSelectorRequirement{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      "node",
 										Operator: corev1.NodeSelectorOpIn,

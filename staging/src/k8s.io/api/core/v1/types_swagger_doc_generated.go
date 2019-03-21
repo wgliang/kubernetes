@@ -1087,15 +1087,15 @@ func (NodeSelector) SwaggerDoc() map[string]string {
 	return map_NodeSelector
 }
 
-var map_NodeSelectorRequirement = map[string]string{
-	"":         "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+var map_LabelSelectorRequirement = map[string]string{
+	"":         "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
 	"key":      "The label key that the selector applies to.",
 	"operator": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
 	"values":   "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
 }
 
-func (NodeSelectorRequirement) SwaggerDoc() map[string]string {
-	return map_NodeSelectorRequirement
+func (LabelSelectorRequirement) SwaggerDoc() map[string]string {
+	return map_LabelSelectorRequirement
 }
 
 var map_NodeSelectorTerm = map[string]string{

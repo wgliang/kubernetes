@@ -856,9 +856,9 @@ func podMatchesNodeSelectorAndAffinityTerms(pod *v1.Pod, node *v1.Node) bool {
 	// 1. nil NodeSelector matches all nodes (i.e. does not filter out any nodes)
 	// 2. nil []NodeSelectorTerm (equivalent to non-nil empty NodeSelector) matches no nodes
 	// 3. zero-length non-nil []NodeSelectorTerm matches no nodes also, just for simplicity
-	// 4. nil []NodeSelectorRequirement (equivalent to non-nil empty NodeSelectorTerm) matches no nodes
-	// 5. zero-length non-nil []NodeSelectorRequirement matches no nodes also, just for simplicity
-	// 6. non-nil empty NodeSelectorRequirement is not allowed
+	// 4. nil []LabelSelectorRequirement (equivalent to non-nil empty NodeSelectorTerm) matches no nodes
+	// 5. zero-length non-nil []LabelSelectorRequirement matches no nodes also, just for simplicity
+	// 6. non-nil empty LabelSelectorRequirement is not allowed
 	nodeAffinityMatches := true
 	affinity := pod.Spec.Affinity
 	if affinity != nil && affinity.NodeAffinity != nil {
