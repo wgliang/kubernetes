@@ -419,7 +419,7 @@ func (v *vsphereVolumeProvisioner) Provision(selectedNode *v1.Node, allowedTopol
 	}
 
 	labels := volSpec.Labels
-	requirements := make([]v1.NodeSelectorRequirement, 0)
+	requirements := make([]v1.LabelSelectorRequirement, 0)
 	if len(labels) != 0 {
 		if pv.Labels == nil {
 			pv.Labels = make(map[string]string)
@@ -435,7 +435,7 @@ func (v *vsphereVolumeProvisioner) Provision(selectedNode *v1.Node, allowedTopol
 			} else {
 				values = []string{v}
 			}
-			requirements = append(requirements, v1.NodeSelectorRequirement{Key: k, Operator: v1.NodeSelectorOpIn, Values: values})
+			requirements = append(requirements, v1.LabelSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: values})
 		}
 	}
 

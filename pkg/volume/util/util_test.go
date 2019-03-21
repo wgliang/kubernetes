@@ -71,7 +71,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{},
+							MatchExpressions: []v1.LabelSelectorRequirement{},
 						},
 					},
 				},
@@ -84,19 +84,19 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key3",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value1", "test-value3"},
 								},
 							},
 						},
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key2",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value0", "test-value2"},
 								},
 							},
@@ -112,15 +112,15 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key1",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value1", "test-value3"},
 								},
 								{
 									Key:      "test-key2",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value0", "test-value2"},
 								},
 							},
@@ -136,15 +136,15 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key1",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value1", "test-value3"},
 								},
 								{
 									Key:      "test-key3",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value0", "test-value2"},
 								},
 							},
@@ -160,15 +160,15 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key1",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value3", "test-value4"},
 								},
 								{
 									Key:      "test-key2",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value0", "test-value2"},
 								},
 							},
@@ -184,19 +184,19 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key3",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value1", "test-value3"},
 								},
 							},
 						},
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "test-key2",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"test-value0", "test-value1"},
 								},
 							},

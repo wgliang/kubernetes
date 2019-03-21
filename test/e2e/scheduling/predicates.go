@@ -288,7 +288,7 @@ var _ = SIGDescribe("SchedulerPredicates [Serial]", func() {
 						RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 							NodeSelectorTerms: []v1.NodeSelectorTerm{
 								{
-									MatchExpressions: []v1.NodeSelectorRequirement{
+									MatchExpressions: []v1.LabelSelectorRequirement{
 										{
 											Key:      "node",
 											Operator: v1.NodeSelectorOpIn,
@@ -399,7 +399,7 @@ var _ = SIGDescribe("SchedulerPredicates [Serial]", func() {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.NodeSelectorRequirement{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      "foo",
 										Operator: v1.NodeSelectorOpIn,
@@ -407,7 +407,7 @@ var _ = SIGDescribe("SchedulerPredicates [Serial]", func() {
 									},
 								},
 							}, {
-								MatchExpressions: []v1.NodeSelectorRequirement{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      "diffkey",
 										Operator: v1.NodeSelectorOpIn,
@@ -446,7 +446,7 @@ var _ = SIGDescribe("SchedulerPredicates [Serial]", func() {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.NodeSelectorRequirement{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      k,
 										Operator: v1.NodeSelectorOpIn,

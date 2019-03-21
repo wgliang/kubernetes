@@ -50,10 +50,10 @@ func TestPriorityMetadata(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},

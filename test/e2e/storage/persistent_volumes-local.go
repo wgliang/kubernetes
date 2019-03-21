@@ -888,7 +888,7 @@ func makeLocalPVConfig(config *localTestConfig, volume *localTestVolume) framewo
 			Required: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.NodeSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      nodeKey,
 								Operator: v1.NodeSelectorOpIn,
@@ -949,7 +949,7 @@ func makeLocalPodWithNodeAffinity(config *localTestConfig, volume *localTestVolu
 			RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.NodeSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "kubernetes.io/hostname",
 								Operator: v1.NodeSelectorOpIn,

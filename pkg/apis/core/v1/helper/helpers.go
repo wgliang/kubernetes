@@ -200,9 +200,9 @@ func containsAccessMode(modes []v1.PersistentVolumeAccessMode, mode v1.Persisten
 	return false
 }
 
-// NodeSelectorRequirementsAsSelector converts the []NodeSelectorRequirement api type into a struct that implements
+// LabelSelectorRequirementsAsSelector converts the []LabelSelectorRequirement api type into a struct that implements
 // labels.Selector.
-func NodeSelectorRequirementsAsSelector(nsm []v1.NodeSelectorRequirement) (labels.Selector, error) {
+func LabelSelectorRequirementsAsSelector(nsm []v1.LabelSelectorRequirement) (labels.Selector, error) {
 	if len(nsm) == 0 {
 		return labels.Nothing(), nil
 	}
@@ -210,20 +210,20 @@ func NodeSelectorRequirementsAsSelector(nsm []v1.NodeSelectorRequirement) (label
 	for _, expr := range nsm {
 		var op selection.Operator
 		switch expr.Operator {
-		case v1.NodeSelectorOpIn:
+		case v1.LabelSelectorOpIn:
 			op = selection.In
-		case v1.NodeSelectorOpNotIn:
+		case v1.LabelSelectorOpNotIn:
 			op = selection.NotIn
-		case v1.NodeSelectorOpExists:
+		case v1.LabelSelectorOpExists:
 			op = selection.Exists
-		case v1.NodeSelectorOpDoesNotExist:
+		case v1.LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case v1.NodeSelectorOpGt:
+		case v1.LabelSelectorOpGt:
 			op = selection.GreaterThan
-		case v1.NodeSelectorOpLt:
+		case v1.LabelSelectorOpLt:
 			op = selection.LessThan
 		default:
-			return nil, fmt.Errorf("%q is not a valid node selector operator", expr.Operator)
+			return nil, fmt.Errorf("%q is not a valid label selector operator", expr.Operator)
 		}
 		r, err := labels.NewRequirement(expr.Key, op, expr.Values)
 		if err != nil {
@@ -234,9 +234,9 @@ func NodeSelectorRequirementsAsSelector(nsm []v1.NodeSelectorRequirement) (label
 	return selector, nil
 }
 
-// NodeSelectorRequirementsAsFieldSelector converts the []NodeSelectorRequirement core type into a struct that implements
+// LabelSelectorRequirementsAsFieldSelector converts the []LabelSelectorRequirement core type into a struct that implements
 // fields.Selector.
-func NodeSelectorRequirementsAsFieldSelector(nsm []v1.NodeSelectorRequirement) (fields.Selector, error) {
+func LabelSelectorRequirementsAsFieldSelector(nsm []v1.LabelSelectorRequirement) (fields.Selector, error) {
 	if len(nsm) == 0 {
 		return fields.Nothing(), nil
 	}
@@ -244,30 +244,30 @@ func NodeSelectorRequirementsAsFieldSelector(nsm []v1.NodeSelectorRequirement) (
 	selectors := []fields.Selector{}
 	for _, expr := range nsm {
 		switch expr.Operator {
-		case v1.NodeSelectorOpIn:
+		case v1.LabelSelectorOpIn:
 			if len(expr.Values) != 1 {
-				return nil, fmt.Errorf("unexpected number of value (%d) for node field selector operator %q",
+				return nil, fmt.Errorf("unexpected number of value (%d) for label field selector operator %q",
 					len(expr.Values), expr.Operator)
 			}
 			selectors = append(selectors, fields.OneTermEqualSelector(expr.Key, expr.Values[0]))
 
-		case v1.NodeSelectorOpNotIn:
+		case v1.LabelSelectorOpNotIn:
 			if len(expr.Values) != 1 {
-				return nil, fmt.Errorf("unexpected number of value (%d) for node field selector operator %q",
+				return nil, fmt.Errorf("unexpected number of value (%d) for label field selector operator %q",
 					len(expr.Values), expr.Operator)
 			}
 			selectors = append(selectors, fields.OneTermNotEqualSelector(expr.Key, expr.Values[0]))
 
 		default:
-			return nil, fmt.Errorf("%q is not a valid node field selector operator", expr.Operator)
+			return nil, fmt.Errorf("%q is not a valid label field selector operator", expr.Operator)
 		}
 	}
 
 	return fields.AndSelectors(selectors...), nil
 }
 
-// NodeSelectorRequirementKeysExistInNodeSelectorTerms checks if a NodeSelectorTerm with key is already specified in terms
-func NodeSelectorRequirementKeysExistInNodeSelectorTerms(reqs []v1.NodeSelectorRequirement, terms []v1.NodeSelectorTerm) bool {
+// LabelSelectorRequirementKeysExistInNodeSelectorTerms checks if a NodeSelectorTerm with key is already specified in terms
+func LabelSelectorRequirementKeysExistInNodeSelectorTerms(reqs []v1.LabelSelectorRequirement, terms []v1.NodeSelectorTerm) bool {
 	for _, req := range reqs {
 		for _, term := range terms {
 			for _, r := range term.MatchExpressions {
@@ -294,14 +294,14 @@ func MatchNodeSelectorTerms(
 		}
 
 		if len(req.MatchExpressions) != 0 {
-			labelSelector, err := NodeSelectorRequirementsAsSelector(req.MatchExpressions)
+			labelSelector, err := LabelSelectorRequirementsAsSelector(req.MatchExpressions)
 			if err != nil || !labelSelector.Matches(nodeLabels) {
 				continue
 			}
 		}
 
 		if len(req.MatchFields) != 0 {
-			fieldSelector, err := NodeSelectorRequirementsAsFieldSelector(req.MatchFields)
+			fieldSelector, err := LabelSelectorRequirementsAsFieldSelector(req.MatchFields)
 			if err != nil || !fieldSelector.Matches(nodeFields) {
 				continue
 			}
@@ -529,17 +529,17 @@ func PodSelectorAsSelector(ps *v1.PodSelector) (labels.Selector, error) {
 	for _, expr := range ps.MatchExpressions {
 		var op selection.Operator
 		switch expr.Operator {
-		case v1.PodSelectorOpIn:
+		case v1.LabelSelectorOpIn:
 			op = selection.In
-		case v1.PodSelectorOpNotIn:
+		case v1.LabelSelectorOpNotIn:
 			op = selection.NotIn
-		case v1.PodSelectorOpExists:
+		case v1.LabelSelectorOpExists:
 			op = selection.Exists
-		case v1.PodSelectorOpDoesNotExist:
+		case v1.LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case v1.PodSelectorOpGt:
+		case v1.LabelSelectorOpGt:
 			op = selection.GreaterThan
-		case v1.PodSelectorOpLt:
+		case v1.LabelSelectorOpLt:
 			op = selection.LessThan
 		default:
 			return nil, fmt.Errorf("%q is not a valid pod selector operator", expr.Operator)
@@ -567,13 +567,13 @@ func PodSelectorAsMap(ps *v1.PodSelector) (map[string]string, error) {
 	}
 	for _, expr := range ps.MatchExpressions {
 		switch expr.Operator {
-		case v1.PodSelectorOpIn:
+		case v1.LabelSelectorOpIn:
 			if len(expr.Values) != 1 {
 				return selector, fmt.Errorf("operator %q without a single value cannot be converted into the old label selector format", expr.Operator)
 			}
 			// Should we do anything in case this will override a previous key-value pair?
 			selector[expr.Key] = expr.Values[0]
-		case v1.PodSelectorOpNotIn, v1.PodSelectorOpExists, v1.PodSelectorOpDoesNotExist, v1.PodSelectorOpGt, v1.PodSelectorOpLt:
+		case v1.LabelSelectorOpNotIn, v1.LabelSelectorOpExists, v1.LabelSelectorOpDoesNotExist, v1.LabelSelectorOpGt, v1.LabelSelectorOpLt:
 			return selector, fmt.Errorf("operator %q cannot be converted into the old label selector format", expr.Operator)
 		default:
 			return selector, fmt.Errorf("%q is not a valid selector operator", expr.Operator)
@@ -591,10 +591,10 @@ func ParseToPodSelector(selector string) (*v1.PodSelector, error) {
 
 	labelSelector := &v1.PodSelector{
 		MatchLabels:      map[string]string{},
-		MatchExpressions: []v1.PodSelectorRequirement{},
+		MatchExpressions: []v1.LabelSelectorRequirement{},
 	}
 	for _, req := range reqs {
-		var op v1.PodSelectorOperator
+		var op v1.LabelSelectorOperator
 		switch req.Operator() {
 		case selection.Equals, selection.DoubleEquals:
 			vals := req.Values()
@@ -608,20 +608,20 @@ func ParseToPodSelector(selector string) (*v1.PodSelector, error) {
 			labelSelector.MatchLabels[req.Key()] = val
 			continue
 		case selection.In:
-			op = v1.PodSelectorOpIn
+			op = v1.LabelSelectorOpIn
 		case selection.NotIn:
-			op = v1.PodSelectorOpNotIn
+			op = v1.LabelSelectorOpNotIn
 		case selection.Exists:
-			op = v1.PodSelectorOpExists
+			op = v1.LabelSelectorOpExists
 		case selection.DoesNotExist:
-			op = v1.PodSelectorOpDoesNotExist
+			op = v1.LabelSelectorOpDoesNotExist
 		case selection.GreaterThan, selection.LessThan:
 			// Adding a separate case for these operators to indicate that this is deliberate
 			return nil, fmt.Errorf("%q isn't supported in label selectors", req.Operator())
 		default:
 			return nil, fmt.Errorf("%q is not a valid label selector operator", req.Operator())
 		}
-		labelSelector.MatchExpressions = append(labelSelector.MatchExpressions, v1.PodSelectorRequirement{
+		labelSelector.MatchExpressions = append(labelSelector.MatchExpressions, v1.LabelSelectorRequirement{
 			Key:      req.Key(),
 			Operator: op,
 			Values:   req.Values().List(),

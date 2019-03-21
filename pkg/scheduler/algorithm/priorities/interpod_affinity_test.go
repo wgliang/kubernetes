@@ -70,10 +70,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},
@@ -91,10 +91,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 6,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S2"},
 								},
 							},
@@ -112,14 +112,14 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 8,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpNotIn,
+									Operator: v1.LabelSelectorOpNotIn,
 									Values:   []string{"S1"},
 								}, {
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S2"},
 								},
 							},
@@ -130,13 +130,13 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 2,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpExists,
+									Operator: v1.LabelSelectorOpExists,
 								}, {
 									Key:      "wrongkey",
-									Operator: v1.PodSelectorOpDoesNotExist,
+									Operator: v1.LabelSelectorOpDoesNotExist,
 								},
 							},
 						},
@@ -151,10 +151,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 			RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 				{
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.PodSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "security",
-								Operator: v1.PodSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"S1", "value2"},
 							},
 						},
@@ -162,13 +162,13 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					TopologyKey: "region",
 				}, {
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.PodSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "security",
-								Operator: v1.PodSelectorOpExists,
+								Operator: v1.LabelSelectorOpExists,
 							}, {
 								Key:      "wrongkey",
-								Operator: v1.PodSelectorOpDoesNotExist,
+								Operator: v1.LabelSelectorOpDoesNotExist,
 							},
 						},
 					},
@@ -184,10 +184,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},
@@ -206,10 +206,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S2"},
 								},
 							},
@@ -228,10 +228,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 8,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},
@@ -247,10 +247,10 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.PodSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: v1.PodSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S2"},
 								},
 							},
@@ -546,10 +546,10 @@ func TestHardPodAffinitySymmetricWeight(t *testing.T) {
 			RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 				{
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.PodSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "service",
-								Operator: v1.PodSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"S1"},
 							},
 						},

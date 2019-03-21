@@ -80,11 +80,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "security",
-												Operator: metav1.LabelSelectorOpDoesNotExist,
+												Operator: v1.LabelSelectorOpDoesNotExist,
 												Values:   []string{"securityscan"},
 											},
 										},
@@ -113,11 +113,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "security",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan"},
 											},
 										},
@@ -145,11 +145,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -188,11 +188,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpNotIn,
+												Operator: v1.LabelSelectorOpNotIn,
 												Values:   []string{"securityscan3", "value3"},
 											},
 										},
@@ -226,11 +226,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -265,11 +265,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"antivirusscan", "value2"},
 											},
 										},
@@ -302,28 +302,28 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpExists,
+												Operator: v1.LabelSelectorOpExists,
 											}, {
 												Key:      "wrongkey",
-												Operator: metav1.LabelSelectorOpDoesNotExist,
+												Operator: v1.LabelSelectorOpDoesNotExist,
 											},
 										},
 									},
 									TopologyKey: "region",
 								}, {
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan"},
 											}, {
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpNotIn,
+												Operator: v1.LabelSelectorOpNotIn,
 												Values:   []string{"WrongValue"},
 											},
 										},
@@ -356,28 +356,28 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpExists,
+												Operator: v1.LabelSelectorOpExists,
 											}, {
 												Key:      "wrongkey",
-												Operator: metav1.LabelSelectorOpDoesNotExist,
+												Operator: v1.LabelSelectorOpDoesNotExist,
 											},
 										},
 									},
 									TopologyKey: "region",
 								}, {
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan2"},
 											}, {
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpNotIn,
+												Operator: v1.LabelSelectorOpNotIn,
 												Values:   []string{"WrongValue"},
 											},
 										},
@@ -410,11 +410,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -426,11 +426,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"antivirusscan", "value2"},
 											},
 										},
@@ -463,11 +463,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -479,11 +479,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"antivirusscan", "value2"},
 											},
 										},
@@ -504,11 +504,11 @@ func TestInterPodAffinity(t *testing.T) {
 							PodAntiAffinity: &v1.PodAntiAffinity{
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
-										LabelSelector: &metav1.LabelSelector{
-											MatchExpressions: []metav1.LabelSelectorRequirement{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.LabelSelectorRequirement{
 												{
 													Key:      "service",
-													Operator: metav1.LabelSelectorOpIn,
+													Operator: v1.LabelSelectorOpIn,
 													Values:   []string{"antivirusscan", "value2"},
 												},
 											},
@@ -540,11 +540,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -556,11 +556,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -593,11 +593,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -609,11 +609,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"antivirusscan", "value2"},
 											},
 										},
@@ -634,11 +634,11 @@ func TestInterPodAffinity(t *testing.T) {
 							PodAntiAffinity: &v1.PodAntiAffinity{
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
-										LabelSelector: &metav1.LabelSelector{
-											MatchExpressions: []metav1.LabelSelectorRequirement{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.LabelSelectorRequirement{
 												{
 													Key:      "service",
-													Operator: metav1.LabelSelectorOpIn,
+													Operator: v1.LabelSelectorOpIn,
 													Values:   []string{"securityscan", "value3"},
 												},
 											},
@@ -670,11 +670,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAffinity: &v1.PodAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "service",
-												Operator: metav1.LabelSelectorOpNotIn,
+												Operator: v1.LabelSelectorOpNotIn,
 												Values:   []string{"securityscan", "value2"},
 											},
 										},
@@ -711,11 +711,11 @@ func TestInterPodAffinity(t *testing.T) {
 							PodAntiAffinity: &v1.PodAntiAffinity{
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
-										LabelSelector: &metav1.LabelSelector{
-											MatchExpressions: []metav1.LabelSelectorRequirement{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.LabelSelectorRequirement{
 												{
 													Key:      "service",
-													Operator: metav1.LabelSelectorOpIn,
+													Operator: v1.LabelSelectorOpIn,
 													Values:   []string{"securityscan", "value2"},
 												},
 											},
@@ -751,11 +751,11 @@ func TestInterPodAffinity(t *testing.T) {
 							PodAntiAffinity: &v1.PodAntiAffinity{
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
-										LabelSelector: &metav1.LabelSelector{
-											MatchExpressions: []metav1.LabelSelectorRequirement{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.LabelSelectorRequirement{
 												{
 													Key:      "service",
-													Operator: metav1.LabelSelectorOpNotIn,
+													Operator: v1.LabelSelectorOpNotIn,
 													Values:   []string{"securityscan", "value2"},
 												},
 											},
@@ -785,11 +785,11 @@ func TestInterPodAffinity(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "foo",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"abc"},
 											},
 										},

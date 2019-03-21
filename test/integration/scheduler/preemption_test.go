@@ -125,11 +125,11 @@ func TestPreemption(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "pod",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"preemptor"},
 											},
 										},
@@ -152,11 +152,11 @@ func TestPreemption(t *testing.T) {
 					PodAntiAffinity: &v1.PodAntiAffinity{
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
-								LabelSelector: &metav1.LabelSelector{
-									MatchExpressions: []metav1.LabelSelectorRequirement{
+								LabelSelector: &v1.PodSelector{
+									MatchExpressions: []v1.LabelSelectorRequirement{
 										{
 											Key:      "pod",
-											Operator: metav1.LabelSelectorOpIn,
+											Operator: v1.LabelSelectorOpIn,
 											Values:   []string{"p0"},
 										},
 									},
@@ -188,11 +188,11 @@ func TestPreemption(t *testing.T) {
 						PodAntiAffinity: &v1.PodAntiAffinity{
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
-									LabelSelector: &metav1.LabelSelector{
-										MatchExpressions: []metav1.LabelSelectorRequirement{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.LabelSelectorRequirement{
 											{
 												Key:      "pod",
-												Operator: metav1.LabelSelectorOpIn,
+												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"preemptor"},
 											},
 										},
@@ -215,11 +215,11 @@ func TestPreemption(t *testing.T) {
 					PodAntiAffinity: &v1.PodAntiAffinity{
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
-								LabelSelector: &metav1.LabelSelector{
-									MatchExpressions: []metav1.LabelSelectorRequirement{
+								LabelSelector: &v1.PodSelector{
+									MatchExpressions: []v1.LabelSelectorRequirement{
 										{
 											Key:      "pod",
-											Operator: metav1.LabelSelectorOpIn,
+											Operator: v1.LabelSelectorOpIn,
 											Values:   []string{"p0"},
 										},
 									},

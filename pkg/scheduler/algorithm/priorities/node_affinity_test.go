@@ -38,9 +38,9 @@ func TestNodeAffinityPriority(t *testing.T) {
 			PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{{
 				Weight: 2,
 				Preference: v1.NodeSelectorTerm{
-					MatchExpressions: []v1.NodeSelectorRequirement{{
+					MatchExpressions: []v1.LabelSelectorRequirement{{
 						Key:      "foo",
-						Operator: v1.NodeSelectorOpIn,
+						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"bar"},
 					}},
 				},
@@ -54,10 +54,10 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 2,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.NodeSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "foo",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"bar"},
 							},
 						},
@@ -66,10 +66,10 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 4,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.NodeSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "key",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"value"},
 							},
 						},
@@ -78,20 +78,20 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 5,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.NodeSelectorRequirement{
+						MatchExpressions: []v1.LabelSelectorRequirement{
 							{
 								Key:      "foo",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"bar"},
 							},
 							{
 								Key:      "key",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"value"},
 							},
 							{
 								Key:      "az",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{"az1"},
 							},
 						},
