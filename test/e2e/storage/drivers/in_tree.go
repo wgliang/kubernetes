@@ -1716,7 +1716,7 @@ func (l *localDriver) nodeAffinityForNode(node *v1.Node) *v1.VolumeNodeAffinity 
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      nodeKey,
 							Operator: v1.NodeSelectorOpIn,

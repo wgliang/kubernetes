@@ -2460,41 +2460,11 @@ type NodeSelector struct {
 type NodeSelectorTerm struct {
 	// A list of node selector requirements by node's labels.
 	// +optional
-	MatchExpressions []NodeSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,1,rep,name=matchExpressions"`
+	MatchExpressions []LabelSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,1,rep,name=matchExpressions"`
 	// A list of node selector requirements by node's fields.
 	// +optional
-	MatchFields []NodeSelectorRequirement `json:"matchFields,omitempty" protobuf:"bytes,2,rep,name=matchFields"`
+	MatchFields []LabelSelectorRequirement `json:"matchFields,omitempty" protobuf:"bytes,2,rep,name=matchFields"`
 }
-
-// A node selector requirement is a selector that contains values, a key, and an operator
-// that relates the key and values.
-type NodeSelectorRequirement struct {
-	// The label key that the selector applies to.
-	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
-	// Represents a key's relationship to a set of values.
-	// Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
-	Operator NodeSelectorOperator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=NodeSelectorOperator"`
-	// An array of string values. If the operator is In or NotIn,
-	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
-	// the values array must be empty. If the operator is Gt or Lt, the values
-	// array must have a single element, which will be interpreted as an integer.
-	// This array is replaced during a strategic merge patch.
-	// +optional
-	Values []string `json:"values,omitempty" protobuf:"bytes,3,rep,name=values"`
-}
-
-// A node selector operator is the set of operators that can be used in
-// a node selector requirement.
-type NodeSelectorOperator string
-
-const (
-	NodeSelectorOpIn           NodeSelectorOperator = "In"
-	NodeSelectorOpNotIn        NodeSelectorOperator = "NotIn"
-	NodeSelectorOpExists       NodeSelectorOperator = "Exists"
-	NodeSelectorOpDoesNotExist NodeSelectorOperator = "DoesNotExist"
-	NodeSelectorOpGt           NodeSelectorOperator = "Gt"
-	NodeSelectorOpLt           NodeSelectorOperator = "Lt"
-)
 
 // A pod selector is a label query over a set of pod resources. The result of matchLabels and
 // matchExpressions are ANDed. An empty label selector matches all objects. A null
@@ -2507,37 +2477,37 @@ type PodSelector struct {
 	MatchLabels map[string]string `json:"matchLabels,omitempty" protobuf:"bytes,1,rep,name=matchLabels"`
 	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +optional
-	MatchExpressions []PodSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,2,rep,name=matchExpressions"`
+	MatchExpressions []LabelSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,2,rep,name=matchExpressions"`
 }
 
-// A pod selector requirement is a selector that contains values, a key, and an operator that
-// relates the key and values.
-type PodSelectorRequirement struct {
-	// key is the label key that the selector applies to.
-	// +patchMergeKey=key
-	// +patchStrategy=merge
-	Key string `json:"key" patchStrategy:"merge" patchMergeKey:"key" protobuf:"bytes,1,opt,name=key"`
-	// operator represents a key's relationship to a set of values.
-	// Valid operators are In, NotIn, Exists and DoesNotExist.
-	Operator PodSelectorOperator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=LabelSelectorOperator"`
-	// values is an array of string values. If the operator is In or NotIn,
+// A node selector requirement is a selector that contains values, a key, and an operator
+// that relates the key and values.
+type LabelSelectorRequirement struct {
+	// The label key that the selector applies to.
+	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
+	// Represents a key's relationship to a set of values.
+	// Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+	Operator LabelSelectorOperator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=LabelSelectorOperator"`
+	// An array of string values. If the operator is In or NotIn,
 	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
-	// the values array must be empty. This array is replaced during a strategic
-	// merge patch.
+	// the values array must be empty. If the operator is Gt or Lt, the values
+	// array must have a single element, which will be interpreted as an integer.
+	// This array is replaced during a strategic merge patch.
 	// +optional
 	Values []string `json:"values,omitempty" protobuf:"bytes,3,rep,name=values"`
 }
 
-// A pod selector operator is the set of operators that can be used in a pod selector requirement.
-type PodSelectorOperator string
+// A node selector operator is the set of operators that can be used in
+// a node selector requirement.
+type LabelSelectorOperator string
 
 const (
-	PodSelectorOpIn           PodSelectorOperator = "In"
-	PodSelectorOpNotIn        PodSelectorOperator = "NotIn"
-	PodSelectorOpExists       PodSelectorOperator = "Exists"
-	PodSelectorOpDoesNotExist PodSelectorOperator = "DoesNotExist"
-	PodSelectorOpGt           PodSelectorOperator = "Gt"
-	PodSelectorOpLt           PodSelectorOperator = "Lt"
+	LabelSelectorOpIn           LabelSelectorOperator = "In"
+	LabelSelectorOpNotIn        LabelSelectorOperator = "NotIn"
+	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
+	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
+	LabelSelectorOpGt           LabelSelectorOperator = "Gt"
+	LabelSelectorOpLt           LabelSelectorOperator = "Lt"
 )
 
 // A topology selector term represents the result of label queries.

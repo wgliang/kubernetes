@@ -2236,40 +2236,10 @@ type NodeSelector struct {
 // The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
 type NodeSelectorTerm struct {
 	// A list of node selector requirements by node's labels.
-	MatchExpressions []NodeSelectorRequirement
+	MatchExpressions []LabelSelectorRequirement
 	// A list of node selector requirements by node's fields.
-	MatchFields []NodeSelectorRequirement
+	MatchFields []LabelSelectorRequirement
 }
-
-// A node selector requirement is a selector that contains values, a key, and an operator
-// that relates the key and values.
-type NodeSelectorRequirement struct {
-	// The label key that the selector applies to.
-	Key string
-	// Represents a key's relationship to a set of values.
-	// Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
-	Operator NodeSelectorOperator
-	// An array of string values. If the operator is In or NotIn,
-	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
-	// the values array must be empty. If the operator is Gt or Lt, the values
-	// array must have a single element, which will be interpreted as an integer.
-	// This array is replaced during a strategic merge patch.
-	// +optional
-	Values []string
-}
-
-// A node selector operator is the set of operators that can be used in
-// a node selector requirement.
-type NodeSelectorOperator string
-
-const (
-	NodeSelectorOpIn           NodeSelectorOperator = "In"
-	NodeSelectorOpNotIn        NodeSelectorOperator = "NotIn"
-	NodeSelectorOpExists       NodeSelectorOperator = "Exists"
-	NodeSelectorOpDoesNotExist NodeSelectorOperator = "DoesNotExist"
-	NodeSelectorOpGt           NodeSelectorOperator = "Gt"
-	NodeSelectorOpLt           NodeSelectorOperator = "Lt"
-)
 
 // A pod selector is a label query over a set of pod resources. The result of matchLabels and
 // matchExpressions are ANDed. An empty label selector matches all objects. A null
@@ -2282,19 +2252,19 @@ type PodSelector struct {
 	MatchLabels map[string]string
 	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +optional
-	MatchExpressions []PodSelectorRequirement
+	MatchExpressions []LabelSelectorRequirement
 }
 
 // A pod selector requirement is a selector that contains values, a key, and an operator that
 // relates the key and values.
-type PodSelectorRequirement struct {
+type LabelSelectorRequirement struct {
 	// key is the label key that the selector applies to.
 	// +patchMergeKey=key
 	// +patchStrategy=merge
 	Key string
 	// operator represents a key's relationship to a set of values.
 	// Valid operators are In, NotIn, Exists and DoesNotExist.
-	Operator PodSelectorOperator
+	Operator LabelSelectorOperator
 	// values is an array of string values. If the operator is In or NotIn,
 	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
 	// the values array must be empty. This array is replaced during a strategic
@@ -2304,15 +2274,15 @@ type PodSelectorRequirement struct {
 }
 
 // A pod selector operator is the set of operators that can be used in a pod selector requirement.
-type PodSelectorOperator string
+type LabelSelectorOperator string
 
 const (
-	PodSelectorOpIn           PodSelectorOperator = "In"
-	PodSelectorOpNotIn        PodSelectorOperator = "NotIn"
-	PodSelectorOpExists       PodSelectorOperator = "Exists"
-	PodSelectorOpDoesNotExist PodSelectorOperator = "DoesNotExist"
-	PodSelectorOpGt           PodSelectorOperator = "Gt"
-	PodSelectorOpLt           PodSelectorOperator = "Lt"
+	LabelSelectorOpIn           LabelSelectorOperator = "In"
+	LabelSelectorOpNotIn        LabelSelectorOperator = "NotIn"
+	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
+	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
+	LabelSelectorOpGt           LabelSelectorOperator = "Gt"
+	LabelSelectorOpLt           LabelSelectorOperator = "Lt"
 )
 
 // A topology selector term represents the result of label queries.

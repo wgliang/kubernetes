@@ -34,7 +34,7 @@ import (
 	fakecloud "k8s.io/kubernetes/pkg/cloudprovider/providers/fake"
 )
 
-func nodeSelectorRequirementsEqual(r1, r2 v1.NodeSelectorRequirement) bool {
+func LabelSelectorRequirementsEqual(r1, r2 v1.LabelSelectorRequirement) bool {
 	if r1.Key != r2.Key {
 		return false
 	}
@@ -60,11 +60,11 @@ func nodeSelectorTermsEqual(t1, t2 v1.NodeSelectorTerm) bool {
 	if len(fields1) != len(fields2) {
 		return false
 	}
-	match := func(reqs1, reqs2 []v1.NodeSelectorRequirement) bool {
+	match := func(reqs1, reqs2 []v1.LabelSelectorRequirement) bool {
 		for _, req1 := range reqs1 {
 			reqMatched := false
 			for _, req2 := range reqs2 {
-				if nodeSelectorRequirementsEqual(req1, req2) {
+				if LabelSelectorRequirementsEqual(req1, req2) {
 					reqMatched = true
 					break
 				}
@@ -79,8 +79,8 @@ func nodeSelectorTermsEqual(t1, t2 v1.NodeSelectorTerm) bool {
 }
 
 // volumeNodeAffinitiesEqual performs a highly semantic comparison of two VolumeNodeAffinity data structures
-// It ignores ordering of instances of NodeSelectorRequirements in a VolumeNodeAffinity's NodeSelectorTerms as well as
-// orderding of strings in Values of NodeSelectorRequirements when matching two VolumeNodeAffinity structures.
+// It ignores ordering of instances of LabelSelectorRequirements in a VolumeNodeAffinity's NodeSelectorTerms as well as
+// orderding of strings in Values of LabelSelectorRequirements when matching two VolumeNodeAffinity structures.
 // Note that in most equality functions, Go considers two slices to be not equal if the order of elements in a slice do not
 // match - so reflect.DeepEqual as well as Semantic.DeepEqual do not work for comparing VolumeNodeAffinity semantically.
 // e.g. these two NodeSelectorTerms are considered semantically equal by volumeNodeAffinitiesEqual
@@ -153,15 +153,15 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "a",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 						{
 							Key:      "b",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"2"},
 						},
 					},
@@ -173,10 +173,10 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 					},
@@ -188,10 +188,10 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1", "2", "3"},
 						},
 					},
@@ -213,24 +213,24 @@ func TestCreatePatch(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "c",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"val1", "val2"},
 								},
 								{
 									Key:      "d",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"val3"},
 								},
 							},
 						},
 						{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      "e",
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"val4", "val5"},
 								},
 							},
@@ -244,44 +244,44 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "c",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val1", "val2"},
 						},
 						{
 							Key:      "d",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val3"},
 						},
 						{
 							Key:      "a",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 						{
 							Key:      "b",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"2"},
 						},
 					},
 				},
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "e",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val4", "val5"},
 						},
 						{
 							Key:      "a",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 						{
 							Key:      "b",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"2"},
 						},
 					},
@@ -293,34 +293,34 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "c",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val1", "val2"},
 						},
 						{
 							Key:      "d",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val3"},
 						},
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 					},
 				},
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "e",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val4", "val5"},
 						},
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1"},
 						},
 					},
@@ -332,34 +332,34 @@ func TestCreatePatch(t *testing.T) {
 		Required: &v1.NodeSelector{
 			NodeSelectorTerms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "c",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val1", "val2"},
 						},
 						{
 							Key:      "d",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val3"},
 						},
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"1", "2", "3"},
 						},
 					},
 				},
 				{
-					MatchExpressions: []v1.NodeSelectorRequirement{
+					MatchExpressions: []v1.LabelSelectorRequirement{
 						{
 							Key:      "e",
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"val5", "val4"},
 						},
 						{
 							Key:      v1.LabelZoneFailureDomain,
-							Operator: v1.NodeSelectorOpIn,
+							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"3", "2", "1"},
 						},
 					},
@@ -515,7 +515,7 @@ func TestAddLabelsToVolume(t *testing.T) {
 			if len(reqs) != 1 {
 				return false, nil, nil
 			}
-			if reqs[0].Key != "a" || reqs[0].Values[0] != "1" || reqs[0].Operator != v1.NodeSelectorOpIn {
+			if reqs[0].Key != "a" || reqs[0].Values[0] != "1" || reqs[0].Operator != v1.LabelSelectorOpIn {
 				return false, nil, nil
 			}
 			labeledCh <- true

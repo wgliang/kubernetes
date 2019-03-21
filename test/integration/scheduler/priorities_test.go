@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	testutils "k8s.io/kubernetes/test/utils"
 	"strings"
 )
@@ -60,10 +59,10 @@ func TestNodeAffinity(t *testing.T) {
 				PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{
 					{
 						Preference: v1.NodeSelectorTerm{
-							MatchExpressions: []v1.NodeSelectorRequirement{
+							MatchExpressions: []v1.LabelSelectorRequirement{
 								{
 									Key:      labelKey,
-									Operator: v1.NodeSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{labelValue},
 								},
 							},
@@ -134,20 +133,20 @@ func TestPodAffinity(t *testing.T) {
 				PreferredDuringSchedulingIgnoredDuringExecution: []v1.WeightedPodAffinityTerm{
 					{
 						PodAffinityTerm: v1.PodAffinityTerm{
-							LabelSelector: &metav1.LabelSelector{
-								MatchExpressions: []metav1.LabelSelectorRequirement{
+							LabelSelector: &v1.PodSelector{
+								MatchExpressions: []v1.LabelSelectorRequirement{
 									{
 										Key:      labelKey,
-										Operator: metav1.LabelSelectorOpIn,
+										Operator: v1.LabelSelectorOpIn,
 										Values:   []string{labelValue, "S3"},
 									},
 									{
 										Key:      labelKey,
-										Operator: metav1.LabelSelectorOpNotIn,
+										Operator: v1.LabelSelectorOpNotIn,
 										Values:   []string{"S2"},
 									}, {
 										Key:      labelKey,
-										Operator: metav1.LabelSelectorOpExists,
+										Operator: v1.LabelSelectorOpExists,
 									},
 								},
 							},

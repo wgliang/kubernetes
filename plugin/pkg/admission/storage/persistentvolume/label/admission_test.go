@@ -206,20 +206,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},
@@ -269,20 +269,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},
@@ -335,20 +335,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},
@@ -401,20 +401,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},
@@ -470,20 +470,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},
@@ -521,10 +521,10 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "c",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"3"},
 										},
 									},
@@ -554,10 +554,10 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "c",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"3"},
 										},
 									},
@@ -597,20 +597,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      "c",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"3"},
 										},
 									},
@@ -643,35 +643,35 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      "c",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"3"},
 										},
 										{
 											Key:      "d",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "e",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      "f",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"3"},
 										},
 									},
@@ -724,20 +724,20 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.NodeSelectorRequirement{
+									MatchExpressions: []api.LabelSelectorRequirement{
 										{
 											Key:      "a",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1"},
 										},
 										{
 											Key:      "b",
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"2"},
 										},
 										{
 											Key:      v1.LabelZoneFailureDomain,
-											Operator: api.NodeSelectorOpIn,
+											Operator: api.LabelSelectorOpIn,
 											Values:   []string{"1", "2", "3"},
 										},
 									},

@@ -118,10 +118,10 @@ func TestRemoveDuplicateAccessModes(t *testing.T) {
 	}
 }
 
-func TestNodeSelectorRequirementsAsSelector(t *testing.T) {
-	matchExpressions := []core.NodeSelectorRequirement{{
+func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
+	matchExpressions := []core.LabelSelectorRequirement{{
 		Key:      "foo",
-		Operator: core.NodeSelectorOpIn,
+		Operator: core.LabelSelectorOpIn,
 		Values:   []string{"bar", "baz"},
 	}}
 	mustParse := func(s string) labels.Selector {
@@ -132,36 +132,36 @@ func TestNodeSelectorRequirementsAsSelector(t *testing.T) {
 		return out
 	}
 	tc := []struct {
-		in        []core.NodeSelectorRequirement
+		in        []core.LabelSelectorRequirement
 		out       labels.Selector
 		expectErr bool
 	}{
 		{in: nil, out: labels.Nothing()},
-		{in: []core.NodeSelectorRequirement{}, out: labels.Nothing()},
+		{in: []core.LabelSelectorRequirement{}, out: labels.Nothing()},
 		{
 			in:  matchExpressions,
 			out: mustParse("foo in (baz,bar)"),
 		},
 		{
-			in: []core.NodeSelectorRequirement{{
+			in: []core.LabelSelectorRequirement{{
 				Key:      "foo",
-				Operator: core.NodeSelectorOpExists,
+				Operator: core.LabelSelectorOpExists,
 				Values:   []string{"bar", "baz"},
 			}},
 			expectErr: true,
 		},
 		{
-			in: []core.NodeSelectorRequirement{{
+			in: []core.LabelSelectorRequirement{{
 				Key:      "foo",
-				Operator: core.NodeSelectorOpGt,
+				Operator: core.LabelSelectorOpGt,
 				Values:   []string{"1"},
 			}},
 			out: mustParse("foo>1"),
 		},
 		{
-			in: []core.NodeSelectorRequirement{{
+			in: []core.LabelSelectorRequirement{{
 				Key:      "bar",
-				Operator: core.NodeSelectorOpLt,
+				Operator: core.LabelSelectorOpLt,
 				Values:   []string{"7"},
 			}},
 			out: mustParse("bar<7"),
@@ -169,7 +169,7 @@ func TestNodeSelectorRequirementsAsSelector(t *testing.T) {
 	}
 
 	for i, tc := range tc {
-		out, err := NodeSelectorRequirementsAsSelector(tc.in)
+		out, err := LabelSelectorRequirementsAsSelector(tc.in)
 		if err == nil && tc.expectErr {
 			t.Errorf("[%v]expected error but got none.", i)
 		}

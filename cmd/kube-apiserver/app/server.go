@@ -888,7 +888,7 @@ func postProcessOpenAPISpecForBackwardCompatibility(s *spec.Swagger) (*spec.Swag
 		"io.k8s.kubernetes.pkg.apis.authentication.v1.UserInfo":                                        "io.k8s.api.authentication.v1.UserInfo",
 		"io.k8s.kubernetes.pkg.api.v1.LoadBalancerIngress":                                             "io.k8s.api.core.v1.LoadBalancerIngress",
 		"io.k8s.kubernetes.pkg.api.v1.DaemonEndpoint":                                                  "io.k8s.api.core.v1.DaemonEndpoint",
-		"io.k8s.kubernetes.pkg.api.v1.NodeSelectorRequirement":                                         "io.k8s.api.core.v1.NodeSelectorRequirement",
+		"io.k8s.kubernetes.pkg.api.v1.LabelSelectorRequirement":                                        "io.k8s.api.core.v1.LabelSelectorRequirement",
 		"io.k8s.kubernetes.pkg.apis.batch.v2alpha1.CronJobStatus":                                      "io.k8s.api.batch.v2alpha1.CronJobStatus",
 		"io.k8s.kubernetes.pkg.apis.autoscaling.v1.Scale":                                              "io.k8s.api.autoscaling.v1.Scale",
 		"io.k8s.kubernetes.pkg.api.v1.ScaleIOVolumeSource":                                             "io.k8s.api.core.v1.ScaleIOVolumeSource",

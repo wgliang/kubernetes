@@ -1625,6 +1625,25 @@ message KeyToPath {
   optional int32 mode = 3;
 }
 
+// A node selector requirement is a selector that contains values, a key, and an operator
+// that relates the key and values.
+message LabelSelectorRequirement {
+  // The label key that the selector applies to.
+  optional string key = 1;
+
+  // Represents a key's relationship to a set of values.
+  // Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+  optional string operator = 2;
+
+  // An array of string values. If the operator is In or NotIn,
+  // the values array must be non-empty. If the operator is Exists or DoesNotExist,
+  // the values array must be empty. If the operator is Gt or Lt, the values
+  // array must have a single element, which will be interpreted as an integer.
+  // This array is replaced during a strategic merge patch.
+  // +optional
+  repeated string values = 3;
+}
+
 // Lifecycle describes actions that the management system should take in response to container lifecycle
 // events. For the PostStart and PreStop lifecycle handlers, management of the container blocks
 // until the action is complete, unless the container process fails, in which case the handler is aborted.
@@ -2005,36 +2024,17 @@ message NodeSelector {
   repeated NodeSelectorTerm nodeSelectorTerms = 1;
 }
 
-// A node selector requirement is a selector that contains values, a key, and an operator
-// that relates the key and values.
-message NodeSelectorRequirement {
-  // The label key that the selector applies to.
-  optional string key = 1;
-
-  // Represents a key's relationship to a set of values.
-  // Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
-  optional string operator = 2;
-
-  // An array of string values. If the operator is In or NotIn,
-  // the values array must be non-empty. If the operator is Exists or DoesNotExist,
-  // the values array must be empty. If the operator is Gt or Lt, the values
-  // array must have a single element, which will be interpreted as an integer.
-  // This array is replaced during a strategic merge patch.
-  // +optional
-  repeated string values = 3;
-}
-
 // A null or empty node selector term matches no objects. The requirements of
 // them are ANDed.
 // The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
 message NodeSelectorTerm {
   // A list of node selector requirements by node's labels.
   // +optional
-  repeated NodeSelectorRequirement matchExpressions = 1;
+  repeated LabelSelectorRequirement matchExpressions = 1;
 
   // A list of node selector requirements by node's fields.
   // +optional
-  repeated NodeSelectorRequirement matchFields = 2;
+  repeated LabelSelectorRequirement matchFields = 2;
 }
 
 // NodeSpec describes the attributes that a node is created with.
@@ -2957,27 +2957,7 @@ message PodSelector {
 
   // matchExpressions is a list of label selector requirements. The requirements are ANDed.
   // +optional
-  repeated PodSelectorRequirement matchExpressions = 2;
-}
-
-// A pod selector requirement is a selector that contains values, a key, and an operator that
-// relates the key and values.
-message PodSelectorRequirement {
-  // key is the label key that the selector applies to.
-  // +patchMergeKey=key
-  // +patchStrategy=merge
-  optional string key = 1;
-
-  // operator represents a key's relationship to a set of values.
-  // Valid operators are In, NotIn, Exists and DoesNotExist.
-  optional string operator = 2;
-
-  // values is an array of string values. If the operator is In or NotIn,
-  // the values array must be non-empty. If the operator is Exists or DoesNotExist,
-  // the values array must be empty. This array is replaced during a strategic
-  // merge patch.
-  // +optional
-  repeated string values = 3;
+  repeated LabelSelectorRequirement matchExpressions = 2;
 }
 
 // Describes the class of pods that should avoid this node.

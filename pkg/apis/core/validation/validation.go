@@ -3008,20 +3008,20 @@ func ValidatePodSpec(spec *core.PodSpec, fldPath *field.Path) field.ErrorList {
 	return allErrs
 }
 
-// ValidateNodeSelectorRequirement tests that the specified NodeSelectorRequirement fields has valid data
-func ValidateNodeSelectorRequirement(rq core.NodeSelectorRequirement, fldPath *field.Path) field.ErrorList {
+// ValidateLabelSelectorRequirement tests that the specified LabelSelectorRequirement fields has valid data
+func ValidateLabelSelectorRequirement(rq core.LabelSelectorRequirement, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 	switch rq.Operator {
-	case core.NodeSelectorOpIn, core.NodeSelectorOpNotIn:
+	case core.LabelSelectorOpIn, core.LabelSelectorOpNotIn:
 		if len(rq.Values) == 0 {
 			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified when `operator` is 'In' or 'NotIn'"))
 		}
-	case core.NodeSelectorOpExists, core.NodeSelectorOpDoesNotExist:
+	case core.LabelSelectorOpExists, core.LabelSelectorOpDoesNotExist:
 		if len(rq.Values) > 0 {
 			allErrs = append(allErrs, field.Forbidden(fldPath.Child("values"), "may not be specified when `operator` is 'Exists' or 'DoesNotExist'"))
 		}
 
-	case core.NodeSelectorOpGt, core.NodeSelectorOpLt:
+	case core.LabelSelectorOpGt, core.LabelSelectorOpLt:
 		if len(rq.Values) != 1 {
 			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified single value when `operator` is 'Lt' or 'Gt'"))
 		}
@@ -3038,12 +3038,12 @@ var nodeFieldSelectorValidators = map[string]func(string, bool) []string{
 	core.ObjectNameField: ValidateNodeName,
 }
 
-// ValidateNodeFieldSelectorRequirement tests that the specified NodeSelectorRequirement fields has valid data
-func ValidateNodeFieldSelectorRequirement(req core.NodeSelectorRequirement, fldPath *field.Path) field.ErrorList {
+// ValidateNodeFieldSelectorRequirement tests that the specified LabelSelectorRequirement fields has valid data
+func ValidateNodeFieldSelectorRequirement(req core.LabelSelectorRequirement, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	switch req.Operator {
-	case core.NodeSelectorOpIn, core.NodeSelectorOpNotIn:
+	case core.LabelSelectorOpIn, core.LabelSelectorOpNotIn:
 		if len(req.Values) != 1 {
 			allErrs = append(allErrs, field.Required(fldPath.Child("values"),
 				"must be only one value when `operator` is 'In' or 'NotIn' for node field selector"))
@@ -3070,7 +3070,7 @@ func ValidateNodeSelectorTerm(term core.NodeSelectorTerm, fldPath *field.Path) f
 	allErrs := field.ErrorList{}
 
 	for j, req := range term.MatchExpressions {
-		allErrs = append(allErrs, ValidateNodeSelectorRequirement(req, fldPath.Child("matchExpressions").Index(j))...)
+		allErrs = append(allErrs, ValidateLabelSelectorRequirement(req, fldPath.Child("matchExpressions").Index(j))...)
 	}
 
 	for j, req := range term.MatchFields {
@@ -5276,28 +5276,6 @@ func ValidatePodSelector(ps *core.PodSelector, fldPath *field.Path) field.ErrorL
 	for i, expr := range ps.MatchExpressions {
 		allErrs = append(allErrs, ValidateLabelSelectorRequirement(expr, fldPath.Child("matchExpressions").Index(i))...)
 	}
-	return allErrs
-}
-
-func ValidateLabelSelectorRequirement(sr core.PodSelectorRequirement, fldPath *field.Path) field.ErrorList {
-	allErrs := field.ErrorList{}
-	switch sr.Operator {
-	case core.PodSelectorOpIn, core.PodSelectorOpNotIn:
-		if len(sr.Values) == 0 {
-			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified when `operator` is 'In' or 'NotIn'"))
-		}
-	case core.PodSelectorOpExists, core.PodSelectorOpDoesNotExist:
-		if len(sr.Values) > 0 {
-			allErrs = append(allErrs, field.Forbidden(fldPath.Child("values"), "may not be specified when `operator` is 'Exists' or 'DoesNotExist'"))
-		}
-	case core.PodSelectorOpGt, core.PodSelectorOpLt:
-		if len(sr.Values) != 1 {
-			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified single value when `operator` is 'Lt' or 'Gt'"))
-		}
-	default:
-		allErrs = append(allErrs, field.Invalid(fldPath.Child("operator"), sr.Operator, "not a valid selector operator"))
-	}
-	allErrs = append(allErrs, ValidateLabelName(sr.Key, fldPath.Child("key"))...)
 	return allErrs
 }
 

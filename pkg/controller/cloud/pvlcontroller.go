@@ -203,10 +203,10 @@ func (pvlc *PersistentVolumeLabelController) createPatch(vol *v1.PersistentVolum
 		newVolume.Labels = make(map[string]string)
 	}
 
-	requirements := make([]v1.NodeSelectorRequirement, 0)
+	requirements := make([]v1.LabelSelectorRequirement, 0)
 	for k, v := range volLabels {
 		newVolume.Labels[k] = v
-		// Set NodeSelectorRequirements based on the labels
+		// Set LabelSelectorRequirements based on the labels
 		if populateAffinity {
 			var values []string
 			if k == v1.LabelZoneFailureDomain {
@@ -218,7 +218,7 @@ func (pvlc *PersistentVolumeLabelController) createPatch(vol *v1.PersistentVolum
 			} else {
 				values = []string{v}
 			}
-			requirements = append(requirements, v1.NodeSelectorRequirement{Key: k, Operator: v1.NodeSelectorOpIn, Values: values})
+			requirements = append(requirements, v1.LabelSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: values})
 		}
 	}
 	if populateAffinity {
@@ -233,8 +233,8 @@ func (pvlc *PersistentVolumeLabelController) createPatch(vol *v1.PersistentVolum
 			newVolume.Spec.NodeAffinity.Required.NodeSelectorTerms = make([]v1.NodeSelectorTerm, 1)
 		}
 		// Populate NodeAffinity with requirements if there are no conflicting keys found
-		if v1helper.NodeSelectorRequirementKeysExistInNodeSelectorTerms(requirements, newVolume.Spec.NodeAffinity.Required.NodeSelectorTerms) {
-			klog.V(4).Infof("NodeSelectorRequirements for cloud labels %v conflict with existing NodeAffinity %v. Skipping addition of NodeSelectorRequirements for cloud labels.",
+		if v1helper.LabelSelectorRequirementKeysExistInNodeSelectorTerms(requirements, newVolume.Spec.NodeAffinity.Required.NodeSelectorTerms) {
+			klog.V(4).Infof("LabelSelectorRequirements for cloud labels %v conflict with existing NodeAffinity %v. Skipping addition of LabelSelectorRequirements for cloud labels.",
 				requirements, newVolume.Spec.NodeAffinity)
 		} else {
 			for _, req := range requirements {
