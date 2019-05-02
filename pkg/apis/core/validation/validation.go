@@ -25,6 +25,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"k8s.io/klog"
@@ -3036,8 +3037,8 @@ func ValidatePodSpec(spec *core.PodSpec, fldPath *field.Path) field.ErrorList {
 	return allErrs
 }
 
-// ValidateLabelSelectorRequirement tests that the specified LabelSelectorRequirement fields has valid data
-func ValidateLabelSelectorRequirement(rq core.LabelSelectorRequirement, fldPath *field.Path) field.ErrorList {
+// ValidateNumericAwareSelectorRequirement tests that the specified NumericAwareSelectorRequirement fields has valid data
+func ValidateNumericAwareSelectorRequirement(rq core.NumericAwareSelectorRequirement, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 	switch rq.Operator {
 	case core.LabelSelectorOpIn, core.LabelSelectorOpNotIn:
@@ -3048,10 +3049,13 @@ func ValidateLabelSelectorRequirement(rq core.LabelSelectorRequirement, fldPath 
 		if len(rq.Values) > 0 {
 			allErrs = append(allErrs, field.Forbidden(fldPath.Child("values"), "may not be specified when `operator` is 'Exists' or 'DoesNotExist'"))
 		}
-
-	case core.LabelSelectorOpGt, core.LabelSelectorOpLt:
+	case core.LabelSelectorOpNumericallyGreaterthan, core.LabelSelectorOpNumericallyLessthan:
 		if len(rq.Values) != 1 {
 			allErrs = append(allErrs, field.Required(fldPath.Child("values"), "must be specified single value when `operator` is 'Lt' or 'Gt'"))
+		} else {
+			if _, err := strconv.ParseInt(rq.Values[0], 10, 64); err != nil {
+				allErrs = append(allErrs, field.Required(fldPath.Child("values"), "for 'Gt', 'Lt' operators, the value must be an integer"))
+			}
 		}
 	default:
 		allErrs = append(allErrs, field.Invalid(fldPath.Child("operator"), rq.Operator, "not a valid selector operator"))
@@ -3066,8 +3070,8 @@ var nodeFieldSelectorValidators = map[string]func(string, bool) []string{
 	core.ObjectNameField: ValidateNodeName,
 }
 
-// ValidateNodeFieldSelectorRequirement tests that the specified LabelSelectorRequirement fields has valid data
-func ValidateNodeFieldSelectorRequirement(req core.LabelSelectorRequirement, fldPath *field.Path) field.ErrorList {
+// ValidateNodeFieldSelectorRequirement tests that the specified NumericAwareSelectorRequirement fields has valid data
+func ValidateNodeFieldSelectorRequirement(req core.NumericAwareSelectorRequirement, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	switch req.Operator {
@@ -3098,7 +3102,7 @@ func ValidateNodeSelectorTerm(term core.NodeSelectorTerm, fldPath *field.Path) f
 	allErrs := field.ErrorList{}
 
 	for j, req := range term.MatchExpressions {
-		allErrs = append(allErrs, ValidateLabelSelectorRequirement(req, fldPath.Child("matchExpressions").Index(j))...)
+		allErrs = append(allErrs, ValidateNumericAwareSelectorRequirement(req, fldPath.Child("matchExpressions").Index(j))...)
 	}
 
 	for j, req := range term.MatchFields {
@@ -5302,7 +5306,7 @@ func ValidatePodSelector(ps *core.PodSelector, fldPath *field.Path) field.ErrorL
 	}
 	allErrs = append(allErrs, ValidateLabels(ps.MatchLabels, fldPath.Child("matchLabels"))...)
 	for i, expr := range ps.MatchExpressions {
-		allErrs = append(allErrs, ValidateLabelSelectorRequirement(expr, fldPath.Child("matchExpressions").Index(i))...)
+		allErrs = append(allErrs, ValidateNumericAwareSelectorRequirement(expr, fldPath.Child("matchExpressions").Index(i))...)
 	}
 	return allErrs
 }

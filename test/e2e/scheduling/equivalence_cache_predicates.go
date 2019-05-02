@@ -129,11 +129,11 @@ var _ = framework.KubeDescribe("EquivalenceCache [Serial]", func() {
 			PodAffinity: &v1.PodAffinity{
 				RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 					{
-						LabelSelector: &metav1.LabelSelector{
-							MatchExpressions: []metav1.LabelSelectorRequirement{
+						LabelSelector: &v1.PodSelector{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
-									Operator: metav1.LabelSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},
@@ -205,11 +205,11 @@ var _ = framework.KubeDescribe("EquivalenceCache [Serial]", func() {
 			PodAntiAffinity: &v1.PodAntiAffinity{
 				RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 					{
-						LabelSelector: &metav1.LabelSelector{
-							MatchExpressions: []metav1.LabelSelectorRequirement{
+						LabelSelector: &v1.PodSelector{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "service",
-									Operator: metav1.LabelSelectorOpIn,
+									Operator: v1.LabelSelectorOpIn,
 									Values:   []string{"S1"},
 								},
 							},

@@ -614,7 +614,7 @@ func TestDaemonSetWithNodeSelectorLaunchesPods(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      "zone",
 										Operator: v1.LabelSelectorOpIn,
@@ -623,7 +623,7 @@ func TestDaemonSetWithNodeSelectorLaunchesPods(t *testing.T) {
 								},
 							},
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,

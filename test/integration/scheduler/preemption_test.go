@@ -126,7 +126,7 @@ func TestPreemption(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "pod",
 												Operator: v1.LabelSelectorOpIn,
@@ -153,7 +153,7 @@ func TestPreemption(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
 								LabelSelector: &v1.PodSelector{
-									MatchExpressions: []v1.LabelSelectorRequirement{
+									MatchExpressions: []v1.NumericAwareSelectorRequirement{
 										{
 											Key:      "pod",
 											Operator: v1.LabelSelectorOpIn,
@@ -189,7 +189,7 @@ func TestPreemption(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "pod",
 												Operator: v1.LabelSelectorOpIn,
@@ -216,7 +216,7 @@ func TestPreemption(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
 								LabelSelector: &v1.PodSelector{
-									MatchExpressions: []v1.LabelSelectorRequirement{
+									MatchExpressions: []v1.NumericAwareSelectorRequirement{
 										{
 											Key:      "pod",
 											Operator: v1.LabelSelectorOpIn,

@@ -355,10 +355,10 @@ func testNoWrappedVolumeRace(f *framework.Framework, volumes []v1.Volume, volume
 			RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      nodeHostnameLabelKey,
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{targetNode.Labels[nodeHostnameLabelKey]},
 							},
 						},

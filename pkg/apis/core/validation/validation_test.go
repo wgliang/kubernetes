@@ -399,7 +399,7 @@ func TestValidatePersistentVolumes(t *testing.T) {
 					Required: &core.NodeSelector{
 						NodeSelectorTerms: []core.NodeSelectorTerm{
 							{
-								MatchExpressions: []core.LabelSelectorRequirement{
+								MatchExpressions: []core.NumericAwareSelectorRequirement{
 									{
 										Operator: core.LabelSelectorOpIn,
 										Values:   []string{"test-label-value"},
@@ -619,7 +619,7 @@ func simpleVolumeNodeAffinity(key, value string) *core.VolumeNodeAffinity {
 		Required: &core.NodeSelector{
 			NodeSelectorTerms: []core.NodeSelectorTerm{
 				{
-					MatchExpressions: []core.LabelSelectorRequirement{
+					MatchExpressions: []core.NumericAwareSelectorRequirement{
 						{
 							Key:      key,
 							Operator: core.LabelSelectorOpIn,
@@ -6586,7 +6586,7 @@ func TestValidatePod(t *testing.T) {
 				//		RequiredDuringSchedulingRequiredDuringExecution: &core.NodeSelector{
 				//			NodeSelectorTerms: []core.NodeSelectorTerm{
 				//				{
-				//					MatchExpressions: []core.LabelSelectorRequirement{
+				//					MatchExpressions: []core.NumericAwareSelectorRequirement{
 				//						{
 				//							Key: "key1",
 				//							Operator: core.LabelSelectorOpExists
@@ -6600,14 +6600,14 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "key2",
 											Operator: core.LabelSelectorOpIn,
 											Values:   []string{"value1", "value2"},
 										},
 									},
-									MatchFields: []core.LabelSelectorRequirement{
+									MatchFields: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "metadata.name",
 											Operator: core.LabelSelectorOpIn,
@@ -6621,7 +6621,7 @@ func TestValidatePod(t *testing.T) {
 							{
 								Weight: 10,
 								Preference: core.NodeSelectorTerm{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "foo",
 											Operator: core.LabelSelectorOpIn,
@@ -6646,7 +6646,7 @@ func TestValidatePod(t *testing.T) {
 				//		RequiredDuringSchedulingRequiredDuringExecution: &core.NodeSelector{
 				//			NodeSelectorTerms: []core.NodeSelectorTerm{
 				//				{
-				//					MatchExpressions: []core.LabelSelectorRequirement{
+				//					MatchExpressions: []core.NumericAwareSelectorRequirement{
 				//						{
 				//							Key: "key1",
 				//							Operator: core.LabelSelectorOpExists
@@ -6660,7 +6660,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchExpressions: []core.LabelSelectorRequirement{},
+									MatchExpressions: []core.NumericAwareSelectorRequirement{},
 								},
 							},
 						},
@@ -6668,7 +6668,7 @@ func TestValidatePod(t *testing.T) {
 							{
 								Weight: 10,
 								Preference: core.NodeSelectorTerm{
-									MatchExpressions: []core.LabelSelectorRequirement{},
+									MatchExpressions: []core.NumericAwareSelectorRequirement{},
 								},
 							},
 						},
@@ -6699,7 +6699,7 @@ func TestValidatePod(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: []core.PodAffinityTerm{
 						{
 							LabelSelector: &core.PodSelector{
-								MatchExpressions: []core.LabelSelectorRequirement{
+								MatchExpressions: []core.NumericAwareSelectorRequirement{
 									{
 										Key:      "key2",
 										Operator: core.LabelSelectorOpIn,
@@ -6716,7 +6716,7 @@ func TestValidatePod(t *testing.T) {
 							Weight: 10,
 							PodAffinityTerm: core.PodAffinityTerm{
 								LabelSelector: &core.PodSelector{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "key2",
 											Operator: core.LabelSelectorOpNotIn,
@@ -6755,7 +6755,7 @@ func TestValidatePod(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: []core.PodAffinityTerm{
 						{
 							LabelSelector: &core.PodSelector{
-								MatchExpressions: []core.LabelSelectorRequirement{
+								MatchExpressions: []core.NumericAwareSelectorRequirement{
 									{
 										Key:      "key2",
 										Operator: core.LabelSelectorOpExists,
@@ -6771,7 +6771,7 @@ func TestValidatePod(t *testing.T) {
 							Weight: 10,
 							PodAffinityTerm: core.PodAffinityTerm{
 								LabelSelector: &core.PodSelector{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "key2",
 											Operator: core.LabelSelectorOpDoesNotExist,
@@ -7122,7 +7122,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key: "key1",
 										},
@@ -7146,7 +7146,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "invalid key ___@#",
 											Operator: core.LabelSelectorOpExists,
@@ -7171,7 +7171,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchFields: []core.LabelSelectorRequirement{
+									MatchFields: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "metadata.name",
 											Operator: core.LabelSelectorOpIn,
@@ -7197,7 +7197,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchFields: []core.LabelSelectorRequirement{
+									MatchFields: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "metadata.name",
 											Operator: core.LabelSelectorOpExists,
@@ -7222,7 +7222,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: &core.NodeSelector{
 							NodeSelectorTerms: []core.NodeSelectorTerm{
 								{
-									MatchFields: []core.LabelSelectorRequirement{
+									MatchFields: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "metadata.namespace",
 											Operator: core.LabelSelectorOpIn,
@@ -7249,7 +7249,7 @@ func TestValidatePod(t *testing.T) {
 							{
 								Weight: 199,
 								Preference: core.NodeSelectorTerm{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "foo",
 											Operator: core.LabelSelectorOpIn,
@@ -7293,7 +7293,7 @@ func TestValidatePod(t *testing.T) {
 								Weight: 109,
 								PodAffinityTerm: core.PodAffinityTerm{
 									LabelSelector: &core.PodSelector{
-										MatchExpressions: []core.LabelSelectorRequirement{
+										MatchExpressions: []core.NumericAwareSelectorRequirement{
 											{
 												Key:      "key2",
 												Operator: core.LabelSelectorOpNotIn,
@@ -7324,7 +7324,7 @@ func TestValidatePod(t *testing.T) {
 								Weight: 10,
 								PodAffinityTerm: core.PodAffinityTerm{
 									LabelSelector: &core.PodSelector{
-										MatchExpressions: []core.LabelSelectorRequirement{
+										MatchExpressions: []core.NumericAwareSelectorRequirement{
 											{
 												Key:      "key2",
 												Operator: core.LabelSelectorOpExists,
@@ -7355,7 +7355,7 @@ func TestValidatePod(t *testing.T) {
 								Weight: 10,
 								PodAffinityTerm: core.PodAffinityTerm{
 									LabelSelector: &core.PodSelector{
-										MatchExpressions: []core.LabelSelectorRequirement{
+										MatchExpressions: []core.NumericAwareSelectorRequirement{
 											{
 												Key:      "key2",
 												Operator: core.LabelSelectorOpExists,
@@ -7383,7 +7383,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: []core.PodAffinityTerm{
 							{
 								LabelSelector: &core.PodSelector{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "key2",
 											Operator: core.LabelSelectorOpIn,
@@ -7410,7 +7410,7 @@ func TestValidatePod(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: []core.PodAffinityTerm{
 							{
 								LabelSelector: &core.PodSelector{
-									MatchExpressions: []core.LabelSelectorRequirement{
+									MatchExpressions: []core.NumericAwareSelectorRequirement{
 										{
 											Key:      "key2",
 											Operator: core.LabelSelectorOpIn,
@@ -7439,7 +7439,7 @@ func TestValidatePod(t *testing.T) {
 								Weight: 10,
 								PodAffinityTerm: core.PodAffinityTerm{
 									LabelSelector: &core.PodSelector{
-										MatchExpressions: []core.LabelSelectorRequirement{
+										MatchExpressions: []core.NumericAwareSelectorRequirement{
 											{
 												Key:      "key2",
 												Operator: core.LabelSelectorOpNotIn,
@@ -7469,7 +7469,7 @@ func TestValidatePod(t *testing.T) {
 								Weight: 10,
 								PodAffinityTerm: core.PodAffinityTerm{
 									LabelSelector: &core.PodSelector{
-										MatchExpressions: []core.LabelSelectorRequirement{
+										MatchExpressions: []core.NumericAwareSelectorRequirement{
 											{
 												Key:      "key2",
 												Operator: core.LabelSelectorOpNotIn,

@@ -316,9 +316,9 @@ func (p *azureDiskProvisioner) Provision(selectedNode *v1.Node, allowedTopologie
 	if zoned {
 		// Set node affinity labels based on availability zone labels.
 		if len(labels) > 0 {
-			requirements := make([]v1.LabelSelectorRequirement, 0)
+			requirements := make([]v1.NumericAwareSelectorRequirement, 0)
 			for k, v := range labels {
-				requirements = append(requirements, v1.LabelSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: []string{v}})
+				requirements = append(requirements, v1.NumericAwareSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: []string{v}})
 			}
 
 			nodeSelectorTerms = append(nodeSelectorTerms, v1.NodeSelectorTerm{
@@ -331,7 +331,7 @@ func (p *azureDiskProvisioner) Provision(selectedNode *v1.Node, allowedTopologie
 		// There are at most 3 fault domains available in each region.
 		// Refer https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability.
 		for i := 0; i < 3; i++ {
-			requirements := []v1.LabelSelectorRequirement{
+			requirements := []v1.NumericAwareSelectorRequirement{
 				{
 					Key:      v1.LabelZoneRegion,
 					Operator: v1.LabelSelectorOpIn,

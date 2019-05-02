@@ -194,7 +194,7 @@ func makeBasePodWithNodeAffinity(key string, vals []string) *v1.Pod {
 			RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      key,
 								Operator: v1.LabelSelectorOpIn,

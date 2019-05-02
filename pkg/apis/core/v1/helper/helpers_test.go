@@ -180,8 +180,8 @@ func TestRemoveDuplicateAccessModes(t *testing.T) {
 	}
 }
 
-func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
-	matchExpressions := []v1.LabelSelectorRequirement{{
+func TestNumericAwareSelectorRequirementsAsSelector(t *testing.T) {
+	matchExpressions := []v1.NumericAwareSelectorRequirement{{
 		Key:      "foo",
 		Operator: v1.LabelSelectorOpIn,
 		Values:   []string{"bar", "baz"},
@@ -194,18 +194,18 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 		return out
 	}
 	tc := []struct {
-		in        []v1.LabelSelectorRequirement
+		in        []v1.NumericAwareSelectorRequirement
 		out       labels.Selector
 		expectErr bool
 	}{
 		{in: nil, out: labels.Nothing()},
-		{in: []v1.LabelSelectorRequirement{}, out: labels.Nothing()},
+		{in: []v1.NumericAwareSelectorRequirement{}, out: labels.Nothing()},
 		{
 			in:  matchExpressions,
 			out: mustParse("foo in (baz,bar)"),
 		},
 		{
-			in: []v1.LabelSelectorRequirement{{
+			in: []v1.NumericAwareSelectorRequirement{{
 				Key:      "foo",
 				Operator: v1.LabelSelectorOpExists,
 				Values:   []string{"bar", "baz"},
@@ -213,17 +213,17 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 			expectErr: true,
 		},
 		{
-			in: []v1.LabelSelectorRequirement{{
+			in: []v1.NumericAwareSelectorRequirement{{
 				Key:      "foo",
-				Operator: v1.LabelSelectorOpGt,
+				Operator: v1.LabelSelectorOpNumericallyGreaterthan,
 				Values:   []string{"1"},
 			}},
 			out: mustParse("foo>1"),
 		},
 		{
-			in: []v1.LabelSelectorRequirement{{
+			in: []v1.NumericAwareSelectorRequirement{{
 				Key:      "bar",
-				Operator: v1.LabelSelectorOpLt,
+				Operator: v1.LabelSelectorOpNumericallyLessthan,
 				Values:   []string{"7"},
 			}},
 			out: mustParse("bar<7"),
@@ -231,7 +231,7 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 	}
 
 	for i, tc := range tc {
-		out, err := LabelSelectorRequirementsAsSelector(tc.in)
+		out, err := NumericAwareSelectorRequirementsAsSelector(tc.in)
 		if err == nil && tc.expectErr {
 			t.Errorf("[%v]expected error but got none.", i)
 		}
@@ -551,7 +551,7 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val"},
@@ -568,7 +568,7 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -587,7 +587,7 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1, host_2"},
@@ -606,7 +606,7 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -625,7 +625,7 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -644,12 +644,12 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -668,12 +668,12 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -694,12 +694,12 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -720,14 +720,14 @@ func TestMatchNodeSelectorTerms(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val"},
 						}},
 					},
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1"},
@@ -783,7 +783,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val", "label_2_val"},
@@ -795,7 +795,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_1_val", "label_2_val"},
@@ -808,7 +808,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_2_val", "label_1_val"},
@@ -820,7 +820,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_2_val", "label_1_val"},
@@ -833,7 +833,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1", "host_2"},
@@ -847,7 +847,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_1", "host_2"},
@@ -860,7 +860,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_2", "host_1"},
@@ -874,7 +874,7 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_2", "host_1"},
@@ -887,12 +887,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val", "label_2_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1", "host_2"},
@@ -908,12 +908,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_1_val", "label_2_val"},
 					}},
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_1", "host_2"},
@@ -926,12 +926,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_1_val", "label_2_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_2", "host_1"},
@@ -947,12 +947,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_1_val", "label_2_val"},
 					}},
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_2", "host_1"},
@@ -965,12 +965,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_2_val", "label_1_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_1", "host_2"},
@@ -986,12 +986,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_2_val", "label_1_val"},
 					}},
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_1", "host_2"},
@@ -1004,12 +1004,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			args: args{
 				nodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 							Key:      "label_1",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"label_2_val", "label_1_val"},
 						}},
-						MatchFields: []v1.LabelSelectorRequirement{{
+						MatchFields: []v1.NumericAwareSelectorRequirement{{
 							Key:      "metadata.name",
 							Operator: v1.LabelSelectorOpIn,
 							Values:   []string{"host_2", "host_1"},
@@ -1025,12 +1025,12 @@ func TestMatchNodeSelectorTermsStateless(t *testing.T) {
 			},
 			want: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "label_1",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"label_2_val", "label_1_val"},
 					}},
-					MatchFields: []v1.LabelSelectorRequirement{{
+					MatchFields: []v1.NumericAwareSelectorRequirement{{
 						Key:      "metadata.name",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"host_2", "host_1"},
@@ -1209,22 +1209,22 @@ func TestMatchTopologySelectorTerms(t *testing.T) {
 	}
 }
 
-func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
+func TestNumericAwareSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 	tests := []struct {
 		name   string
-		reqs   []v1.LabelSelectorRequirement
+		reqs   []v1.NumericAwareSelectorRequirement
 		terms  []v1.NodeSelectorTerm
 		exists bool
 	}{
 		{
 			name:   "empty set of keys in empty set of terms",
-			reqs:   []v1.LabelSelectorRequirement{},
+			reqs:   []v1.NumericAwareSelectorRequirement{},
 			terms:  []v1.NodeSelectorTerm{},
 			exists: false,
 		},
 		{
 			name: "key existence in terms with all keys specified",
-			reqs: []v1.LabelSelectorRequirement{
+			reqs: []v1.NumericAwareSelectorRequirement{
 				{
 					Key:      "key1",
 					Operator: v1.LabelSelectorOpIn,
@@ -1238,7 +1238,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 			},
 			terms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key2",
 							Operator: v1.LabelSelectorOpIn,
@@ -1252,7 +1252,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 					},
 				},
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key1",
 							Operator: v1.LabelSelectorOpIn,
@@ -1270,7 +1270,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 		},
 		{
 			name: "key existence in terms with one of the keys specfied",
-			reqs: []v1.LabelSelectorRequirement{
+			reqs: []v1.NumericAwareSelectorRequirement{
 				{
 					Key:      "key1",
 					Operator: v1.LabelSelectorOpIn,
@@ -1294,7 +1294,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 			},
 			terms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key2",
 							Operator: v1.LabelSelectorOpIn,
@@ -1307,7 +1307,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 					},
 				},
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key5",
 							Operator: v1.LabelSelectorOpIn,
@@ -1320,7 +1320,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 		},
 		{
 			name: "key existence in terms without any of the keys specified",
-			reqs: []v1.LabelSelectorRequirement{
+			reqs: []v1.NumericAwareSelectorRequirement{
 				{
 					Key:      "key2",
 					Operator: v1.LabelSelectorOpIn,
@@ -1334,7 +1334,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 			},
 			terms: []v1.NodeSelectorTerm{
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key4",
 							Operator: v1.LabelSelectorOpIn,
@@ -1348,7 +1348,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 					},
 				},
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key6",
 							Operator: v1.LabelSelectorOpIn,
@@ -1357,7 +1357,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 					},
 				},
 				{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "key7",
 							Operator: v1.LabelSelectorOpIn,
@@ -1375,7 +1375,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 		},
 		{
 			name: "key existence in empty set of terms",
-			reqs: []v1.LabelSelectorRequirement{
+			reqs: []v1.NumericAwareSelectorRequirement{
 				{
 					Key:      "key2",
 					Operator: v1.LabelSelectorOpIn,
@@ -1392,7 +1392,7 @@ func TestLabelSelectorRequirementKeyExistsInNodeSelectorTerms(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		keyExists := LabelSelectorRequirementKeysExistInNodeSelectorTerms(test.reqs, test.terms)
+		keyExists := NumericAwareSelectorRequirementKeysExistInNodeSelectorTerms(test.reqs, test.terms)
 		if test.exists != keyExists {
 			t.Errorf("test %s failed. Expected %v but got %v", test.name, test.exists, keyExists)
 		}

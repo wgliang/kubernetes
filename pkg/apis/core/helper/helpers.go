@@ -364,9 +364,9 @@ func containsAccessMode(modes []core.PersistentVolumeAccessMode, mode core.Persi
 	return false
 }
 
-// LabelSelectorRequirementsAsSelector converts the []LabelSelectorRequirement core type into a struct that implements
+// NumericAwareSelectorRequirementsAsSelector converts the []NumericAwareSelectorRequirement core type into a struct that implements
 // labels.Selector.
-func LabelSelectorRequirementsAsSelector(nsm []core.LabelSelectorRequirement) (labels.Selector, error) {
+func NumericAwareSelectorRequirementsAsSelector(nsm []core.NumericAwareSelectorRequirement) (labels.Selector, error) {
 	if len(nsm) == 0 {
 		return labels.Nothing(), nil
 	}
@@ -382,9 +382,9 @@ func LabelSelectorRequirementsAsSelector(nsm []core.LabelSelectorRequirement) (l
 			op = selection.Exists
 		case core.LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case core.LabelSelectorOpGt:
+		case core.LabelSelectorOpNumericallyGreaterthan:
 			op = selection.GreaterThan
-		case core.LabelSelectorOpLt:
+		case core.LabelSelectorOpNumericallyLessthan:
 			op = selection.LessThan
 		default:
 			return nil, fmt.Errorf("%q is not a valid label selector operator", expr.Operator)
@@ -398,9 +398,9 @@ func LabelSelectorRequirementsAsSelector(nsm []core.LabelSelectorRequirement) (l
 	return selector, nil
 }
 
-// LabelSelectorRequirementsAsFieldSelector converts the []LabelSelectorRequirement core type into a struct that implements
+// NumericAwareSelectorRequirementsAsFieldSelector converts the []NumericAwareSelectorRequirement core type into a struct that implements
 // fields.Selector.
-func LabelSelectorRequirementsAsFieldSelector(nsm []core.LabelSelectorRequirement) (fields.Selector, error) {
+func NumericAwareSelectorRequirementsAsFieldSelector(nsm []core.NumericAwareSelectorRequirement) (fields.Selector, error) {
 	if len(nsm) == 0 {
 		return fields.Nothing(), nil
 	}

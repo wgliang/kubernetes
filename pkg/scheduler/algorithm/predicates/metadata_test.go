@@ -122,7 +122,7 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "foo",
 							Operator: v1.LabelSelectorOpIn,
@@ -138,7 +138,7 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "foo",
 							Operator: v1.LabelSelectorOpIn,
@@ -150,7 +150,7 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 			},
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "service",
 							Operator: v1.LabelSelectorOpNotIn,
@@ -166,7 +166,7 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 		RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "foo",
 							Operator: v1.LabelSelectorOpIn,
@@ -178,7 +178,7 @@ func TestPredicateMetadata_AddRemovePod(t *testing.T) {
 			},
 			{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      "service",
 							Operator: v1.LabelSelectorOpNotIn,
@@ -534,7 +534,7 @@ func TestGetTPMapMatchingIncomingAffinityAntiAffinity(t *testing.T) {
 		for _, key := range keys {
 			terms = append(terms, v1.PodAffinityTerm{
 				LabelSelector: &v1.PodSelector{
-					MatchExpressions: []v1.LabelSelectorRequirement{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{
 						{
 							Key:      key,
 							Operator: v1.LabelSelectorOpExists,

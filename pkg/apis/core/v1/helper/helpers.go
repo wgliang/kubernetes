@@ -200,9 +200,9 @@ func containsAccessMode(modes []v1.PersistentVolumeAccessMode, mode v1.Persisten
 	return false
 }
 
-// LabelSelectorRequirementsAsSelector converts the []LabelSelectorRequirement api type into a struct that implements
+// NumericAwareSelectorRequirementsAsSelector converts the []NumericAwareSelectorRequirement api type into a struct that implements
 // labels.Selector.
-func LabelSelectorRequirementsAsSelector(nsm []v1.LabelSelectorRequirement) (labels.Selector, error) {
+func NumericAwareSelectorRequirementsAsSelector(nsm []v1.NumericAwareSelectorRequirement) (labels.Selector, error) {
 	if len(nsm) == 0 {
 		return labels.Nothing(), nil
 	}
@@ -218,9 +218,9 @@ func LabelSelectorRequirementsAsSelector(nsm []v1.LabelSelectorRequirement) (lab
 			op = selection.Exists
 		case v1.LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case v1.LabelSelectorOpGt:
+		case v1.LabelSelectorOpNumericallyGreaterthan:
 			op = selection.GreaterThan
-		case v1.LabelSelectorOpLt:
+		case v1.LabelSelectorOpNumericallyLessthan:
 			op = selection.LessThan
 		default:
 			return nil, fmt.Errorf("%q is not a valid label selector operator", expr.Operator)
@@ -234,9 +234,9 @@ func LabelSelectorRequirementsAsSelector(nsm []v1.LabelSelectorRequirement) (lab
 	return selector, nil
 }
 
-// LabelSelectorRequirementsAsFieldSelector converts the []LabelSelectorRequirement core type into a struct that implements
+// NumericAwareSelectorRequirementsAsFieldSelector converts the []NumericAwareSelectorRequirement core type into a struct that implements
 // fields.Selector.
-func LabelSelectorRequirementsAsFieldSelector(nsm []v1.LabelSelectorRequirement) (fields.Selector, error) {
+func NumericAwareSelectorRequirementsAsFieldSelector(nsm []v1.NumericAwareSelectorRequirement) (fields.Selector, error) {
 	if len(nsm) == 0 {
 		return fields.Nothing(), nil
 	}
@@ -266,8 +266,8 @@ func LabelSelectorRequirementsAsFieldSelector(nsm []v1.LabelSelectorRequirement)
 	return fields.AndSelectors(selectors...), nil
 }
 
-// LabelSelectorRequirementKeysExistInNodeSelectorTerms checks if a NodeSelectorTerm with key is already specified in terms
-func LabelSelectorRequirementKeysExistInNodeSelectorTerms(reqs []v1.LabelSelectorRequirement, terms []v1.NodeSelectorTerm) bool {
+// NumericAwareSelectorRequirementKeysExistInNodeSelectorTerms checks if a NodeSelectorTerm with key is already specified in terms
+func NumericAwareSelectorRequirementKeysExistInNodeSelectorTerms(reqs []v1.NumericAwareSelectorRequirement, terms []v1.NodeSelectorTerm) bool {
 	for _, req := range reqs {
 		for _, term := range terms {
 			for _, r := range term.MatchExpressions {
@@ -294,14 +294,15 @@ func MatchNodeSelectorTerms(
 		}
 
 		if len(req.MatchExpressions) != 0 {
-			labelSelector, err := LabelSelectorRequirementsAsSelector(req.MatchExpressions)
+			// Should we be compatible `NumericAwareSelectorRequirement` and `NumericAwareSelectorRequirement` at the same time?
+			labelSelector, err := NumericAwareSelectorRequirementsAsSelector(req.MatchExpressions)
 			if err != nil || !labelSelector.Matches(nodeLabels) {
 				continue
 			}
 		}
 
 		if len(req.MatchFields) != 0 {
-			fieldSelector, err := LabelSelectorRequirementsAsFieldSelector(req.MatchFields)
+			fieldSelector, err := NumericAwareSelectorRequirementsAsFieldSelector(req.MatchFields)
 			if err != nil || !fieldSelector.Matches(nodeFields) {
 				continue
 			}
@@ -537,9 +538,9 @@ func PodSelectorAsSelector(ps *v1.PodSelector) (labels.Selector, error) {
 			op = selection.Exists
 		case v1.LabelSelectorOpDoesNotExist:
 			op = selection.DoesNotExist
-		case v1.LabelSelectorOpGt:
+		case v1.LabelSelectorOpNumericallyGreaterthan:
 			op = selection.GreaterThan
-		case v1.LabelSelectorOpLt:
+		case v1.LabelSelectorOpNumericallyLessthan:
 			op = selection.LessThan
 		default:
 			return nil, fmt.Errorf("%q is not a valid pod selector operator", expr.Operator)
@@ -573,7 +574,7 @@ func PodSelectorAsMap(ps *v1.PodSelector) (map[string]string, error) {
 			}
 			// Should we do anything in case this will override a previous key-value pair?
 			selector[expr.Key] = expr.Values[0]
-		case v1.LabelSelectorOpNotIn, v1.LabelSelectorOpExists, v1.LabelSelectorOpDoesNotExist, v1.LabelSelectorOpGt, v1.LabelSelectorOpLt:
+		case v1.LabelSelectorOpNotIn, v1.LabelSelectorOpExists, v1.LabelSelectorOpDoesNotExist, v1.LabelSelectorOpNumericallyGreaterthan, v1.LabelSelectorOpNumericallyLessthan:
 			return selector, fmt.Errorf("operator %q cannot be converted into the old label selector format", expr.Operator)
 		default:
 			return selector, fmt.Errorf("%q is not a valid selector operator", expr.Operator)
@@ -591,7 +592,7 @@ func ParseToPodSelector(selector string) (*v1.PodSelector, error) {
 
 	labelSelector := &v1.PodSelector{
 		MatchLabels:      map[string]string{},
-		MatchExpressions: []v1.LabelSelectorRequirement{},
+		MatchExpressions: []v1.NumericAwareSelectorRequirement{},
 	}
 	for _, req := range reqs {
 		var op v1.LabelSelectorOperator
@@ -615,13 +616,14 @@ func ParseToPodSelector(selector string) (*v1.PodSelector, error) {
 			op = v1.LabelSelectorOpExists
 		case selection.DoesNotExist:
 			op = v1.LabelSelectorOpDoesNotExist
-		case selection.GreaterThan, selection.LessThan:
-			// Adding a separate case for these operators to indicate that this is deliberate
-			return nil, fmt.Errorf("%q isn't supported in label selectors", req.Operator())
+		case selection.GreaterThan:
+			op = v1.LabelSelectorOpNumericallyGreaterthan
+		case selection.LessThan:
+			op = v1.LabelSelectorOpNumericallyLessthan
 		default:
 			return nil, fmt.Errorf("%q is not a valid label selector operator", req.Operator())
 		}
-		labelSelector.MatchExpressions = append(labelSelector.MatchExpressions, v1.LabelSelectorRequirement{
+		labelSelector.MatchExpressions = append(labelSelector.MatchExpressions, v1.NumericAwareSelectorRequirement{
 			Key:      req.Key(),
 			Operator: op,
 			Values:   req.Values().List(),

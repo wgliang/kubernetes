@@ -150,7 +150,7 @@ func SplitByAvailablePods(minReadySeconds int32, pods []*v1.Pod) ([]*v1.Pod, []*
 // NodeAffinity of the given affinity with a new NodeAffinity that selects the given nodeName.
 // Note that this function assumes that no NodeAffinity conflicts with the selected nodeName.
 func ReplaceDaemonSetPodNodeNameNodeAffinity(affinity *v1.Affinity, nodename string) *v1.Affinity {
-	nodeSelReq := v1.LabelSelectorRequirement{
+	nodeSelReq := v1.NumericAwareSelectorRequirement{
 		Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 		Operator: v1.LabelSelectorOpIn,
 		Values:   []string{nodename},
@@ -159,7 +159,7 @@ func ReplaceDaemonSetPodNodeNameNodeAffinity(affinity *v1.Affinity, nodename str
 	nodeSelector := &v1.NodeSelector{
 		NodeSelectorTerms: []v1.NodeSelectorTerm{
 			{
-				MatchFields: []v1.LabelSelectorRequirement{nodeSelReq},
+				MatchFields: []v1.NumericAwareSelectorRequirement{nodeSelReq},
 			},
 		},
 	}
@@ -189,7 +189,7 @@ func ReplaceDaemonSetPodNodeNameNodeAffinity(affinity *v1.Affinity, nodename str
 	// Replace node selector with the new one.
 	nodeAffinity.RequiredDuringSchedulingIgnoredDuringExecution.NodeSelectorTerms = []v1.NodeSelectorTerm{
 		{
-			MatchFields: []v1.LabelSelectorRequirement{nodeSelReq},
+			MatchFields: []v1.NumericAwareSelectorRequirement{nodeSelReq},
 		},
 	}
 

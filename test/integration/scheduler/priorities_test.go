@@ -59,7 +59,7 @@ func TestNodeAffinity(t *testing.T) {
 				PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{
 					{
 						Preference: v1.NodeSelectorTerm{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      labelKey,
 									Operator: v1.LabelSelectorOpIn,
@@ -134,7 +134,7 @@ func TestPodAffinity(t *testing.T) {
 					{
 						PodAffinityTerm: v1.PodAffinityTerm{
 							LabelSelector: &v1.PodSelector{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      labelKey,
 										Operator: v1.LabelSelectorOpIn,

@@ -118,8 +118,8 @@ func TestRemoveDuplicateAccessModes(t *testing.T) {
 	}
 }
 
-func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
-	matchExpressions := []core.LabelSelectorRequirement{{
+func TestNumericAwareSelectorRequirementsAsSelector(t *testing.T) {
+	matchExpressions := []core.NumericAwareSelectorRequirement{{
 		Key:      "foo",
 		Operator: core.LabelSelectorOpIn,
 		Values:   []string{"bar", "baz"},
@@ -132,18 +132,18 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 		return out
 	}
 	tc := []struct {
-		in        []core.LabelSelectorRequirement
+		in        []core.NumericAwareSelectorRequirement
 		out       labels.Selector
 		expectErr bool
 	}{
 		{in: nil, out: labels.Nothing()},
-		{in: []core.LabelSelectorRequirement{}, out: labels.Nothing()},
+		{in: []core.NumericAwareSelectorRequirement{}, out: labels.Nothing()},
 		{
 			in:  matchExpressions,
 			out: mustParse("foo in (baz,bar)"),
 		},
 		{
-			in: []core.LabelSelectorRequirement{{
+			in: []core.NumericAwareSelectorRequirement{{
 				Key:      "foo",
 				Operator: core.LabelSelectorOpExists,
 				Values:   []string{"bar", "baz"},
@@ -151,17 +151,17 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 			expectErr: true,
 		},
 		{
-			in: []core.LabelSelectorRequirement{{
+			in: []core.NumericAwareSelectorRequirement{{
 				Key:      "foo",
-				Operator: core.LabelSelectorOpGt,
+				Operator: core.LabelSelectorOpNumericallyGreaterthan,
 				Values:   []string{"1"},
 			}},
 			out: mustParse("foo>1"),
 		},
 		{
-			in: []core.LabelSelectorRequirement{{
+			in: []core.NumericAwareSelectorRequirement{{
 				Key:      "bar",
-				Operator: core.LabelSelectorOpLt,
+				Operator: core.LabelSelectorOpNumericallyLessthan,
 				Values:   []string{"7"},
 			}},
 			out: mustParse("bar<7"),
@@ -169,7 +169,7 @@ func TestLabelSelectorRequirementsAsSelector(t *testing.T) {
 	}
 
 	for i, tc := range tc {
-		out, err := LabelSelectorRequirementsAsSelector(tc.in)
+		out, err := NumericAwareSelectorRequirementsAsSelector(tc.in)
 		if err == nil && tc.expectErr {
 			t.Errorf("[%v]expected error but got none.", i)
 		}

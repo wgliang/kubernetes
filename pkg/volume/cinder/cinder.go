@@ -602,10 +602,10 @@ func (c *cinderVolumeProvisioner) Provision(selectedNode *v1.Node, allowedTopolo
 		pv.Spec.AccessModes = c.plugin.GetAccessModes()
 	}
 
-	requirements := make([]v1.LabelSelectorRequirement, 0)
+	requirements := make([]v1.NumericAwareSelectorRequirement, 0)
 	for k, v := range labels {
 		if v != "" {
-			requirements = append(requirements, v1.LabelSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: []string{v}})
+			requirements = append(requirements, v1.NumericAwareSelectorRequirement{Key: k, Operator: v1.LabelSelectorOpIn, Values: []string{v}})
 		}
 	}
 	if len(requirements) > 0 {

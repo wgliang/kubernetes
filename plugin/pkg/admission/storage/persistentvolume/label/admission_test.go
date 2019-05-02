@@ -206,7 +206,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -269,7 +269,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -335,7 +335,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -401,7 +401,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -470,7 +470,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -521,7 +521,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "c",
 											Operator: api.LabelSelectorOpIn,
@@ -554,7 +554,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "c",
 											Operator: api.LabelSelectorOpIn,
@@ -597,7 +597,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -643,7 +643,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,
@@ -724,7 +724,7 @@ func Test_PVLAdmission(t *testing.T) {
 						Required: &api.NodeSelector{
 							NodeSelectorTerms: []api.NodeSelectorTerm{
 								{
-									MatchExpressions: []api.LabelSelectorRequirement{
+									MatchExpressions: []api.NumericAwareSelectorRequirement{
 										{
 											Key:      "a",
 											Operator: api.LabelSelectorOpIn,

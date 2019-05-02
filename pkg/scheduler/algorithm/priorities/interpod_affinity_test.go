@@ -70,7 +70,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -91,7 +91,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 6,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -112,7 +112,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 8,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpNotIn,
@@ -130,7 +130,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 2,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpExists,
@@ -151,7 +151,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 			RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 				{
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "security",
 								Operator: v1.LabelSelectorOpIn,
@@ -162,7 +162,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					TopologyKey: "region",
 				}, {
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "security",
 								Operator: v1.LabelSelectorOpExists,
@@ -184,7 +184,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -206,7 +206,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -228,7 +228,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 8,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -247,7 +247,7 @@ func TestInterPodAffinityPriority(t *testing.T) {
 					Weight: 5,
 					PodAffinityTerm: v1.PodAffinityTerm{
 						LabelSelector: &v1.PodSelector{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "security",
 									Operator: v1.LabelSelectorOpIn,
@@ -546,7 +546,7 @@ func TestHardPodAffinitySymmetricWeight(t *testing.T) {
 			RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 				{
 					LabelSelector: &v1.PodSelector{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "service",
 								Operator: v1.LabelSelectorOpIn,

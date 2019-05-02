@@ -1377,7 +1377,7 @@ func TestNodeAffinityDaemonLaunchesPods(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      "color",
 										Operator: v1.LabelSelectorOpIn,
@@ -2112,7 +2112,7 @@ func TestNodeShouldRunDaemonPod(t *testing.T) {
 										RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 											NodeSelectorTerms: []v1.NodeSelectorTerm{
 												{
-													MatchExpressions: []v1.LabelSelectorRequirement{
+													MatchExpressions: []v1.NumericAwareSelectorRequirement{
 														{
 															Key:      "type",
 															Operator: v1.LabelSelectorOpIn,
@@ -2147,7 +2147,7 @@ func TestNodeShouldRunDaemonPod(t *testing.T) {
 										RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 											NodeSelectorTerms: []v1.NodeSelectorTerm{
 												{
-													MatchExpressions: []v1.LabelSelectorRequirement{
+													MatchExpressions: []v1.NumericAwareSelectorRequirement{
 														{
 															Key:      "type",
 															Operator: v1.LabelSelectorOpIn,
@@ -2555,10 +2555,10 @@ func TestDeleteUnscheduledPodForNotExistingNode(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.NodeSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
-										Operator: v1.NodeSelectorOpIn,
+										Operator: v1.LabelSelectorOpIn,
 										Values:   []string{"node-2"},
 									},
 								},

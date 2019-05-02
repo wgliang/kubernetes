@@ -184,7 +184,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -203,7 +203,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      v1.LabelHostname,
 										Operator: v1.LabelSelectorOpIn,
@@ -221,7 +221,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -240,7 +240,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{
 						{
 							Preference: v1.NodeSelectorTerm{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      v1.LabelHostname,
 										Operator: v1.LabelSelectorOpIn,
@@ -258,7 +258,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{
 						{
 							Preference: v1.NodeSelectorTerm{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      v1.LabelHostname,
 										Operator: v1.LabelSelectorOpIn,
@@ -271,7 +271,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -290,7 +290,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -308,7 +308,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -329,7 +329,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -348,7 +348,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchExpressions: []v1.LabelSelectorRequirement{
+								MatchExpressions: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      "hostname",
 										Operator: v1.LabelSelectorOpIn,
@@ -357,7 +357,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 								},
 							},
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -375,7 +375,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -394,7 +394,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpNotIn,
@@ -412,7 +412,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -431,7 +431,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										// NOTE: Only `metadata.name` is valid key in `MatchFields` in 1.11;
 										//       added this case for compatibility: the feature works as normal
@@ -452,7 +452,7 @@ func TestReplaceDaemonSetPodNodeNameNodeAffinity(t *testing.T) {
 					RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 						NodeSelectorTerms: []v1.NodeSelectorTerm{
 							{
-								MatchFields: []v1.LabelSelectorRequirement{
+								MatchFields: []v1.NumericAwareSelectorRequirement{
 									{
 										Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 										Operator: v1.LabelSelectorOpIn,
@@ -518,7 +518,7 @@ func TestGetTargetNodeName(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 									NodeSelectorTerms: []v1.NodeSelectorTerm{
 										{
-											MatchFields: []v1.LabelSelectorRequirement{
+											MatchFields: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 													Operator: v1.LabelSelectorOpIn,
@@ -546,7 +546,7 @@ func TestGetTargetNodeName(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 									NodeSelectorTerms: []v1.NodeSelectorTerm{
 										{
-											MatchFields: []v1.LabelSelectorRequirement{
+											MatchFields: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 													Operator: v1.LabelSelectorOpIn,

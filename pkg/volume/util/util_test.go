@@ -71,7 +71,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{},
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{},
 						},
 					},
 				},
@@ -84,7 +84,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key3",
 									Operator: v1.LabelSelectorOpIn,
@@ -93,7 +93,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 							},
 						},
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key2",
 									Operator: v1.LabelSelectorOpIn,
@@ -112,7 +112,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key1",
 									Operator: v1.LabelSelectorOpIn,
@@ -136,7 +136,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key1",
 									Operator: v1.LabelSelectorOpIn,
@@ -160,7 +160,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key1",
 									Operator: v1.LabelSelectorOpIn,
@@ -184,7 +184,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 				Required: &v1.NodeSelector{
 					NodeSelectorTerms: []v1.NodeSelectorTerm{
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key3",
 									Operator: v1.LabelSelectorOpIn,
@@ -193,7 +193,7 @@ func TestCheckVolumeNodeAffinity(t *testing.T) {
 							},
 						},
 						{
-							MatchExpressions: []v1.LabelSelectorRequirement{
+							MatchExpressions: []v1.NumericAwareSelectorRequirement{
 								{
 									Key:      "test-key2",
 									Operator: v1.LabelSelectorOpIn,

@@ -2277,9 +2277,9 @@ type NodeSelector struct {
 // The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
 type NodeSelectorTerm struct {
 	// A list of node selector requirements by node's labels.
-	MatchExpressions []LabelSelectorRequirement
+	MatchExpressions []NumericAwareSelectorRequirement
 	// A list of node selector requirements by node's fields.
-	MatchFields []LabelSelectorRequirement
+	MatchFields []NumericAwareSelectorRequirement
 }
 
 // A pod selector is a label query over a set of pod resources. The result of matchLabels and
@@ -2293,18 +2293,18 @@ type PodSelector struct {
 	MatchLabels map[string]string
 	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +optional
-	MatchExpressions []LabelSelectorRequirement
+	MatchExpressions []NumericAwareSelectorRequirement
 }
 
-// A pod selector requirement is a selector that contains values, a key, and an operator that
+// A numeric aware selector requirement is a selector that contains values, a key, and an operator that
 // relates the key and values.
-type LabelSelectorRequirement struct {
+type NumericAwareSelectorRequirement struct {
 	// key is the label key that the selector applies to.
 	// +patchMergeKey=key
 	// +patchStrategy=merge
 	Key string
 	// operator represents a key's relationship to a set of values.
-	// Valid operators are In, NotIn, Exists and DoesNotExist.
+	// Valid operators are In, NotIn, Exists, DoesNotExist, Gt and Lt.
 	Operator LabelSelectorOperator
 	// values is an array of string values. If the operator is In or NotIn,
 	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
@@ -2314,16 +2314,17 @@ type LabelSelectorRequirement struct {
 	Values []string
 }
 
-// A pod selector operator is the set of operators that can be used in a pod selector requirement.
+// A label selector operator is the set of operators that can be used in a
+// numeric aware selector requirement.
 type LabelSelectorOperator string
 
 const (
-	LabelSelectorOpIn           LabelSelectorOperator = "In"
-	LabelSelectorOpNotIn        LabelSelectorOperator = "NotIn"
-	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
-	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
-	LabelSelectorOpGt           LabelSelectorOperator = "Gt"
-	LabelSelectorOpLt           LabelSelectorOperator = "Lt"
+	LabelSelectorOpIn                     LabelSelectorOperator = "In"
+	LabelSelectorOpNotIn                  LabelSelectorOperator = "NotIn"
+	LabelSelectorOpExists                 LabelSelectorOperator = "Exists"
+	LabelSelectorOpDoesNotExist           LabelSelectorOperator = "DoesNotExist"
+	LabelSelectorOpNumericallyGreaterthan LabelSelectorOperator = "Gt"
+	LabelSelectorOpNumericallyLessthan    LabelSelectorOperator = "Lt"
 )
 
 // A topology selector term represents the result of label queries.

@@ -888,10 +888,10 @@ func makeLocalPVConfig(config *localTestConfig, volume *localTestVolume) framewo
 			Required: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      nodeKey,
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{nodeValue},
 							},
 						},
@@ -949,10 +949,10 @@ func makeLocalPodWithNodeAffinity(config *localTestConfig, volume *localTestVolu
 			RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 				NodeSelectorTerms: []v1.NodeSelectorTerm{
 					{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "kubernetes.io/hostname",
-								Operator: v1.NodeSelectorOpIn,
+								Operator: v1.LabelSelectorOpIn,
 								Values:   []string{nodeName},
 							},
 						},
@@ -1090,11 +1090,11 @@ func createStatefulSet(config *localTestConfig, ssReplicas int32, volumeCount in
 
 	podAffinityTerms := []v1.PodAffinityTerm{
 		{
-			LabelSelector: &metav1.LabelSelector{
-				MatchExpressions: []metav1.LabelSelectorRequirement{
+			LabelSelector: &v1.PodSelector{
+				MatchExpressions: []v1.NumericAwareSelectorRequirement{
 					{
 						Key:      "app",
-						Operator: metav1.LabelSelectorOpIn,
+						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"local-volume-test"},
 					},
 				},
