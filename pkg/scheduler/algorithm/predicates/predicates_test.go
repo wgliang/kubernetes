@@ -1002,7 +1002,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1030,7 +1030,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "kernel-version",
 												Operator: v1.LabelSelectorOpGt,
@@ -1059,7 +1059,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "mem-type",
 												Operator: v1.LabelSelectorOpNotIn,
@@ -1087,7 +1087,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "GPU",
 												Operator: v1.LabelSelectorOpExists,
@@ -1114,7 +1114,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1178,7 +1178,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{},
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{},
 									},
 								},
 							},
@@ -1224,7 +1224,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "GPU",
 												Operator: v1.LabelSelectorOpExists,
@@ -1255,7 +1255,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "GPU",
 												Operator: v1.LabelSelectorOpExists,
@@ -1286,7 +1286,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1295,7 +1295,7 @@ func TestPodFitsSelector(t *testing.T) {
 										},
 									},
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "diffkey",
 												Operator: v1.LabelSelectorOpIn,
@@ -1326,7 +1326,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -1357,7 +1357,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -1385,7 +1385,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpNotIn,
@@ -1413,7 +1413,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
@@ -1439,7 +1439,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
@@ -1465,7 +1465,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
@@ -1474,7 +1474,7 @@ func TestPodFitsSelector(t *testing.T) {
 										},
 									},
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1501,14 +1501,14 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"node_1"},
 											},
 										},
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1535,14 +1535,14 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
 												Values:   []string{"node_1"},
 											},
 										},
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1569,7 +1569,7 @@ func TestPodFitsSelector(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchFields: []v1.LabelSelectorRequirement{
+										MatchFields: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      schedulerapi.NodeFieldSelectorKeyNodeName,
 												Operator: v1.LabelSelectorOpIn,
@@ -1578,7 +1578,7 @@ func TestPodFitsSelector(t *testing.T) {
 										},
 									},
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -1990,7 +1990,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2021,7 +2021,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpNotIn,
@@ -2052,7 +2052,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2084,7 +2084,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2115,7 +2115,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpExists,
@@ -2128,7 +2128,7 @@ func TestInterPodAffinity(t *testing.T) {
 									TopologyKey: "region",
 								}, {
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2163,7 +2163,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpExists,
@@ -2176,7 +2176,7 @@ func TestInterPodAffinity(t *testing.T) {
 									TopologyKey: "region",
 								}, {
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2212,7 +2212,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2228,7 +2228,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2259,7 +2259,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2275,7 +2275,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2299,7 +2299,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "service",
 													Operator: v1.LabelSelectorOpIn,
@@ -2331,7 +2331,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2347,7 +2347,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2379,7 +2379,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2395,7 +2395,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -2419,7 +2419,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "service",
 													Operator: v1.LabelSelectorOpIn,
@@ -2452,7 +2452,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpNotIn,
@@ -2487,7 +2487,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "service",
 													Operator: v1.LabelSelectorOpIn,
@@ -2523,7 +2523,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "service",
 													Operator: v1.LabelSelectorOpNotIn,
@@ -2555,7 +2555,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpExists,
@@ -2566,7 +2566,7 @@ func TestInterPodAffinity(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "security",
 												Operator: v1.LabelSelectorOpExists,
@@ -2589,7 +2589,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "security",
 													Operator: v1.LabelSelectorOpExists,
@@ -2618,7 +2618,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpExists,
@@ -2629,7 +2629,7 @@ func TestInterPodAffinity(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "security",
 												Operator: v1.LabelSelectorOpExists,
@@ -2653,7 +2653,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "security",
 													Operator: v1.LabelSelectorOpExists,
@@ -2682,7 +2682,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "security",
 												Operator: v1.LabelSelectorOpExists,
@@ -2706,7 +2706,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "service",
 													Operator: v1.LabelSelectorOpExists,
@@ -2717,7 +2717,7 @@ func TestInterPodAffinity(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "security",
 													Operator: v1.LabelSelectorOpExists,
@@ -2746,7 +2746,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "abc",
 												Operator: v1.LabelSelectorOpExists,
@@ -2757,7 +2757,7 @@ func TestInterPodAffinity(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "def",
 												Operator: v1.LabelSelectorOpExists,
@@ -2781,7 +2781,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "abc",
 													Operator: v1.LabelSelectorOpExists,
@@ -2792,7 +2792,7 @@ func TestInterPodAffinity(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "def",
 													Operator: v1.LabelSelectorOpExists,
@@ -2821,7 +2821,7 @@ func TestInterPodAffinity(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "abc",
 												Operator: v1.LabelSelectorOpExists,
@@ -2832,7 +2832,7 @@ func TestInterPodAffinity(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "def",
 												Operator: v1.LabelSelectorOpExists,
@@ -2856,7 +2856,7 @@ func TestInterPodAffinity(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "abc",
 													Operator: v1.LabelSelectorOpExists,
@@ -2867,7 +2867,7 @@ func TestInterPodAffinity(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "def",
 													Operator: v1.LabelSelectorOpExists,
@@ -2952,7 +2952,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -2991,7 +2991,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: &v1.NodeSelector{
 								NodeSelectorTerms: []v1.NodeSelectorTerm{
 									{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "hostname",
 												Operator: v1.LabelSelectorOpNotIn,
@@ -3006,7 +3006,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3050,7 +3050,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3062,7 +3062,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -3098,7 +3098,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3135,7 +3135,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3147,7 +3147,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "service",
 												Operator: v1.LabelSelectorOpIn,
@@ -3187,7 +3187,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3227,7 +3227,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3252,7 +3252,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpIn,
@@ -3301,7 +3301,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpIn,
@@ -3333,7 +3333,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpIn,
@@ -3379,7 +3379,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpExists,
@@ -3413,7 +3413,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3460,7 +3460,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpExists,
@@ -3483,7 +3483,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "bar",
 													Operator: v1.LabelSelectorOpExists,
@@ -3520,7 +3520,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3531,7 +3531,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "bar",
 												Operator: v1.LabelSelectorOpExists,
@@ -3586,7 +3586,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpExists,
@@ -3597,7 +3597,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "bar",
 													Operator: v1.LabelSelectorOpExists,
@@ -3633,7 +3633,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3644,7 +3644,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "bar",
 												Operator: v1.LabelSelectorOpExists,
@@ -3692,7 +3692,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpExists,
@@ -3703,7 +3703,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "bar",
 													Operator: v1.LabelSelectorOpExists,
@@ -3740,7 +3740,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3751,7 +3751,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "bar",
 												Operator: v1.LabelSelectorOpExists,
@@ -3800,7 +3800,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "foo",
 													Operator: v1.LabelSelectorOpExists,
@@ -3811,7 +3811,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "labelA",
 													Operator: v1.LabelSelectorOpExists,
@@ -3833,7 +3833,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "bar",
 													Operator: v1.LabelSelectorOpExists,
@@ -3844,7 +3844,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 									},
 									{
 										LabelSelector: &v1.PodSelector{
-											MatchExpressions: []v1.LabelSelectorRequirement{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
 												{
 													Key:      "labelB",
 													Operator: v1.LabelSelectorOpExists,
@@ -3883,7 +3883,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3894,7 +3894,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "bar",
 												Operator: v1.LabelSelectorOpExists,
@@ -3938,7 +3938,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "foo",
 												Operator: v1.LabelSelectorOpExists,
@@ -3949,7 +3949,7 @@ func TestInterPodAffinityWithMultipleNodes(t *testing.T) {
 								},
 								{
 									LabelSelector: &v1.PodSelector{
-										MatchExpressions: []v1.LabelSelectorRequirement{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
 											{
 												Key:      "bar",
 												Operator: v1.LabelSelectorOpExists,

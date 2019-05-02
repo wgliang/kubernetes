@@ -38,7 +38,7 @@ func TestNodeAffinityPriority(t *testing.T) {
 			PreferredDuringSchedulingIgnoredDuringExecution: []v1.PreferredSchedulingTerm{{
 				Weight: 2,
 				Preference: v1.NodeSelectorTerm{
-					MatchExpressions: []v1.LabelSelectorRequirement{{
+					MatchExpressions: []v1.NumericAwareSelectorRequirement{{
 						Key:      "foo",
 						Operator: v1.LabelSelectorOpIn,
 						Values:   []string{"bar"},
@@ -54,7 +54,7 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 2,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "foo",
 								Operator: v1.LabelSelectorOpIn,
@@ -66,7 +66,7 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 4,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "key",
 								Operator: v1.LabelSelectorOpIn,
@@ -78,7 +78,7 @@ func TestNodeAffinityPriority(t *testing.T) {
 				{
 					Weight: 5,
 					Preference: v1.NodeSelectorTerm{
-						MatchExpressions: []v1.LabelSelectorRequirement{
+						MatchExpressions: []v1.NumericAwareSelectorRequirement{
 							{
 								Key:      "foo",
 								Operator: v1.LabelSelectorOpIn,

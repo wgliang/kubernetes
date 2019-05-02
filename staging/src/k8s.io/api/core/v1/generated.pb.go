@@ -93,6 +93,7 @@ limitations under the License.
 		ISCSIVolumeSource
 		KeyToPath
 		LabelSelectorRequirement
+		NumericAwareSelectorRequirement
 		Lifecycle
 		LimitRange
 		LimitRangeItem
@@ -552,6 +553,12 @@ func (*KeyToPath) Descriptor() ([]byte, []int) { return fileDescriptorGenerated,
 func (m *LabelSelectorRequirement) Reset()      { *m = LabelSelectorRequirement{} }
 func (*LabelSelectorRequirement) ProtoMessage() {}
 func (*LabelSelectorRequirement) Descriptor() ([]byte, []int) {
+	return fileDescriptorGenerated, []int{68}
+}
+
+func (m *NumericAwareSelectorRequirement) Reset()      { *m = NumericAwareSelectorRequirement{} }
+func (*NumericAwareSelectorRequirement) ProtoMessage() {}
+func (*NumericAwareSelectorRequirement) Descriptor() ([]byte, []int) {
 	return fileDescriptorGenerated, []int{68}
 }
 
@@ -1185,6 +1192,7 @@ func init() {
 	proto.RegisterType((*ISCSIVolumeSource)(nil), "k8s.io.api.core.v1.ISCSIVolumeSource")
 	proto.RegisterType((*KeyToPath)(nil), "k8s.io.api.core.v1.KeyToPath")
 	proto.RegisterType((*LabelSelectorRequirement)(nil), "k8s.io.api.core.v1.LabelSelectorRequirement")
+	proto.RegisterType((*NumericAwareSelectorRequirement)(nil), "k8s.io.api.core.v1.NumericAwareSelectorRequirement")
 	proto.RegisterType((*Lifecycle)(nil), "k8s.io.api.core.v1.Lifecycle")
 	proto.RegisterType((*LimitRange)(nil), "k8s.io.api.core.v1.LimitRange")
 	proto.RegisterType((*LimitRangeItem)(nil), "k8s.io.api.core.v1.LimitRangeItem")
@@ -4527,6 +4535,47 @@ func (m *LabelSelectorRequirement) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LabelSelectorRequirement) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	dAtA[i] = 0xa
+	i++
+	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Key)))
+	i += copy(dAtA[i:], m.Key)
+	dAtA[i] = 0x12
+	i++
+	i = encodeVarintGenerated(dAtA, i, uint64(len(m.Operator)))
+	i += copy(dAtA[i:], m.Operator)
+	if len(m.Values) > 0 {
+		for _, s := range m.Values {
+			dAtA[i] = 0x1a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	return i, nil
+}
+
+func (m *NumericAwareSelectorRequirement) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NumericAwareSelectorRequirement) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -12368,6 +12417,22 @@ func (m *LabelSelectorRequirement) Size() (n int) {
 	return n
 }
 
+func (m *NumericAwareSelectorRequirement) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Key)
+	n += 1 + l + sovGenerated(uint64(l))
+	l = len(m.Operator)
+	n += 1 + l + sovGenerated(uint64(l))
+	if len(m.Values) > 0 {
+		for _, s := range m.Values {
+			l = len(s)
+			n += 1 + l + sovGenerated(uint64(l))
+		}
+	}
+	return n
+}
+
 func (m *Lifecycle) Size() (n int) {
 	var l int
 	_ = l
@@ -15735,6 +15800,18 @@ func (this *LabelSelectorRequirement) String() string {
 	}, "")
 	return s
 }
+func (this *NumericAwareSelectorRequirement) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NumericAwareSelectorRequirement{`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`Operator:` + fmt.Sprintf("%v", this.Operator) + `,`,
+		`Values:` + fmt.Sprintf("%v", this.Values) + `,`,
+		`}`,
+	}, "")
+	return s
+}
 func (this *Lifecycle) String() string {
 	if this == nil {
 		return "nil"
@@ -16089,8 +16166,8 @@ func (this *NodeSelectorTerm) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&NodeSelectorTerm{`,
-		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "LabelSelectorRequirement", "LabelSelectorRequirement", 1), `&`, ``, 1) + `,`,
-		`MatchFields:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchFields), "LabelSelectorRequirement", "LabelSelectorRequirement", 1), `&`, ``, 1) + `,`,
+		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
+		`MatchFields:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchFields), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -16592,7 +16669,7 @@ func (this *PodSelector) String() string {
 	mapStringForMatchLabels += "}"
 	s := strings.Join([]string{`&PodSelector{`,
 		`MatchLabels:` + mapStringForMatchLabels + `,`,
-		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "LabelSelectorRequirement", "LabelSelectorRequirement", 1), `&`, ``, 1) + `,`,
+		`MatchExpressions:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.MatchExpressions), "NumericAwareSelectorRequirement", "NumericAwareSelectorRequirement", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -29211,6 +29288,143 @@ func (m *LabelSelectorRequirement) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *NumericAwareSelectorRequirement) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenerated
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NumericAwareSelectorRequirement: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NumericAwareSelectorRequirement: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Operator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Operator = LabelSelectorOperator(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Values", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Values = append(m.Values, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenerated(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *Lifecycle) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -32776,7 +32990,7 @@ func (m *NodeSelectorTerm) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MatchExpressions = append(m.MatchExpressions, LabelSelectorRequirement{})
+			m.MatchExpressions = append(m.MatchExpressions, NumericAwareSelectorRequirement{})
 			if err := m.MatchExpressions[len(m.MatchExpressions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -32807,7 +33021,7 @@ func (m *NodeSelectorTerm) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MatchFields = append(m.MatchFields, LabelSelectorRequirement{})
+			m.MatchFields = append(m.MatchFields, NumericAwareSelectorRequirement{})
 			if err := m.MatchFields[len(m.MatchFields)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -39484,7 +39698,7 @@ func (m *PodSelector) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MatchExpressions = append(m.MatchExpressions, LabelSelectorRequirement{})
+			m.MatchExpressions = append(m.MatchExpressions, NumericAwareSelectorRequirement{})
 			if err := m.MatchExpressions[len(m.MatchExpressions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

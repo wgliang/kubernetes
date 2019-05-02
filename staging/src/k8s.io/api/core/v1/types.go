@@ -2494,10 +2494,10 @@ type NodeSelector struct {
 type NodeSelectorTerm struct {
 	// A list of node selector requirements by node's labels.
 	// +optional
-	MatchExpressions []LabelSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,1,rep,name=matchExpressions"`
+	MatchExpressions []NumericAwareSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,1,rep,name=matchExpressions"`
 	// A list of node selector requirements by node's fields.
 	// +optional
-	MatchFields []LabelSelectorRequirement `json:"matchFields,omitempty" protobuf:"bytes,2,rep,name=matchFields"`
+	MatchFields []NumericAwareSelectorRequirement `json:"matchFields,omitempty" protobuf:"bytes,2,rep,name=matchFields"`
 }
 
 // A pod selector is a label query over a set of pod resources. The result of matchLabels and
@@ -2511,12 +2511,30 @@ type PodSelector struct {
 	MatchLabels map[string]string `json:"matchLabels,omitempty" protobuf:"bytes,1,rep,name=matchLabels"`
 	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +optional
-	MatchExpressions []LabelSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,2,rep,name=matchExpressions"`
+	MatchExpressions []NumericAwareSelectorRequirement `json:"matchExpressions,omitempty" protobuf:"bytes,2,rep,name=matchExpressions"`
 }
 
 // A node selector requirement is a selector that contains values, a key, and an operator
 // that relates the key and values.
 type LabelSelectorRequirement struct {
+	// The label key that the selector applies to.
+	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
+	// Represents a key's relationship to a set of values.
+	// Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+	Operator LabelSelectorOperator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=LabelSelectorOperator"`
+	// An array of string values. If the operator is In or NotIn,
+	// the values array must be non-empty. If the operator is Exists or DoesNotExist,
+	// the values array must be empty. If the operator is Gt or Lt, the values
+	// array must have a single element, which will be interpreted as an integer.
+	// This array is replaced during a strategic merge patch.
+	// +optional
+	Values []string `json:"values,omitempty" protobuf:"bytes,3,rep,name=values"`
+}
+
+// A null or empty node selector term matches no objects. The requirements of
+// them are ANDed.
+// The TopologySelectorTerm type implements a subset of the NumericAwareSelectorRequirement.
+type NumericAwareSelectorRequirement struct {
 	// The label key that the selector applies to.
 	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
 	// Represents a key's relationship to a set of values.
@@ -2540,8 +2558,12 @@ const (
 	LabelSelectorOpNotIn        LabelSelectorOperator = "NotIn"
 	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
 	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
-	LabelSelectorOpGt           LabelSelectorOperator = "Gt"
-	LabelSelectorOpLt           LabelSelectorOperator = "Lt"
+	// TODO: @wgliang Does it need to be changed?
+	LabelSelectorOpNumericallyGreater  LabelSelectorOperator = "Gt"
+	LabelSelectorOpNumericallyLessthan LabelSelectorOperator = "Lt"
+	// DEPRECATED
+	LabelSelectorOpGt LabelSelectorOperator = "Gt"
+	LabelSelectorOpLt LabelSelectorOperator = "Lt"
 )
 
 // A topology selector term represents the result of label queries.

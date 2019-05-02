@@ -959,7 +959,7 @@ func TestSelectNodesForPreemption(t *testing.T) {
 						RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
 							{
 								LabelSelector: &v1.PodSelector{
-									MatchExpressions: []v1.PodSelectorRequirement{
+									MatchExpressions: []v1.NumericAwareSelectorRequirement{
 										{
 											Key:      "pod",
 											Operator: v1.PodSelectorOpIn,
