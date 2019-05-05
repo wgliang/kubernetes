@@ -1958,10 +1958,11 @@ func TestRunGeneralPredicates(t *testing.T) {
 
 // TODO: Add test case for RequiredDuringSchedulingRequiredDuringExecution after it's implemented.
 func TestInterPodAffinity(t *testing.T) {
-	podLabel := map[string]string{"service": "securityscan"}
+	podLabel := map[string]string{"service": "securityscan", "level": "6"}
 	labels1 := map[string]string{
-		"region": "r1",
-		"zone":   "z11",
+		"region":   "r1",
+		"zone":     "z11",
+		"duration": "456789",
 	}
 	podLabel2 := map[string]string{"security": "S1"}
 	node1 := v1.Node{ObjectMeta: metav1.ObjectMeta{Name: "machine1", Labels: labels1}}
@@ -2886,6 +2887,259 @@ func TestInterPodAffinity(t *testing.T) {
 			fits:                 false,
 			expectFailureReasons: []PredicateFailureReason{ErrPodAffinityNotMatch, ErrExistingPodsAntiAffinityRulesNotMatch},
 			name:                 "PodAntiAffinity symmetry check b2: incoming pod and existing pod partially match each other on AffinityTerms",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+												Values:   []string{"2"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								}, {
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyLessthan,
+												Values:   []string{"9"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods: []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node: &node1,
+			fits: true,
+			name: "The labelSelector requirements(items of matchExpressions) are Anded, the pod can schedule onto the node because level tags meets the requirements",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+												Values:   []string{"3"},
+											},
+											// {
+											// 	Key:      "level",
+											// 	Operator: v1.LabelSelectorOpNumericallyLessthan,
+											// 	Values:   []string{"3"},
+											// },
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods: []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node: &node1,
+			fits: true,
+			name: "The labelSelector requirements(items of matchExpressions) are Gt, the pod can schedule onto the node because the level tag meets the requirements",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyLessthan,
+												Values:   []string{"7"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods: []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node: &node1,
+			fits: true,
+			name: "The labelSelector requirements(items of matchExpressions) are Lt, the pod can schedule onto the node because the level tag meets the requirements",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+												Values:   []string{"3"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								}, {
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyLessthan,
+												Values:   []string{"5"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods:                 []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node:                 &node1,
+			fits:                 false,
+			name:                 "The labelSelector requirements(items of matchExpressions) are ANDed, the pod cannot schedule onto the node because one of the matchExpression `Lt` don't match.",
+			expectFailureReasons: []PredicateFailureReason{ErrPodAffinityNotMatch, ErrPodAffinityRulesNotMatch},
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+												Values:   []string{"3"},
+											},
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyLessthan,
+												Values:   []string{"5"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods:                 []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node:                 &node1,
+			fits:                 false,
+			name:                 "The labelSelector requirements(items of matchExpressions) are ANDed, the pod cannot schedule onto the node because one of the matchExpression `Lt` don't match.",
+			expectFailureReasons: []PredicateFailureReason{ErrPodAffinityNotMatch, ErrPodAffinityRulesNotMatch},
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+												Values:   []string{"7"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods:                 []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node:                 &node1,
+			fits:                 false,
+			name:                 "The labelSelector requirements(items of matchExpressions) are Gt, the pod cannot schedule onto the node because the level tag does not meets the requirements.",
+			expectFailureReasons: []PredicateFailureReason{ErrPodAffinityNotMatch, ErrPodAffinityRulesNotMatch},
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: podLabel2,
+				},
+				Spec: v1.PodSpec{
+					Affinity: &v1.Affinity{
+						PodAffinity: &v1.PodAffinity{
+							RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+								{
+									LabelSelector: &v1.PodSelector{
+										MatchExpressions: []v1.NumericAwareSelectorRequirement{
+											{
+												Key:      "level",
+												Operator: v1.LabelSelectorOpNumericallyLessthan,
+												Values:   []string{"5"},
+											},
+										},
+									},
+									TopologyKey: "region",
+								},
+							},
+						},
+					},
+				},
+			},
+			pods:                 []*v1.Pod{{Spec: v1.PodSpec{NodeName: "machine1"}, ObjectMeta: metav1.ObjectMeta{Labels: podLabel}}},
+			node:                 &node1,
+			fits:                 false,
+			name:                 "The labelSelector requirements(items of matchExpressions) are Lt, the pod cannot schedule onto the node because the level tag does not meets the requirements.",
+			expectFailureReasons: []PredicateFailureReason{ErrPodAffinityNotMatch, ErrPodAffinityRulesNotMatch},
 		},
 	}
 
