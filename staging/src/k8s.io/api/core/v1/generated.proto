@@ -2193,7 +2193,7 @@ message NumericAwareSelectorRequirement {
   optional string key = 1;
 
   // Represents a key's relationship to a set of values.
-  // Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+  // Valid operators are In, NotIn, Exists, DoesNotExist, Gt and Lt.
   optional string operator = 2;
 
   // An array of string values. If the operator is In or NotIn,
