@@ -58,6 +58,7 @@ func TestInterPodAffinity(t *testing.T) {
 
 	cs := context.clientSet
 	podLabel := map[string]string{"service": "securityscan"}
+	podLabelWithLevel := map[string]string{"level": "6"}
 	// podLabel2 := map[string]string{"security": "S1"}
 
 	tests := []struct {
@@ -808,6 +809,86 @@ func TestInterPodAffinity(t *testing.T) {
 			},
 			fits: false,
 			test: "nodes[0] and nodes[1] have same topologyKey and label value. nodes[0] has an existing pod that matches the inter pod affinity rule. The new pod can not be scheduled onto either of the two nodes.",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:   "fake-name",
+					Labels: podLabelWithLevel,
+				},
+				Spec: v1.PodSpec{Containers: []v1.Container{{Name: "container", Image: imageutils.GetPauseImageName()}}},
+			},
+			pods: []*v1.Pod{
+				{
+					Spec: v1.PodSpec{NodeName: nodes[0].Name,
+						Containers: []v1.Container{{Name: "container", Image: imageutils.GetPauseImageName()}},
+						Affinity: &v1.Affinity{
+							PodAntiAffinity: &v1.PodAntiAffinity{
+								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+									{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
+												{
+													Key:      "level",
+													Operator: v1.LabelSelectorOpNumericallyGreaterthan,
+													Values:   []string{"7"},
+												},
+											},
+										},
+										TopologyKey: "zone",
+									},
+								},
+							},
+						},
+					},
+					ObjectMeta: metav1.ObjectMeta{
+						Name:   "fake-name2",
+						Labels: podLabel},
+				},
+			},
+			node: nodes[0],
+			fits: true,
+			test: "Verify that PodAntiAffinity from existing pod is respected when pod statisfies(Gt) PodAntiAffinity symmetry with the existing pod",
+		},
+		{
+			pod: &v1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:   "fake-name",
+					Labels: podLabelWithLevel,
+				},
+				Spec: v1.PodSpec{Containers: []v1.Container{{Name: "container", Image: imageutils.GetPauseImageName()}}},
+			},
+			pods: []*v1.Pod{
+				{
+					Spec: v1.PodSpec{NodeName: nodes[0].Name,
+						Containers: []v1.Container{{Name: "container", Image: imageutils.GetPauseImageName()}},
+						Affinity: &v1.Affinity{
+							PodAntiAffinity: &v1.PodAntiAffinity{
+								RequiredDuringSchedulingIgnoredDuringExecution: []v1.PodAffinityTerm{
+									{
+										LabelSelector: &v1.PodSelector{
+											MatchExpressions: []v1.NumericAwareSelectorRequirement{
+												{
+													Key:      "level",
+													Operator: v1.LabelSelectorOpNumericallyLessthan,
+													Values:   []string{"7"},
+												},
+											},
+										},
+										TopologyKey: "zone",
+									},
+								},
+							},
+						},
+					},
+					ObjectMeta: metav1.ObjectMeta{
+						Name:   "fake-name2",
+						Labels: podLabel},
+				},
+			},
+			node: nodes[0],
+			fits: false,
+			test: "Verify that PodAntiAffinity from existing pod is respected when pod not statisfies(Lt) PodAntiAffinity symmetry with the existing pod",
 		},
 	}
 
