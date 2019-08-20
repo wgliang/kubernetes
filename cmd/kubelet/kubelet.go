@@ -32,8 +32,10 @@ import (
 )
 
 func main() {
+	// 随机数种子
 	rand.Seed(time.Now().UnixNano())
 
+	// 使用默认参数创建cobra.Command
 	command := app.NewKubeletCommand()
 	logs.InitLogs()
 	defer logs.FlushLogs()

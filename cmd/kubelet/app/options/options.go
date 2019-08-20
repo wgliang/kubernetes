@@ -53,11 +53,13 @@ const defaultRootDir = "/var/lib/kubelet"
 // In general, please try to avoid adding flags or configuration fields,
 // we already have a confusingly large amount of them.
 type KubeletFlags struct {
+	// kubeconfig 文件的路径，访问 apiserver 的标准方式
 	KubeConfig          string
 	BootstrapKubeconfig string
 
 	// Insert a probability of random errors during calls to the master.
 	ChaosChance float64
+	// 立即终止
 	// Crash immediately, rather than eating panics.
 	ReallyCrashForTesting bool
 
@@ -298,6 +300,8 @@ func applyLegacyDefaults(kc *kubeletconfig.KubeletConfiguration) {
 // a kubelet. These can either be set via command line or directly.
 type KubeletServer struct {
 	KubeletFlags
+	// 主要的配置结构体，包含了命令行所有可以配置的参数。
+	// 因为这个字段是直接引用，所以用户可以通过 `KubeletServer` 直接访问它的字段
 	kubeletconfig.KubeletConfiguration
 }
 

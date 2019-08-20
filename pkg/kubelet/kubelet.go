@@ -361,6 +361,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	seccompProfileRoot string,
 	bootstrapCheckpointPath string,
 	nodeStatusMaxImages int32) (*Kubelet, error) {
+	// 一些初始化工作，包括目录，同步频率，hostname和nodeName
 	if rootDirectory == "" {
 		return nil, fmt.Errorf("invalid root directory %q", rootDirectory)
 	}
@@ -401,6 +402,8 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klog.V(2).Infof("cloud provider determined current node name to be %s", nodeName)
 	}
 
+	// PodConfig 非常重要，它是 pod 信息的来源，kubelet 支持文件、URL 和 apiserver 三种渠道，
+	// PodConfig 将它们汇聚到一起，通过管道来传递
 	if kubeDeps.PodConfig == nil {
 		var err error
 		kubeDeps.PodConfig, err = makePodSourceConfig(kubeCfg, kubeDeps, nodeName, bootstrapCheckpointPath)
@@ -408,7 +411,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 			return nil, err
 		}
 	}
-
+	// 容器GC策略，镜像GC策略
 	containerGCPolicy := kubecontainer.ContainerGCPolicy{
 		MinAge:             minimumGCAge.Duration,
 		MaxPerPodContainer: int(maxPerPodContainerCount),
@@ -430,10 +433,13 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		// Do not provide kubeCfg.EnforceNodeAllocatable to eviction threshold parsing if we are not enforcing Evictions
 		enforceNodeAllocatable = []string{}
 	}
+
+	// TODO: @wgliang
 	thresholds, err := eviction.ParseThresholdConfig(enforceNodeAllocatable, kubeCfg.EvictionHard, kubeCfg.EvictionSoft, kubeCfg.EvictionSoftGracePeriod, kubeCfg.EvictionMinimumReclaim)
 	if err != nil {
 		return nil, err
 	}
+	// 驱逐的配置信息
 	evictionConfig := eviction.Config{
 		PressureTransitionPeriod: kubeCfg.EvictionPressureTransitionPeriod.Duration,
 		MaxPodGracePeriodSeconds: int64(kubeCfg.EvictionMaxPodGracePeriod),
@@ -442,6 +448,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		PodCgroupRoot:            kubeDeps.ContainerManager.GetPodCgroupRoot(),
 	}
 
+	// 使用 reflector 把 ListWatch 得到的服务信息实时同步到 serviceIndexer 索引中
 	serviceIndexer := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc})
 	if kubeDeps.KubeClient != nil {
 		serviceLW := cache.NewListWatchFromClient(kubeDeps.KubeClient.CoreV1().RESTClient(), "services", metav1.NamespaceAll, fields.Everything())
@@ -450,6 +457,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	}
 	serviceLister := corelisters.NewServiceLister(serviceIndexer)
 
+	// 使用 reflector 把 ListWatch 得到的节点信息实时同步到  nodeIndexer 索引中
 	nodeIndexer := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{})
 	if kubeDeps.KubeClient != nil {
 		fieldSelector := fields.Set{api.ObjectNameField: string(nodeName)}.AsSelector()
@@ -490,6 +498,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		protocol = utilipt.ProtocolIpv6
 	}
 
+	// 根据配置信息和各种对象创建 Kubelet 实例
 	klet := &Kubelet{
 		hostname:                                hostname,
 		hostnameOverridden:                      len(hostnameOverride) > 0,
@@ -544,10 +553,12 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		nodeStatusMaxImages:                     nodeStatusMaxImages,
 	}
 
+	// 云资源同步管理器
 	if klet.cloud != nil {
 		klet.cloudResourceSyncManager = cloudresource.NewSyncManager(klet.cloud, nodeName, klet.nodeStatusUpdateFrequency)
 	}
 
+	// secretManager和configMapManager管理器
 	var secretManager secret.Manager
 	var configMapManager configmap.Manager
 	switch kubeCfg.ConfigMapAndSecretChangeDetectionStrategy {
@@ -581,8 +592,10 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 
 	imageBackOff := flowcontrol.NewBackOff(backOffPeriod, MaxContainerBackOff)
 
+	// livenessManager 探活
 	klet.livenessManager = proberesults.NewManager()
 
+	// pod缓存
 	klet.podCache = kubecontainer.NewCache()
 	var checkpointManager checkpointmanager.CheckpointManager
 	if bootstrapCheckpointPath != "" {
@@ -591,9 +604,10 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 			return nil, fmt.Errorf("failed to initialize checkpoint manager: %+v", err)
 		}
 	}
+	// 这里是同步更新secret和configMap
 	// podManager is also responsible for keeping secretManager and configMapManager contents up-to-date.
 	klet.podManager = kubepod.NewBasicPodManager(kubepod.NewBasicMirrorClient(klet.kubeClient), secretManager, configMapManager, checkpointManager)
-
+	// 状态管理器，实时检测节点上 pod 的状态，并更新到 apiserver 对应的 pod
 	klet.statusManager = status.NewManager(klet.kubeClient, klet.podManager, klet)
 
 	if remoteRuntimeEndpoint != "" {
@@ -603,6 +617,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		}
 	}
 
+	//插件集合
 	// TODO: These need to become arguments to a standalone docker shim.
 	pluginSettings := dockershim.NetworkPluginSettings{
 		HairpinMode:        kubeletconfiginternal.HairpinMode(kubeCfg.HairpinMode),
@@ -614,13 +629,16 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		MTU:                int(crOptions.NetworkPluginMTU),
 	}
 
+	// 资源分析
 	klet.resourceAnalyzer = serverstats.NewResourceAnalyzer(klet, kubeCfg.VolumeStatsAggPeriod.Duration)
 
 	// if left at nil, that means it is unneeded
 	var legacyLogProvider kuberuntime.LegacyLogProvider
 
+	// 选择容器运行时
 	switch containerRuntime {
 	case kubetypes.DockerContainerRuntime:
+		//创建Docker service
 		// Create and start the CRI shim running as a grpc server.
 		streamingConfig := getStreamingConfig(kubeCfg, kubeDeps, crOptions)
 		ds, err := dockershim.NewDockerService(kubeDeps.DockerClientConfig, crOptions.PodSandboxImage, streamingConfig,
@@ -636,12 +654,13 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klog.V(5).Infof("RemoteRuntimeEndpoint: %q, RemoteImageEndpoint: %q",
 			remoteRuntimeEndpoint,
 			remoteImageEndpoint)
+		//创建启动Docker service
 		klog.V(2).Infof("Starting the GRPC server for the docker CRI shim.")
 		server := dockerremote.NewDockerServer(remoteRuntimeEndpoint, ds)
 		if err := server.Start(); err != nil {
 			return nil, err
 		}
-
+		// 创建dockerLegacyService
 		// Create dockerLegacyService when the logging driver is not supported.
 		supported, err := ds.IsCRISupportedLogDriver()
 		if err != nil {
@@ -657,6 +676,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	default:
 		return nil, fmt.Errorf("unsupported CRI runtime: %q", containerRuntime)
 	}
+	// 获取运行时和镜像服务
 	runtimeService, imageService, err := getRuntimeAndImageServices(remoteRuntimeEndpoint, remoteImageEndpoint, kubeCfg.RuntimeRequestTimeout)
 	if err != nil {
 		return nil, err
@@ -696,6 +716,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	klet.streamingRuntime = runtime
 	klet.runner = runtime
 
+	// 保存了节点上正在运行的 pod 信息
 	runtimeCache, err := kubecontainer.NewRuntimeCache(klet.containerRuntime)
 	if err != nil {
 		return nil, err
@@ -729,6 +750,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klog.Errorf("Pod CIDR update failed %v", err)
 	}
 
+	// 容器GC
 	// setup containerGC
 	containerGC, err := kubecontainer.NewContainerGC(klet.containerRuntime, containerGCPolicy, klet.sourcesReady)
 	if err != nil {
@@ -737,7 +759,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	klet.containerGC = containerGC
 	klet.containerDeletor = newPodContainerDeletor(klet.containerRuntime, integer.IntMax(containerGCPolicy.MaxPerPodContainer, minDeadContainerInPod))
 
-	// setup imageManager
+	// setup imageManager 管理镜像GC
 	imageManager, err := images.NewImageGCManager(klet.containerRuntime, klet.StatsProvider, kubeDeps.Recorder, nodeRef, imageGCPolicy, crOptions.PodSandboxImage)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize image manager: %v", err)
@@ -773,6 +795,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		}
 	}
 
+	// 检测 pod 的状态，并通过 statusManager 进行更新
 	klet.probeManager = prober.NewManager(
 		klet.statusManager,
 		klet.livenessManager,
@@ -780,6 +803,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		containerRefManager,
 		kubeDeps.Recorder)
 
+	// token管理，获取token信息
 	tokenManager := token.NewManager(kubeDeps.KubeClient)
 
 	// NewInitializedVolumePluginMgr initializes some storageErrors on the Kubelet runtimeState (in csi_plugin.go init)
@@ -805,6 +829,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klet.dnsConfigurer.SetupDNSinContainerizedMounter(experimentalMounterPath)
 	}
 
+	// volume 管理
 	// setup volumeManager
 	klet.volumeManager = volumemanager.NewVolumeManager(
 		kubeCfg.EnableControllerAttachDetach,
@@ -822,7 +847,10 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		keepTerminatedPodVolumes)
 
 	klet.reasonCache = NewReasonCache()
+	// 任务队列
 	klet.workQueue = queue.NewBasicWorkQueue(klet.clock)
+
+	// podWorkers 是具体的执行者
 	klet.podWorkers = newPodWorkers(klet.syncPod, kubeDeps.Recorder, klet.workQueue, klet.resyncInterval, backOffPeriod, klet.podCache)
 
 	klet.backOff = flowcontrol.NewBackOff(backOffPeriod, MaxContainerBackOff)
@@ -1266,6 +1294,7 @@ func (kl *Kubelet) setupDataDirs() error {
 // StartGarbageCollection starts garbage collection threads.
 func (kl *Kubelet) StartGarbageCollection() {
 	loggedContainerGCFailure := false
+	// 容器GC
 	go wait.Until(func() {
 		if err := kl.containerGC.GarbageCollect(); err != nil {
 			klog.Errorf("Container garbage collection failed: %v", err)
@@ -1288,6 +1317,7 @@ func (kl *Kubelet) StartGarbageCollection() {
 		return
 	}
 
+	// 镜像GC
 	prevImageGCFailed := false
 	go wait.Until(func() {
 		if err := kl.imageManager.GarbageCollect(); err != nil {
